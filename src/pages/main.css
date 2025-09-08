@@ -1,0 +1,53 @@
+/*
+ * File: main.css
+ * Project: wardrobe
+ * Created Date: 2025-09-08 16:08:20
+ * Author: 3urobeat
+ *
+ * Last Modified: 2025-09-08 19:37:33
+ * Modified By: 3urobeat
+ *
+ * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
+@import "tailwindcss";
+
+/* @config "../../tailwind.config.js"; */
+
+/* This is how this should work now in tailwind v4, however it doesn't for me yet */
+@theme {
+    --color-bg-light: #f8f9fa;
+    --color-bg-dark: #181a1b;
+
+    --color-bg-input-hover-light: #d9dadc;
+    --color-bg-input-hover-dark: #25282a;
+
+    --color-bg-input-light: #e8e9eb;
+    --color-bg-input-dark: #1e2022;
+
+    --color-bg-embed-light: #d6dce4;
+    --color-bg-embed-dark: #242729;
+
+    --color-text-light: #000000;
+    --color-text-dark: #e8e6e3;
+
+    --color-border-primary-light: #000000;
+    --color-border-primary-dark: #565d5f;
+
+    --color-border-secondary-light: #9198a3;
+    --color-border-secondary-dark: #697274;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+}
