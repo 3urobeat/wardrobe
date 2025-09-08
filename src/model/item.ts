@@ -16,13 +16,15 @@
 
 
 export type Item = {
+    id: string,
     title: string,
+    imgPath: string,
     labels: Label[],
     addedTimestamp: number
 }
 
 export type Label = {
+    id: string,
     name: string,
-    type: string,
-    id: string
+    type: string
 }

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 16:47:39
+ * Last Modified: 2025-09-08 22:33:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -13,6 +13,9 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+
+
+import type { Item } from "~/model/item";
 
 
 /**
@@ -27,6 +30,44 @@ export default defineEventHandler(async () => {
 
     console.log("API get-all-items: Received request");
 
-    return [];
+    const items: Item[] = [];
+
+    for (let i = 0; i < 50; i++) {
+        items.push({
+            id: i.toString(),
+            title: i.toString(),
+            imgPath: "favicon.png",
+            addedTimestamp: Date.now(),
+            labels: [
+                {
+                    id: "0",
+                    name: "Summer",
+                    type: "season"
+                },
+                {
+                    id: "1",
+                    name: "Cocktail Dress",
+                    type: "type"
+                },
+                {
+                    id: "2",
+                    name: "2025",
+                    type: "year"
+                },
+                {
+                    id: "3",
+                    name: "Special",
+                    type: "occasion"
+                },
+                {
+                    id: "4",
+                    name: "Red",
+                    type: "color"
+                }
+            ]
+        });
+    }
+
+    return items;
 
 });
