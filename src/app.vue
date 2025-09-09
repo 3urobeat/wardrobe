@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 17:09:39
+ * Last Modified: 2025-09-09 17:13:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -72,6 +72,12 @@
                             <PhCoatHanger class="mr-2"></PhCoatHanger> Outfits
                         </div>
                     </NuxtLink>
+                    <NuxtLink to="/labels" class="flex items-center px-2 py-1 mb-1 rounded-sm hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                        <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'labels'">|</span>
+                        <div class="flex mx-4 items-center justify-center w-full">
+                            <PhTag class="mr-2"></PhTag> Labels
+                        </div>
+                    </NuxtLink>
                     <NuxtLink to="/settings" class="flex items-center px-2 py-1 mb-1 rounded-sm hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                         <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'settings'">|</span>
                         <div class="flex mx-4 items-center justify-center w-full">
@@ -134,7 +140,7 @@
 
 
 <script setup lang="ts">
-    import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhDresser } from "@phosphor-icons/vue";
+    import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhDresser, PhTag } from "@phosphor-icons/vue";
     import packagejson from "../package.json";
 
     const route = useRoute();
