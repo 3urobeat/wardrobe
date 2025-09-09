@@ -1,11 +1,11 @@
 /*
- * File: item.ts
+ * File: label.ts
  * Project: wardrobe
- * Created Date: 2025-09-08 15:45:56
+ * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified:
- * Modified By:
+ * Last Modified: 2025-09-09 22:01:51
+ * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
  *
@@ -15,13 +15,14 @@
  */
 
 
-import type { Label } from "./label";
-
-
-export type Item = {
+export type Label = {
     id: string,
-    title: string,
-    imgPath: string,
-    labels: Label[],
-    addedTimestamp: number
+    name: string,
+    category: Category
+}
+
+
+export type Category = {
+    id: string,
+    name: string
 }

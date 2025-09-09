@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 17:28:24
+ * Last Modified: 2025-09-09 22:00:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -62,7 +62,8 @@
 
 <script setup lang="ts">
     import { PhPlus } from "@phosphor-icons/vue";
-    import type { Item, Label } from "~/model/item";
+    import type { Item } from "~/model/item";
+    import type { Label } from "~/model/label";
 
 
     // Cache

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:36:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 18:58:42
+ * Last Modified: 2025-09-09 22:17:48
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -20,7 +20,7 @@
 <template>
     <!-- Page title bar -->
     <div id="title" class="right-8 pt-10 select-none">
-        <div class="flex w-full justify-start">
+        <div class="flex w-full">
             <div class="flex justify-start">
                 <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
                     <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
@@ -62,14 +62,14 @@
             <!-- Label selector area -->
             <div class="w-full h-full overflow-scroll self-center my-4 rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all">
                 <!-- Separate labels by category -->
-                <div class="flex px-2 m-1.5" v-for="thisCategory in labelCategories" :key="thisCategory">
-                    <label class="text-md text-text-light dark:text-text-dark">{{ thisCategory }}: </label>
+                <div class="flex px-2 m-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                    <label class="text-md text-text-light dark:text-text-dark">{{ thisCategory.name }}: </label>
 
                     <!-- List all labels for this category -->
                     <button
                         class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
                         :class="selectedLabels.includes(thisLabel) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                        v-for="thisLabel in storedLabels.filter((e) => e.type == thisCategory)"
+                        v-for="thisLabel in storedLabels.filter((e) => e.category.name == thisCategory.name)"
                         :key="thisLabel.id"
                         @click="toggleLabel(thisLabel)"
                     >
@@ -91,7 +91,7 @@
 <script setup lang="ts">
     import { PhCaretLeft, PhCheck, PhPlus, PhUploadSimple } from "@phosphor-icons/vue";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "../helpers/responseIndicator";
-    import type { Label } from "~/model/item";
+    import type { Category, Label } from "~/model/label";
 
     // Refs
     const uploadImg       = ref(null);
@@ -99,18 +99,17 @@
     const itemDescription = ref(null);
 
     const storedLabels: Ref<Label[]> = ref([]);
-    const labelCategories: Ref<string[]> = ref([]);
+    const storedCategories: Ref<Category[]> = ref([]);
 
     const selectedLabels: Ref<Label[]> = ref([]);
 
 
-    // Get all labels on page load
-    let res = await useFetch<Label[]>("/api/get-all-labels");
+    // Get all labels & categories on page load
+    let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
+    storedLabels.value = labelsRes.data.value!;
 
-    storedLabels.value = res.data.value!;
-
-    // Get all unique categories
-    labelCategories.value = [...new Set(res.data.value!.flatMap(e => { return e.type }))];
+    let categoriesRes = await useFetch<Category[]>("/api/get-all-categories");
+    storedCategories.value = categoriesRes.data.value!;
 
 
     // Track if user made changes
@@ -146,7 +145,7 @@
 
 
     // Label quick add function
-    async function quickAddLabel(category: string) {
+    async function quickAddLabel(category: Category) {
 
     }
 

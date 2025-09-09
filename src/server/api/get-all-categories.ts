@@ -1,10 +1,10 @@
 /*
- * File: get-all-labels.ts
+ * File: get-all-categories.ts
  * Project: wardrobe
- * Created Date: 2025-09-09 16:43:11
+ * Created Date: 2025-09-09 22:04:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:04:57
+ * Last Modified: 2025-09-09 22:08:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,11 +15,11 @@
  */
 
 
-import type { Label } from "~/model/label";
+import type { Category } from "~/model/label";
 
 
 /**
- * This API route gets all stored labels and returns them
+ * This API route gets all stored categories and returns them
  * Params: {}
  * Returns: { }
  */
@@ -30,66 +30,29 @@ export default defineEventHandler(async () => {
 
     console.log("API get-all-labels: Received request");
 
-    const labels: Label[] = [
+    const categories: Category[] = [
         {
             id: "0",
-            name: "Summer",
-            category: {
-                id: "0",
-                name: "season"
-            }
+            name: "season"
         },
         {
             id: "1",
-            name: "Cocktail Dress",
-            category: {
-                id: "1",
-                name: "type"
-            }
+            name: "type"
         },
         {
             id: "2",
-            name: "2025",
-            category: {
-                id: "2",
-                name: "year"
-            }
+            name: "year"
         },
         {
             id: "3",
-            name: "Special",
-            category: {
-                id: "3",
-                name: "occasion"
-            }
+            name: "occasion"
         },
         {
             id: "4",
-            name: "Red",
-            category: {
-                id: "4",
-                name: "color"
-            }
-        },
-        {
-            id: "5",
-            name: "Spring",
-            category: {
-                id: "0",
-                name: "season"
-            }
-        },
-        {
-            id: "6",
-            name: "Fall",
-            category: {
-                id: "0",
-                name: "season"
-            }
+            name: "color"
         }
-
     ];
 
-    return labels;
+    return categories;
 
 });
