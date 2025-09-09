@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 17:13:19
+ * Last Modified: 2025-09-09 20:49:45
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -36,7 +36,7 @@
 
             <!-- Light/Dark Mode toggle -->
             <div class="w-full pr-3 select-none flex justify-end font-semibold">
-                <button :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
+                <button :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="p-0.5 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
                     <PhMoon :class="darkModeEnabled ? 'opacity-100' : 'opacity-0'" class="fixed size-7 p-0.5 transition-opacity"></PhMoon>
                     <PhSun :class="darkModeEnabled ? 'opacity-0' : 'opacity-100'" class="size-7 p-0.5 transition-opacity"></PhSun>
                 </button>

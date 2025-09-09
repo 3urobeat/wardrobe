@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 19:16:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 19:00:14
+ * Last Modified: 2025-09-09 22:49:46
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -20,15 +20,15 @@
 <template>
     <!-- Page title bar -->
     <div id="title" class="right-8 pt-10 select-none">
-        <div class="flex w-full justify-start">
+        <div class="flex w-full">
             <div class="flex justify-start">
-                <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+                <NuxtLink to="/outfits" class="flex items-center justify-center h-8 py-1 px-3 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
                     <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
                 </NuxtLink>
             </div>
 
             <div class="flex w-full justify-end">
-                <button class="flex items-center justify-center h-8 py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+                <button class="flex items-center justify-center h-8 py-1 px-3 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
                     <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
                     Save
                 </button>
