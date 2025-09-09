@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 22:26:18
+ * Last Modified: 2025-09-09 17:09:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,15 +18,15 @@
 
 
 <template>
-    <div class="flex flex-col h-screen">
+    <div class="flex flex-col h-screen bg-bg-light dark:bg-bg-dark">
         <!-- Title bar -->
         <PhList :class="!showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhList>
-        <PhCaretLeft :class="showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhCaretLeft>
+        <PhCaretLeft :class="showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhCaretLeft>
 
         <header
             id="titlebar"
-            :class="showNavbar ? 'border-opacity-30 lg:border-opacity-100 dark:text-text-dark dark:bg-[#5d5f5f] lg:bg-bg-light lg:dark:bg-bg-dark lg:opacity-100 lg:dark:opacity-100' : 'dark:bg-bg-dark'"
-            class="flex justify-center items-center shrink-0 h-15 bg-bg-light dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
+            :class="showNavbar ? 'border-opacity-30 lg:border-opacity-100 dark:text-text-dark lg:opacity-100 lg:dark:opacity-100' : ''"
+            class="flex justify-center items-center shrink-0 h-15 dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
         >                                                                                                                                                 <!-- The extra lg: tags in :class fix a bg color bug when the window is resized while the navbar was open. The opacities are applied seperately here to avoid page elements fading through -->
             <!-- Title -->
             <div :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="fixed flex justify-center items-center select-none font-semibold transition-opacity duration-500">
@@ -50,8 +50,8 @@
             <!-- Left navigation bar which offsets everything else to the right on desktop and overlays everything on mobile -->
             <nav
                 id="navbar"
-                :class="showNavbar ? 'backdrop-blur-sm bg-bg-light/5 dark:bg-bg-dark/50 lg:bg-bg-light lg:dark:bg-bg-dark' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
-                class="z-20 w-52 min-w-52 lg:relative lg:block lg:opacity-100 bg-bg-light dark:bg-bg-dark dark:text-text-dark border-x-1 border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
+                :class="showNavbar ? 'backdrop-blur-sm' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
+                class="z-20 w-52 min-w-52 lg:relative lg:block lg:opacity-100 dark:text-text-dark border-x-1 border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
             >
 
                 <div class="absolute left-9 lg:top-4">
@@ -111,8 +111,8 @@
 
             <!-- The main content itself, pushed to the side by the navbar - The extra lg: tags in :class fix a bg color bug when the window is resized while the navbar was open - The lg:pr-52 param subtracts the navbar (a bit hacky) -->
             <main
-                :class="showNavbar ? 'opacity-30 dark:opacity-70 lg:bg-bg-light lg:dark:bg-bg-dark lg:opacity-100 lg:dark:opacity-100' : ''"
-                class="fixed w-screen h-screen bg-bg-light dark:bg-bg-dark dark:text-text-dark transition-all duration-500 lg:pl-52"
+                :class="showNavbar ? 'opacity-30 dark:opacity-70 lg:opacity-100 lg:dark:opacity-100' : ''"
+                class="fixed w-screen h-screen dark:text-text-dark transition-all duration-500 lg:pl-52"
                 @click="showNavbar = false"
             >
                 <div :class="showNavbar ? 'absolute h-screen w-screen opacity-0 lg:w-0 lg:h-0' : ''" class="z-50"></div> <!-- Dummy to prevent NuxtPage button presses when the navbar is open -->
