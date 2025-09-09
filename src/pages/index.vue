@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 17:11:46
+ * Last Modified: 2025-09-09 17:28:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -36,21 +36,23 @@
         <!-- Responsive grid for items - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
         <div class="grid grid-cols-[repeat(auto-fill,_minmax(365px,_1fr))] gap-x-6 gap-y-10">
 
-            <!-- Clothing Items -->
-            <button
-                class="flex flex-col h-96 md:w-96 w-full p-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                v-for="thisItem in storedItems" :key="thisItem.id" @click="viewItem(thisItem)"
+            <!-- Clothing Items --> <!-- TODO: This outer button must be something else, e.g. an anchor, to prevent the inner button applying its styling to the outer one. If this gets fixed, remove cursor-pointer from the anchor element. -->
+            <a
+                class="flex flex-col h-96 md:w-96 w-full p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
+                v-for="thisItem in storedItems"
+                :key="thisItem.id"
+                @click="viewItem(thisItem)"
             >
                 <img class="w-fit h-60 mb-1 self-center" :src="thisItem.imgPath" alt="Image for '{{ thisItem.title }}'">
                 <label class="self-start font-semibold mb-1">{{ thisItem.title }}</label>
 
                 <!-- Filter Labels --> <!-- TODO: Align left instead of being centered-->
-                <div class="">
+                <div class="mt-4">
                     <button class="w-fit rounded-xl px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all" v-for="thisLabel in thisItem.labels" :key="thisLabel.id" @click="toggleFilter(thisLabel)">
                         {{ thisLabel.name }}
                     </button>
                 </div>
-            </button>
+            </a>
 
         </div>
 
