@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:36:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 17:11:52
+ * Last Modified: 2025-09-09 18:58:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,17 +18,25 @@
 
 
 <template>
-    <div id="title" class="fixed w-full right-8 mb-5 lg:mb-7 pt-10 select-none">
-        <!-- Save button -->
-        <div class="flex justify-end items-center">
-            <button class="flex items-center justify-center py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
-                <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-                Save
-            </button>
+    <!-- Page title bar -->
+    <div id="title" class="right-8 pt-10 select-none">
+        <div class="flex w-full justify-start">
+            <div class="flex justify-start">
+                <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+                    <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
+                </NuxtLink>
+            </div>
+
+            <div class="flex w-full justify-end">
+                <button class="flex items-center justify-center h-8 py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+                    <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
+                    Save
+                </button>
+            </div>
         </div>
     </div>
 
-    <div class="flex justify-center items-center pt-28 pb-10 px-8" @change="changesMade = true">
+    <div class="flex justify-center items-center pt-12 pb-10 px-8" @change="changesMade = true">
         <!-- TODO: Pop-In Animation -->
         <div class="flex flex-col w-full md:w-xl h-190 px-8 py-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
 
@@ -81,7 +89,7 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPlus, PhUploadSimple } from "@phosphor-icons/vue";
+    import { PhCaretLeft, PhCheck, PhPlus, PhUploadSimple } from "@phosphor-icons/vue";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "../helpers/responseIndicator";
     import type { Label } from "~/model/item";
 
