@@ -43,13 +43,13 @@
     "@eslint/js": "^9.35.0",
     "@nuxt/devtools": "latest",
     "@types/node": "^24.3.1",
-    "@typescript-eslint/parser": "^8.42.0",
+    "@typescript-eslint/parser": "^8.43.0",
     "@vueuse/core": "^13.9.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.35.0",
-    "eslint-plugin-jsdoc": "^54.7.0",
+    "eslint-plugin-jsdoc": "^55.0.5",
     "postcss": "^8.5.6",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.42.0"
+    "typescript-eslint": "^8.43.0"
   }
 }
