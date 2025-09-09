@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 22:41:48
+ * Last Modified: 2025-09-09 17:11:46
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -46,7 +46,7 @@
 
                 <!-- Filter Labels --> <!-- TODO: Align left instead of being centered-->
                 <div class="">
-                    <button class="w-fit rounded-xl px-2 m-0.5 text-gray-100 bg-gray-400 hover:bg-bg-input-hover-dark hover:transition-all" v-for="thisLabel in thisItem.labels" :key="thisLabel.id" @click="toggleFilter(thisLabel)">
+                    <button class="w-fit rounded-xl px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all" v-for="thisLabel in thisItem.labels" :key="thisLabel.id" @click="toggleFilter(thisLabel)">
                         {{ thisLabel.name }}
                     </button>
                 </div>

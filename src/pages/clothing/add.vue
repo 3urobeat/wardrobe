@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:36:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 19:18:43
+ * Last Modified: 2025-09-09 17:11:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,7 +18,7 @@
 
 
 <template>
-    <div id="title" class="absolute w-full right-5 mb-5 lg:mb-7 pt-10 select-none">
+    <div id="title" class="fixed w-full right-8 mb-5 lg:mb-7 pt-10 select-none">
         <!-- Save button -->
         <div class="flex justify-end items-center">
             <button class="flex items-center justify-center py-1 px-3 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
@@ -28,14 +28,81 @@
         </div>
     </div>
 
-    <div class="lg:flex lg:flex-col lg:mx-12 mb-5 lg:mb-7" @change="changesMade = true"> <!-- Offset content to the right on desktop to give headline more presence -->
+    <div class="flex justify-center items-center pt-28 pb-10 px-8" @change="changesMade = true">
+        <!-- TODO: Pop-In Animation -->
+        <div class="flex flex-col w-full md:w-xl h-190 px-8 py-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
+
+            <!-- Image Upload -->
+            <button class="flex justify-center items-center self-center w-6/7 sm:w-2/3 aspect-square m-6 rounded-2xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 outline-dashed hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all" @click="">
+                <PhUploadSimple class="text-2xl text-text-light dark:text-text-dark"></PhUploadSimple>
+            </button>
+
+            <!-- Name input -->
+            <input
+                class="w-full sm:w-1/2 self-center sm:self-start my-2 py-1 px-3 rounded-sm shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 transition-all"
+                placeholder="Name"
+                v-model.trim="itemName"
+            />
+
+            <!-- Description input -->
+            <textarea
+                class="w-full h-20 shrink-0 self-center my-2 py-2 px-3 rounded-sm shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2"
+                placeholder="Description"
+                v-model.trim="itemDescription"
+            />
+
+            <!-- Label selector area -->
+            <div class="w-full h-full overflow-scroll self-center my-4 rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all">
+                <!-- Separate labels by category -->
+                <div class="flex px-2 m-1.5" v-for="thisCategory in labelCategories" :key="thisCategory">
+                    <label class="text-md text-text-light dark:text-text-dark">{{ thisCategory }}: </label>
+
+                    <!-- List all labels for this category -->
+                    <button
+                        class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
+                        :class="selectedLabels.includes(thisLabel) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                        v-for="thisLabel in storedLabels.filter((e) => e.type == thisCategory)"
+                        :key="thisLabel.id"
+                        @click="toggleLabel(thisLabel)"
+                    >
+                        {{ thisLabel.name }}
+                    </button>
+
+                    <!-- Label Quick Add Button -->
+                    <button class="" @click="quickAddLabel(thisCategory)">
+                        <PhPlus class="fill-text-light dark:fill-text-dark"></PhPlus>
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </div>
 </template>
 
 
 <script setup lang="ts">
-    import { PhCheck } from "@phosphor-icons/vue";
+    import { PhCheck, PhPlus, PhUploadSimple } from "@phosphor-icons/vue";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "../helpers/responseIndicator";
+    import type { Label } from "~/model/item";
+
+    // Refs
+    const uploadImg       = ref(null);
+    const itemName        = ref(null);
+    const itemDescription = ref(null);
+
+    const storedLabels: Ref<Label[]> = ref([]);
+    const labelCategories: Ref<string[]> = ref([]);
+
+    const selectedLabels: Ref<Label[]> = ref([]);
+
+
+    // Get all labels on page load
+    let res = await useFetch<Label[]>("/api/get-all-labels");
+
+    storedLabels.value = res.data.value!;
+
+    // Get all unique categories
+    labelCategories.value = [...new Set(res.data.value!.flatMap(e => { return e.type }))];
 
 
     // Track if user made changes
@@ -50,6 +117,30 @@
 
         next();
     });
+
+
+    // Adds/Removes a label
+    async function toggleLabel(selectedLabel: Label) {
+        console.log("DEBUG - add: Toggling label " + selectedLabel.id);
+
+        // Get all selected labels without this one
+        const filtered = selectedLabels.value.filter((e) => e.id != selectedLabel.id);
+
+        // If length does not match, the label must be selected
+        if (filtered.length != selectedLabels.value.length) {
+            // ...and we can simply remove it without filtering again
+            selectedLabels.value = filtered;
+        } else {
+            // ...otherwise we can simply add it
+            selectedLabels.value.push(selectedLabel);
+        }
+    }
+
+
+    // Label quick add function
+    async function quickAddLabel(category: string) {
+
+    }
 
 
     // Sends changes to the database
