@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:36:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:50:08
+ * Last Modified: 2025-09-10 16:37:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,24 +19,22 @@
 
 <template>
     <!-- Page title bar -->
-    <div id="title" class="right-8 pt-10 select-none">
-        <div class="flex w-full">
-            <div class="flex justify-start">
-                <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
-                    <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
-                </NuxtLink>
-            </div>
+    <div id="title" class="flex w-full select-none">
+        <div class="flex justify-start">
+            <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+                <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
+            </NuxtLink>
+        </div>
 
-            <div class="flex w-full justify-end">
-                <button class="flex items-center justify-center h-8 py-1 px-3 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
-                    <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-                    Save
-                </button>
-            </div>
+        <div class="flex w-full justify-end">
+            <button class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+                <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
+                Save
+            </button>
         </div>
     </div>
 
-    <div class="flex justify-center items-center pt-12 pb-10 px-8" @change="changesMade = true">
+    <div class="flex justify-center items-center py-12" @change="changesMade = true">
         <!-- TODO: Pop-In Animation -->
         <div class="flex flex-col w-full md:w-xl h-190 px-8 py-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
 
@@ -47,14 +45,14 @@
 
             <!-- Name input -->
             <input
-                class="w-full sm:w-1/2 self-center sm:self-start my-2 py-1 px-3 rounded-sm shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 transition-all"
+                class="w-full sm:w-1/2 self-center sm:self-start my-2 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 transition-all"
                 placeholder="Name"
                 v-model.trim="itemName"
             />
 
             <!-- Description input -->
             <textarea
-                class="w-full h-20 shrink-0 self-center my-2 py-2 px-3 rounded-sm shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2"
+                class="w-full h-20 shrink-0 self-center my-2 py-2 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2"
                 placeholder="Description"
                 v-model.trim="itemDescription"
             />

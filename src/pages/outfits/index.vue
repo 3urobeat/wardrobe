@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:50:31
+ * Last Modified: 2025-09-10 16:37:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,10 +18,10 @@
 
 
 <template>
-    <div id="title" class="absolute w-full right-5 mb-5 lg:mb-7 pt-10 select-none">
+    <div id="title" class="absolute w-full right-5 mb-5 lg:mb-7 select-none">
         <!-- Add button -->
         <div class="flex justify-end items-center">
-            <NuxtLink to="/outfits/add" class="flex items-center justify-center py-1 px-3 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+            <NuxtLink to="/outfits/add" class="flex items-center justify-center py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
                 Add Outfit
             </NuxtLink>

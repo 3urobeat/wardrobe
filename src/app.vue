@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 20:49:45
+ * Last Modified: 2025-09-10 16:36:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -36,7 +36,7 @@
 
             <!-- Light/Dark Mode toggle -->
             <div class="w-full pr-3 select-none flex justify-end font-semibold">
-                <button :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="p-0.5 rounded-sm bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
+                <button :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="p-0.5 rounded-md bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
                     <PhMoon :class="darkModeEnabled ? 'opacity-100' : 'opacity-0'" class="fixed size-7 p-0.5 transition-opacity"></PhMoon>
                     <PhSun :class="darkModeEnabled ? 'opacity-0' : 'opacity-100'" class="size-7 p-0.5 transition-opacity"></PhSun>
                 </button>
@@ -57,7 +57,7 @@
                 <div class="absolute left-9 lg:top-4">
                     <div class="my-3"></div> <!-- Add some space above everything-->
 
-                    <NuxtLink to="/" class="flex items-center px-2 py-1 mb-1 rounded-sm hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                    <NuxtLink to="/" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                         <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index'">|</span>
                         <div class="flex mx-4 items-center justify-center w-full">
                             <PhHouse class="mr-2"></PhHouse> Browse
@@ -66,19 +66,19 @@
 
                     <div class="my-2 h-0.5 bg-border-secondary-light dark:bg-border-secondary-dark opacity-50"></div> <!-- Divider to give Browse more presence -->
 
-                    <NuxtLink to="/outfits" class="flex items-center px-2 py-1 mb-1 rounded-sm hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                    <NuxtLink to="/outfits" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                         <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'outfits'">|</span>
                         <div class="flex mx-4 items-center justify-center w-full">
                             <PhCoatHanger class="mr-2"></PhCoatHanger> Outfits
                         </div>
                     </NuxtLink>
-                    <NuxtLink to="/labels" class="flex items-center px-2 py-1 mb-1 rounded-sm hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                    <NuxtLink to="/labels" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                         <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'labels'">|</span>
                         <div class="flex mx-4 items-center justify-center w-full">
                             <PhTag class="mr-2"></PhTag> Labels
                         </div>
                     </NuxtLink>
-                    <NuxtLink to="/settings" class="flex items-center px-2 py-1 mb-1 rounded-sm hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                    <NuxtLink to="/settings" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                         <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'settings'">|</span>
                         <div class="flex mx-4 items-center justify-center w-full">
                             <PhGear class="mr-2"></PhGear> Settings
@@ -121,14 +121,15 @@
                 class="fixed w-screen h-screen dark:text-text-dark transition-all duration-500 lg:pl-52"
                 @click="showNavbar = false"
             >
-                <div :class="showNavbar ? 'absolute h-screen w-screen opacity-0 lg:w-0 lg:h-0' : ''" class="z-50"></div> <!-- Dummy to prevent NuxtPage button presses when the navbar is open -->
+                <!-- Dummy to prevent NuxtPage button presses when the navbar is open -->
+                <div :class="showNavbar ? 'absolute h-screen w-screen opacity-0 lg:w-0 lg:h-0' : ''" class="z-50"></div>
 
                 <!-- Page content wrapped into a border container, used to indicate success or failure for actions -->
                 <div
                     id="color-border"
                     class="fixed bottom-0 top-15 right-0 lg:left-52 left-0 border-8 border-transparent rounded-2xl duration-500 overflow-auto"
                 >
-                    <div class="px-5 -mt-5 right-0 left-0">
+                    <div id="page-content" class="p-5">
                         <NuxtPage></NuxtPage> <!-- Links to index.vue -->
                     </div>
                 </div>

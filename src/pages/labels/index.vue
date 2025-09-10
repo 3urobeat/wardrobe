@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:51:23
+ * Last Modified: 2025-09-10 16:37:11
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,23 +18,23 @@
 
 
 <template>
-    <div id="title" class="absolute w-full right-5 mb-5 lg:mb-7 pt-10 select-none">
+    <div id="title" class="absolute w-full right-5 select-none">
         <!-- Save button -->
         <div class="flex justify-end items-center">
-            <button class="flex items-center justify-center py-1 px-3 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+            <button class="flex items-center justify-center py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
                 <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
                 Save
             </button>
         </div>
     </div>
 
-    <div class="flex flex-col items-center pt-28 pb-10 px-8 gap-8" @change="changesMade = true">
+    <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
         <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all" v-for="thisCategory in storedCategories" :key="thisCategory.id">
             <div>
                 <!-- Title -->
                 <div class="w-fit px-1 m-2 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
                     <input
-                        class="w-fit py-0.5 px-3 rounded-sm bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
+                        class="w-fit py-0.5 px-3 rounded-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
                         placeholder="Category Name"
                         v-model.trim="thisCategory.name"
                     />
@@ -54,7 +54,7 @@
                             </div>
 
                             <div class="flex w-full justify-end">
-                                <button class="flex p-1 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="deleteLabel(thisLabel)" title="Delete Label">
+                                <button class="flex p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="deleteLabel(thisLabel)" title="Delete Label">
                                     <PhX class="size-5 text-red-500"></PhX>
                                 </button>
                             </div>
@@ -62,7 +62,7 @@
 
                         <!-- Label content -->
                         <input
-                            class="w-full self-center sm:self-start my-2 py-1 px-3 rounded-sm shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
+                            class="w-full self-center sm:self-start my-2 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
                             placeholder="Name"
                             v-model.trim="thisLabel.name"
                         />
@@ -72,14 +72,14 @@
 
             <!-- Add label button -->
             <div class="flex m-2 items-center">
-                <button class="h-fit p-1 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addLabel(thisCategory)" title="Add Label">
+                <button class="h-fit p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addLabel(thisCategory)" title="Add Label">
                     <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                 </button>
             </div>
         </div>
 
         <!-- Add label category button -->
-        <button class="items-center justify-center p-2 rounded-sm shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addCategory()" title="Add Category">
+        <button class="items-center justify-center p-2 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addCategory()" title="Add Category">
             <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
         </button>
     </div>

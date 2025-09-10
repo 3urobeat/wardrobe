@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:52:32
+ * Last Modified: 2025-09-10 16:37:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -46,7 +46,7 @@
         <!-- TODO -->
     </div>
 
-    <div class="pt-28 pb-10 px-8">
+    <div class="py-20">
 
         <!-- Responsive grid for items - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
         <div class="grid grid-cols-[repeat(auto-fill,_minmax(365px,_1fr))] gap-x-6 gap-y-10">
