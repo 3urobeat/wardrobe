@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:36:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 16:37:13
+ * Last Modified: 2025-09-10 17:44:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -21,7 +21,7 @@
     <!-- Page title bar -->
     <div id="title" class="flex w-full select-none">
         <div class="flex justify-start">
-            <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
+            <NuxtLink to="/" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
             </NuxtLink>
         </div>

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 17:58:21
+ * Last Modified: 2025-09-10 22:25:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -76,17 +76,17 @@
         <!-- Responsive grid for items - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
         <div class="grid grid-cols-[repeat(auto-fill,_minmax(365px,_1fr))] gap-x-6 gap-y-10">
 
-            <!-- Clothing Items --> <!-- TODO: This outer button must be something else, e.g. an anchor, to prevent the inner button applying its styling to the outer one. If this gets fixed, remove cursor-pointer from the anchor element. -->
+            <!-- Clothing Items -->
             <NuxtLink
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
                 v-for="thisOutfit in getItemsToShow()"
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
-                <!-- <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisOutfit.imgPath" alt="Image for '{{ thisItem.title }}'"> -->
+                <!-- <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisOutfit.imgPath" alt="Image for '{{ thisItem.title }}'"> --> <!-- TODO -->
                 <label class="self-start font-semibold mb-1">{{ thisOutfit.title }}</label>
 
-                <!-- Filter Labels -->
+                <!-- Filter Labels --> <!-- TODO: Click goes through and triggers redirect -->
                 <div class="mt-4">
                     <button
                         class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"

@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 16:42:47
+ * Last Modified: 2025-09-10 21:58:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -84,13 +84,13 @@
                 :key="thisItem.id"
                 @click="viewItem(thisItem)"
             >
-                <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisItem.imgPath" alt="Image for '{{ thisItem.title }}'">
+                <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisItem.imgPath" :alt="'Image for ' + thisItem.title">
                 <label class="self-start font-semibold mb-1">{{ thisItem.title }}</label>
 
                 <!-- Filter Labels -->
                 <div class="mt-4">
                     <button
-                        class="w-fit rounded-xl px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
+                        class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
                         :class="selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
                         v-for="thisLabel in thisItem.labels"
                         :key="thisLabel.name"
