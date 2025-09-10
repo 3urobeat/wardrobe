@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 16:43:11
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:04:57
+ * Last Modified: 2025-09-10 21:20:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -85,6 +85,30 @@ export default defineEventHandler(async () => {
             category: {
                 id: "0",
                 name: "season"
+            }
+        },
+        {
+            id: "7",
+            name: "Torso",
+            category: {
+                id: "5",
+                name: "body part"
+            }
+        },
+        {
+            id: "8",
+            name: "Legs",
+            category: {
+                id: "5",
+                name: "body part"
+            }
+        },
+        {
+            id: "9",
+            name: "Feet",
+            category: {
+                id: "5",
+                name: "body part"
             }
         }
 

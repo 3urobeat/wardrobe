@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 22:04:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:08:06
+ * Last Modified: 2025-09-10 21:20:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -50,6 +50,10 @@ export default defineEventHandler(async () => {
         {
             id: "4",
             name: "color"
+        },
+        {
+            id: "5",
+            name: "body part"
         }
     ];
 
