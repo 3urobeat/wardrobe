@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 16:36:57
+ * Last Modified: 2025-09-10 16:41:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -25,18 +25,17 @@
 
         <header
             id="titlebar"
-            :class="showNavbar ? 'border-opacity-30 lg:border-opacity-100 dark:text-text-dark lg:opacity-100 lg:dark:opacity-100' : ''"
             class="flex justify-center items-center shrink-0 h-15 dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
         >                                                                                                                                                 <!-- The extra lg: tags in :class fix a bg color bug when the window is resized while the navbar was open. The opacities are applied seperately here to avoid page elements fading through -->
             <!-- Title -->
-            <div :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="fixed flex justify-center items-center select-none font-semibold transition-opacity duration-500">
+            <div class="fixed flex justify-center items-center select-none font-semibold transition-opacity duration-500">
                 <PhDresser class="mr-2 size-5"></PhDresser>
                 Wardrobe
             </div>
 
             <!-- Light/Dark Mode toggle -->
             <div class="w-full pr-3 select-none flex justify-end font-semibold">
-                <button :class="showNavbar ? 'opacity-30 lg:opacity-100' : ''" class="p-0.5 rounded-md bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
+                <button class="p-0.5 rounded-md bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
                     <PhMoon :class="darkModeEnabled ? 'opacity-100' : 'opacity-0'" class="fixed size-7 p-0.5 transition-opacity"></PhMoon>
                     <PhSun :class="darkModeEnabled ? 'opacity-0' : 'opacity-100'" class="size-7 p-0.5 transition-opacity"></PhSun>
                 </button>
@@ -50,7 +49,7 @@
             <!-- Left navigation bar which offsets everything else to the right on desktop and overlays everything on mobile -->
             <nav
                 id="navbar"
-                :class="showNavbar ? 'backdrop-blur-sm' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
+                :class="showNavbar ? 'backdrop-blur-md' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
                 class="z-20 w-52 min-w-52 lg:relative lg:block lg:opacity-100 dark:text-text-dark border-x-1 border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
             >
 
