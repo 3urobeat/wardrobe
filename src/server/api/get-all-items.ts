@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 22:33:35
+ * Last Modified: 2025-09-10 16:42:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -30,43 +30,88 @@ export default defineEventHandler(async () => {
 
     console.log("API get-all-items: Received request");
 
-    const items: Item[] = [];
-
-    for (let i = 0; i < 50; i++) {
-        items.push({
-            id: i.toString(),
-            title: i.toString(),
+    const items: Item[] = [
+        {
+            id: "0",
+            title: "Dress 1",
             imgPath: "favicon.png",
-            addedTimestamp: Date.now(),
+            addedTimestamp: Date.now() - (Math.random() * 10000),
             labels: [
                 {
                     id: "0",
                     name: "Summer",
-                    type: "season"
-                },
+                    category: {
+                        id: "0",
+                        name: "season"
+                    }
+                }
+            ]
+        },
+        {
+            id: "1",
+            title: "Dress 2",
+            imgPath: "favicon.png",
+            addedTimestamp: Date.now() - (Math.random() * 10000),
+            labels: [
                 {
-                    id: "1",
-                    name: "Cocktail Dress",
-                    type: "type"
+                    id: "0",
+                    name: "Spring",
+                    category: {
+                        id: "0",
+                        name: "season"
+                    }
                 },
                 {
                     id: "2",
                     name: "2025",
-                    type: "year"
-                },
+                    category: {
+                        id: "2",
+                        name: "year"
+                    }
+                }
+            ]
+        },
+        {
+            id: "2",
+            title: "Shirt 1",
+            imgPath: "favicon.png",
+            addedTimestamp: Date.now() - (Math.random() * 10000),
+            labels: [
                 {
-                    id: "3",
-                    name: "Special",
-                    type: "occasion"
+                    id: "0",
+                    name: "Winter",
+                    category: {
+                        id: "0",
+                        name: "season"
+                    }
                 },
                 {
                     id: "4",
-                    name: "Red",
-                    type: "color"
+                    name: "Blue",
+                    category: {
+                        id: "4",
+                        name: "color"
+                    }
                 }
             ]
-        });
-    }
+        },
+        {
+            id: "3",
+            title: "Pants 1",
+            imgPath: "favicon.png",
+            addedTimestamp: Date.now() - (Math.random() * 10000),
+            labels: [
+                {
+                    id: "2",
+                    name: "2025",
+                    category: {
+                        id: "2",
+                        name: "year"
+                    }
+                }
+            ]
+        }
+    ];
 
     return items;
 
