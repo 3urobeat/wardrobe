@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 17:25:41
+ * Last Modified: 2025-09-17 21:52:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,17 +18,14 @@
 
 
 <template>
-    <div id="title" class="absolute w-full right-5 select-none">
-        <!-- Save button -->
-        <div class="flex justify-end items-center">
-            <button class="flex items-center justify-center py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
-                <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-                Save
-            </button>
-        </div>
-    </div>
+    <TitleBarBasic>
+        <button class="flex items-center justify-center" @click="saveChanges">
+            <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
+            Save
+        </button>
+    </TitleBarBasic>
 
-    <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
+    <div class="flex flex-col items-center py-12 gap-8" @change="changesMade = true">
         <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all" v-for="thisCategory in storedCategories" :key="thisCategory.id">
             <div>
                 <!-- Title -->
@@ -44,7 +41,7 @@
                 <div class="flex h-44 mx-2 overflow-x-scroll"> <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                     <div
                         class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
-                        v-for="thisLabel in storedLabels.filter((e) => e.category.name == thisCategory.name)"
+                        v-for="thisLabel in storedLabels.filter((e: Label) => e.category.name == thisCategory.name)"
                         :key="thisLabel.id"
                     >
                         <!-- Label title bar -->
@@ -88,6 +85,7 @@
 
 <script setup lang="ts">
     import { PhCheck, PhPlus, PhTag, PhX } from "@phosphor-icons/vue";
+    import TitleBarBasic from "~/components/titleBarBasic.vue";
     import type { Category, Label } from "~/model/label";
 
 

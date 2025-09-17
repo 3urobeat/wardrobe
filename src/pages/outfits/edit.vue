@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 20:58:19
+ * Last Modified: 2025-09-17 21:52:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,21 +18,12 @@
 
 
 <template>
-    <!-- Page title bar -->
-    <div id="title" class="flex w-full select-none">
-        <div class="flex justify-start">
-            <NuxtLink :to="'/outfits/view?id=' + itemId" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
-            </NuxtLink>
-        </div>
-
-        <div class="flex w-full justify-end">
-            <button class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="saveChanges">
-                <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-                Save
-            </button>
-        </div>
-    </div>
+    <TitleBarBasic :backRedirectTo="'/outfits/view?id=' + clothingId">
+        <button class="flex items-center justify-center" @click="saveChanges">
+            <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
+            Save
+        </button>
+    </TitleBarBasic>
 
     <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
     </div>
@@ -40,12 +31,13 @@
 
 
 <script setup lang="ts">
-    import { PhCaretLeft, PhCheck } from "@phosphor-icons/vue";
+    import { PhCheck } from "@phosphor-icons/vue";
+    import TitleBarBasic from "~/components/titleBarBasic.vue";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "../helpers/responseIndicator";
 
 
     // Get ID of the outfit to view from query parameters
-    const itemId = useRoute().query.id;
+    const clothingId = useRoute().query.id;
 
 
     // Track if user made changes

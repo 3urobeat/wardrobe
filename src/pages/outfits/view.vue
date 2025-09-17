@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 22:15:59
+ * Last Modified: 2025-09-17 21:52:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,21 +18,12 @@
 
 
 <template>
-    <!-- Page title bar -->
-    <div id="title" class="flex w-full select-none">
-        <div class="flex justify-start">
-            <NuxtLink to="/outfits" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
-            </NuxtLink>
-        </div>
-
-        <div class="flex w-full justify-end">
-            <NuxtLink :to="'/outfits/edit?id=' + (thisOutfit ? thisOutfit.id : 'new')" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <PhPencil class="mr-2 size-5"></PhPencil>
-                Edit
-            </NuxtLink>
-        </div>
-    </div>
+    <TitleBarBasic backRedirectTo="/outfits">
+        <NuxtLink :to="'/outfits/edit?id=' + (thisOutfit ? thisOutfit.id : 'new')" class="flex items-center justify-center">
+            <PhPencil class="mr-2 size-5"></PhPencil>
+            Edit
+        </NuxtLink>
+    </TitleBarBasic>
 
     <div class="flex py-12 gap-4 md:gap-8 select-none">
         <!-- Preview container -->
@@ -51,18 +42,18 @@
                     <div class="flex h-44 mx-2 overflow-x-scroll"> <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                         <div
                             class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
-                            v-for="thisItem in thisOutfit ? thisOutfit.items.filter(e => e.item.labels.some(f => f.id == thisLabel.id)) : []"
+                            v-for="thisItem in (thisOutfit ? thisOutfit.clothes.filter((e) => e.clothing.labels.some((f: Label) => f.id == thisLabel.id)) : [])"
                             :key="thisItem.order"
                         >
                             <!-- Label title bar -->
                             <div class="flex w-full mt-2 mb-1 justify-end">
-                                <button class="flex p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="removeItem(thisLabel, thisItem.item)" title="Remove Item">
+                                <button class="flex p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="removeItem(thisLabel, thisItem.clothing)" title="Remove Item">
                                     <PhX class="size-5 text-red-500"></PhX>
                                 </button>
                             </div>
 
-                            <img class="mb-1 self-center" :src="thisItem.item.imgPath" :alt="'Image for ' + thisItem.item.title">
-                            <label class="self-start font-semibold mb-1">{{ thisItem.item.title }}</label>
+                            <img class="mb-1 self-center" :src="thisItem.clothing.imgPath" :alt="'Image for ' + thisItem.clothing.title">
+                            <label class="self-start font-semibold mb-1">{{ thisItem.clothing.title }}</label>
                         </div>
                     </div>
                 </div>
@@ -73,7 +64,7 @@
                         <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                     </button>
                 </div>
-                <!-- TODO: Implement item picker -->
+                <!-- TODO: Implement clothing picker -->
             </div>
         </div>
     </div>
@@ -81,7 +72,8 @@
 
 
 <script setup lang="ts">
-    import { PhCaretLeft, PhPencil, PhPlus, PhX } from "@phosphor-icons/vue";
+    import { PhPencil, PhPlus, PhX } from "@phosphor-icons/vue";
+    import TitleBarBasic from "~/components/titleBarBasic.vue";
     import type { Item } from "~/model/item";
     import type { Label } from "~/model/label";
     import type { Outfit } from "~/model/outfit";
@@ -92,7 +84,7 @@
     const bodyPartLabels: Ref<Label[]> = ref([]);
 
     // Get ID of the outfit to view from query parameters
-    const itemId = useRoute().query.id;
+    const clothingId = useRoute().query.id;
 
     // Get outfit
     onBeforeMount(async () => {
@@ -103,7 +95,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                id: itemId
+                id: clothingId
             })
         });
 
@@ -117,8 +109,8 @@
     bodyPartLabels.value = labelsRes.data.value!.filter((e) => e.category.name == "body part");
 
 
-    // Remove item from a label of this outfit
-    async function removeItem(label: Label, item: Item) {
+    // Remove clothing from a label of this outfit
+    async function removeItem(label: Label, clothing: Item) {
 
     }
 

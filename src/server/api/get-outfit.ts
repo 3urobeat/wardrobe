@@ -4,7 +4,7 @@
  * Created Date: 2025-09-10 18:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 22:05:46
+ * Last Modified: 2025-09-17 21:52:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,7 +19,7 @@ import { Outfit } from "~/model/outfit";
 
 
 /**
- * This API route gets details for a stored item and returns them
+ * This API route gets details for a stored clothing and returns them
  * Params: { id: string }
  * Returns: Outfit || null
  */
@@ -38,9 +38,9 @@ export default defineEventHandler(async (event) => {
     const outfit: Outfit = {
         id: "1",
         title: "Outfit 2",
-        items: [{
+        clothes: [{
             order: 0,
-            item: {
+            clothing: {
                 id: "1",
                 title: "Dress 2",
                 imgPath: "favicon.png",

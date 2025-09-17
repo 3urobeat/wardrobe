@@ -1,10 +1,10 @@
 /*
- * File: get-all-items.ts
+ * File: get-all-clothes.ts
  * Project: wardrobe
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 16:42:44
+ * Last Modified: 2025-09-17 21:52:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,11 +15,11 @@
  */
 
 
-import type { Item } from "~/model/item";
+import type { Clothing } from "~/model/clothing";
 
 
 /**
- * This API route gets all stored items and returns them
+ * This API route gets all stored clothes and returns them
  * Params: {}
  * Returns: { }
  */
@@ -28,9 +28,9 @@ import type { Item } from "~/model/item";
 // This function is executed when this API route is called
 export default defineEventHandler(async () => {
 
-    console.log("API get-all-items: Received request");
+    console.log("API get-all-clothes: Received request");
 
-    const items: Item[] = [
+    const clothes: Clothing[] = [
         {
             id: "0",
             title: "Dress 1",
@@ -113,6 +113,6 @@ export default defineEventHandler(async () => {
         }
     ];
 
-    return items;
+    return clothes;
 
 });

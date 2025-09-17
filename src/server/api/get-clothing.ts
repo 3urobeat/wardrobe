@@ -1,10 +1,10 @@
 /*
- * File: get-item.ts
+ * File: get-clothing.ts
  * Project: wardrobe
  * Created Date: 2025-09-08 16:16:54
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 16:17:44
+ * Last Modified: 2025-09-17 21:52:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,7 @@
 
 
 /**
- * This API route gets details for a stored item and returns them
+ * This API route gets details for a stored clothing and returns them
  * Params: {}
  * Returns: { }
  */
@@ -25,7 +25,7 @@
 // This function is executed when this API route is called
 export default defineEventHandler(async () => {
 
-    console.log("API get-item: Received request");
+    console.log("API get-clothing: Received request");
 
     return;
 

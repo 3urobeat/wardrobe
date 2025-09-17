@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 21:58:22
+ * Last Modified: 2025-09-17 17:31:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -18,89 +18,45 @@
 
 
 <template>
-    <!-- TODO: Blur only size of components -->
-    <div id="fixed-title" class="fixed flex flex-col right-0 top-20.5 w-full text-nowrap select-none p-1.5 px-3 md:px-7 gap-y-3 rounded-2xl backdrop-blur-lg">
-        <div class="flex w-full justify-between md:justify-end gap-x-4">
-            <!-- Sort dropdown -->
-            <div class="flex justify-end overflow-scroll rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
-                <select class="w-full px-2 m-0.5" v-model="selectedSort">
-                    <option value="date-desc">Date (Newest first)</option>
-                    <option value="date-asc">Date (Oldest first)</option>
-                    <option value="name-desc">Name (A-Z)</option>
-                    <option value="name-asc">Name (Z-A)</option>
-                </select>
-            </div>
+    <TitleBarFull
+        buttonRedirectTo="/clothing/add"
+        ref="titleBarFull"
+    >
+        <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
+        Add Clothing
+    </TitleBarFull>
 
-            <!-- Filters selection for Desktop --> <!-- TODO: Does not want to scroll -->
-            <div class="flex justify-end rounded-xl overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all" :class="selectedFilters.length > 0 ? 'h-0 md:h-fit w-0 md:w-full lg:w-1/3' : 'w-0 invisible'">
-                <button
-                    class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="selectedFilters.includes(thisFilter) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                    v-for="thisFilter in selectedFilters"
-                    :key="thisFilter"
-                    @click="toggleFilter(thisFilter)"
-                >
-                    {{ thisFilter }}
-                </button>
-            </div>
+    <div
+        class="overflow-x-clip"
+        :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"
+    >
 
-            <!-- Add button -->
-            <NuxtLink to="/clothing/add" class="flex items-center justify-center py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
-                Add Clothing
-            </NuxtLink>
-
-            <!-- Scaling slider -->
-            <!-- TODO -->
-        </div>
-
-        <!-- TODO: Having to duplicate the entire filter selection sucks -->
-        <div id="title-mobile-extension" v-if="selectedFilters.length > 0">
-            <!-- Filters selection for Mobile --> <!-- TODO: Does not want to scroll -->
-            <div class="flex justify-center rounded-xl overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all" :class="selectedFilters.length > 0 ? 'h-fit md:h-0 w-full md:w-0 lg:w-1/3' : 'w-0 invisible'">
-                <button
-                    class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="selectedFilters.includes(thisFilter) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                    v-for="thisFilter in selectedFilters"
-                    :key="thisFilter"
-                    @click="toggleFilter(thisFilter)"
-                >
-                    {{ thisFilter }}
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="overflow-x-clip" :class="selectedFilters.length > 0 ? 'py-27 md:py-20' : 'py-20'">
-
-        <!-- Responsive grid for items - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
+        <!-- Responsive grid for clothing - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
         <div class="grid grid-cols-[repeat(auto-fill,_minmax(365px,_1fr))] gap-x-6 gap-y-10">
 
-            <!-- Clothing Items --> <!-- TODO: This outer button must be something else, e.g. an anchor, to prevent the inner button applying its styling to the outer one. If this gets fixed, remove cursor-pointer from the anchor element. -->
+            <!-- Clothing --> <!-- TODO: This outer button must be something else, e.g. an anchor, to prevent the inner button applying its styling to the outer one. If this gets fixed, remove cursor-pointer from the anchor element. -->
             <a
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                v-for="thisItem in getItemsToShow()"
-                :key="thisItem.id"
-                @click="viewItem(thisItem)"
+                v-for="thisClothing in getItemsToShow(storedClothing, titleBarFull.selectedSort, titleBarFull.selectedFilters)"
+                :key="thisClothing.id"
+                @click="viewClothing(thisClothing)"
             >
-                <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisItem.imgPath" :alt="'Image for ' + thisItem.title">
-                <label class="self-start font-semibold mb-1">{{ thisItem.title }}</label>
+                <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisClothing.imgPath" :alt="'Image for ' + thisClothing.title">
+                <label class="self-start font-semibold mb-1">{{ thisClothing.title }}</label>
 
                 <!-- Filter Labels -->
                 <div class="mt-4">
                     <button
                         class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                        :class="selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                        v-for="thisLabel in thisItem.labels"
+                        :class="titleBarFull.selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                        v-for="thisLabel in thisClothing.labels"
                         :key="thisLabel.name"
-                        @click="toggleFilter(thisLabel.name)"
+                        @click="titleBarFull.toggleFilter(thisLabel.name)"
                     >
                         {{ thisLabel.name }}
                     </button>
                 </div>
             </a>
-
         </div>
 
     </div>
@@ -109,75 +65,26 @@
 
 <script setup lang="ts">
     import { PhPlus } from "@phosphor-icons/vue";
-    import type { Item } from "~/model/item";
+    import TitleBarFull from "~/components/titleBarFull.vue";
+    import type { Clothing } from "~/model/clothing";
 
 
     // Cache
-    const storedItems:     Ref<Item[]>   = ref([]);
-    const selectedSort:    Ref<string>   = ref("date-desc");
-    const selectedFilters: Ref<string[]> = ref([]);
+    const storedClothing: Ref<Clothing[]> = ref([]);
+
+    // Get refs to props exported by defineExpose() in TitleBarFull
+    const titleBarFull: Ref<{ selectedSort: string, selectedFilters: string[], toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: "", selectedFilters: [] }); // TODO: Can this be an exported type somewhere?
 
 
     // Get all clothing and their details on load
-    let res = await useFetch<Item[]>("/api/get-all-items");
+    let res = await useFetch<Clothing[]>("/api/get-all-clothes");
 
-    storedItems.value  = res.data.value!;
+    storedClothing.value = res.data.value!;
 
 
     // Redirect to view page (or a popup?)
-    async function viewItem(selectedItem: Item) {
+    function viewClothing(selectedClothing: Clothing) {
 
-    }
-
-    // Applies or removes a filter to/from the view
-    async function toggleFilter(selectedFilter: string) {
-        console.log("DEBUG - index: Toggling filter " + selectedFilter);
-
-        // Get all selected labels without this one
-        const filtered = selectedFilters.value.filter((e) => e != selectedFilter);
-
-        // If length does not match, the label must be selected
-        if (filtered.length != selectedFilters.value.length) {
-            // ...and we can simply remove it without filtering again
-            selectedFilters.value = filtered;
-        } else {
-            // ...otherwise we can simply add it
-            selectedFilters.value.push(selectedFilter);
-        }
-    }
-
-    // Returns items to display sorted & filtered
-    function getItemsToShow() {
-        let items: Item[] = storedItems.value;
-
-        // Apply filter
-        if (selectedFilters.value.length > 0) {
-            items = storedItems.value.filter(e => e.labels.some(f => selectedFilters.value.includes(f.name)));
-        }
-
-        // Apply sort to storedItems
-        switch (selectedSort.value) {
-            case "date-desc":
-                items = items.sort((a, b) => b.addedTimestamp - a.addedTimestamp);
-                break;
-
-            case "date-asc":
-                items = items.sort((a, b) => a.addedTimestamp - b.addedTimestamp);
-                break;
-
-            case "name-desc":
-                items = items.sort((a, b) => a.title.charCodeAt(0) - b.title.charCodeAt(0));
-                break;
-
-            case "name-asc":
-                items = items.sort((a, b) => b.title.charCodeAt(0) - a.title.charCodeAt(0));
-                break;
-
-            default:
-                break; // Sorted by ID, invisible to user
-        }
-
-        return items;
     }
 
 </script>
