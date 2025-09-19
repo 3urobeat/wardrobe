@@ -17,4 +17,16 @@ export default defineNuxtConfig({
         modules: "src/modules",
         shared: "src/shared",
     },
+    hooks: {
+        "pages:extend"(pages) {
+
+            // Re-Route index to clothing subdirectory
+            pages.push({
+                name: "index",
+                path: "/",
+                file: "~/pages/clothing/index.vue"
+            });
+
+        }
+    }
 });
