@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 18:02:20
+ * Last Modified: 2025-09-19 19:01:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -78,12 +78,59 @@
                 </div>
 
                 <!-- Add clothing to label button when in edit mode -->
-                <div class="flex m-2 items-center" v-if="editModeEnabled">
-                    <button class="h-fit p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" title="Add Item">
-                        <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
-                    </button>
+                <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">
+                    <div class="flex m-2 items-center">
+                        <button class="h-fit p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" title="Add Item">
+                            <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
+                        </button>
+                    </div>
+
+                    <!-- Position dialog absolute to parent by setting parent to relative -->
+                    <div class="absolute top-0 mt-36"> <!-- TODO: top is necessary so box grows downward, which then requires that stupid mt... -->
+                        <dialog open id="clothing-picker" class="relative flex flex-col items-center z-50 w-180 max-h-140 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+
+                            <!-- Search -->
+                            <div class="w-full p-4">
+                                <input
+                                    class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
+                                    placeholder="Search"
+                                    v-model.trim="searchStr"
+                                />
+                            </div>
+
+                            <!-- Clothes --> <!-- TODO: This will probably increase resource usage by a lot. Think about having only one picker or populating each only on open -->
+                            <div class="grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                <button
+                                    class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
+                                    v-for="thisClothing in getItemsToShow(storedClothing) as Clothing[]"
+                                    :key="thisClothing.id"
+                                >
+                                    <img class="h-35 my-1.5 self-center" :src="thisClothing.imgPath" :alt="'Image for ' + thisClothing.title">
+                                    <label class="self-start font-semibold ml-1">{{ thisClothing.title }}</label>
+
+                                    <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
+                                    <div class="flex mt-1">
+                                        <div
+                                            class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600"
+                                            v-for="thisLabel in thisClothing.labels"
+                                            :key="thisLabel.name"
+                                        >
+                                            {{ thisLabel.name }}
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+
+                            <!-- Close Button -->
+                            <form method="dialog" class="p-4">
+                                <button class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">Close</button>
+                            </form>
+
+                        </dialog>
+                    </div>
+                    <!-- End of clothing picker -->
                 </div>
-                <!-- TODO: Implement clothing picker -->
+
             </div>
         </div>
     </div>
@@ -101,9 +148,11 @@
 
 
     // Refs
-    const thisOutfit:     Ref<Outfit>  = ref(null!);
-    const thisOutfitId:   Ref<string>  = ref(thisOutfit.value ? thisOutfit.value.id : "new");
-    const bodyPartLabels: Ref<Label[]> = ref([]);
+    const thisOutfit:     Ref<Outfit>     = ref(null!);
+    const thisOutfitId:   Ref<string>     = ref(thisOutfit.value ? thisOutfit.value.id : "new");
+    const bodyPartLabels: Ref<Label[]>    = ref([]);
+    const storedClothing: Ref<Clothing[]> = ref([]); // Edit Mode only
+    const searchStr:      Ref<string>     = ref("");
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
     const editModeEnabled = (useRoute().name == "outfits-edit");
@@ -132,6 +181,14 @@
         thisOutfit.value = res.data.value!;
 
     });
+
+
+    // Get all clothes for clothing picker dialog when in edit mode. Do this after page load to reduce wait time, the picker is closed anyway
+    if (editModeEnabled) {
+        let res = await useFetch<Clothing[]>("/api/get-all-clothes");
+
+        storedClothing.value = res.data.value!;
+    }
 
 
     // Track if user made changes when in edit mode
