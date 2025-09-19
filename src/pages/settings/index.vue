@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:51:21
+ * Last Modified: 2025-09-19 18:02:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         </button>
     </TitleBarBasic>
 
-    <div class="lg:flex lg:flex-col lg:mx-12 mb-5 lg:mb-7" @change="changesMade = true"> <!-- Offset content to the right on desktop to give headline more presence -->
+    <div class="py-20" @change="changesMade = true"> <!-- Offset content to the right on desktop to give headline more presence -->
     </div>
 </template>
 

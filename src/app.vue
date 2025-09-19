@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 17:13:35
+ * Last Modified: 2025-09-19 18:02:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -128,7 +128,7 @@
                     id="color-border"
                     class="fixed bottom-0 top-15 right-0 lg:left-52 left-0 border-8 border-transparent rounded-2xl duration-500 overflow-auto"
                 >
-                    <div id="page-content" class="md:p-5">
+                    <div id="page-content" class="p-1 md:px-5">
                         <NuxtPage></NuxtPage> <!-- Links to index.vue -->
                     </div>
                 </div>

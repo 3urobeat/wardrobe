@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:55:42
+ * Last Modified: 2025-09-19 18:02:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -43,7 +43,7 @@
 
 
     <!-- Page content -->
-    <div class="flex py-12 gap-4 md:gap-8 select-none" @change="changesMade = true">
+    <div class="flex py-20 gap-4 md:gap-8 select-none" @change="changesMade = true">
         <!-- Preview container --> <!-- TODO: Highlight item here when hovering it in the label container? -->
         <div class="w-1/3 rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
         </div>

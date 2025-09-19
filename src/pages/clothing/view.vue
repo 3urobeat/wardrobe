@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 16:33:26
+ * Last Modified: 2025-09-19 18:02:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,7 +18,7 @@
 
 
 <template>
-    <div class="text-center lg:flex lg:flex-col lg:mx-12"> <!-- Offset content to the right on desktop -->
+    <div class="py-20"> <!-- Offset content to the right on desktop -->
     </div>
 </template>
 

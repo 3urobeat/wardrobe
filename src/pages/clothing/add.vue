@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:36:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:46:28
+ * Last Modified: 2025-09-19 18:02:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         </button>
     </TitleBarBasic>
 
-    <div class="flex justify-center items-center py-12" @change="changesMade = true">
+    <div class="flex justify-center items-center py-20" @change="changesMade = true">
         <!-- TODO: Pop-In Animation -->
         <div class="flex flex-col w-full md:w-xl h-190 px-8 py-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
 

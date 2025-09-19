@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:55:40
+ * Last Modified: 2025-09-19 18:02:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -37,11 +37,11 @@
             <!-- Outfits -->
             <NuxtLink
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                v-for="thisOutfit in getItemsToShow(storedOutfits, titleBarFull.selectedSort, titleBarFull.selectedFilters)"
+                v-for="thisOutfit in getItemsToShow(storedOutfits, titleBarFull.selectedSort, titleBarFull.selectedFilters) as Outfit[]"
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
-                <!-- <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisOutfit.imgPath" alt="Image for '{{ thisItem.title }}'"> --> <!-- TODO -->
+                <!-- <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisOutfit.imgPath" :alt="'Image for ' + thisOutfit.title"> --> <!-- TODO: Pre-render preview image from view page and display that here -->
                 <label class="self-start font-semibold mb-1">{{ thisOutfit.title }}</label>
 
                 <!-- Filter Labels --> <!-- TODO: Click goes through and triggers redirect -->

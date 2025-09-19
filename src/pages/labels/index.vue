@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:21
+ * Last Modified: 2025-09-19 18:02:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         </button>
     </TitleBarBasic>
 
-    <div class="flex flex-col items-center py-12 gap-8" @change="changesMade = true">
+    <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
         <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all" v-for="thisCategory in storedCategories" :key="thisCategory.id">
             <div>
                 <!-- Title -->
