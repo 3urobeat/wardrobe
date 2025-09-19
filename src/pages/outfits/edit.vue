@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:46:27
+ * Last Modified: 2025-09-19 17:55:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -17,55 +17,9 @@
 -->
 
 
-<template>
-    <TitleBarBasic :backRedirectTo="'/outfits/view?id=' + clothingId">
-        <button class="flex items-center justify-center" @click="saveChanges">
-            <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-            Save
-        </button>
-    </TitleBarBasic>
+<!--
+    See view.vue, which is loaded for outfits-view & outfits-edit and toggles edit components.
+    The relevant re-route is configured in nuxt.config.ts.
+-->
 
-    <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
-    </div>
-</template>
-
-
-<script setup lang="ts">
-    import { PhCheck } from "@phosphor-icons/vue";
-    import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
-
-
-    // Get ID of the outfit to view from query parameters
-    const clothingId = useRoute().query.id;
-
-
-    // Track if user made changes
-    const changesMade = ref(false);
-
-    onBeforeRouteLeave((to, from, next) => {
-        if (changesMade.value) {
-            if (!confirm("You have unsaved changes!\nWould you still like to continue?")) {
-                next(false);
-            }
-        }
-
-        next();
-    });
-
-
-    // Sends changes to the database
-    async function saveChanges() {
-
-        // Indicate success/failure
-        /* if (success.data.value) {
-            responseIndicatorSuccess();
-
-            changesMade.value = false;
-        } else {
-            responseIndicatorFailure();
-        } */
-
-    }
-
-</script>
+<template></template>
