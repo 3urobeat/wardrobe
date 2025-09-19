@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:31
+ * Last Modified: 2025-09-19 17:46:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -34,7 +34,7 @@
     import { PhCheck } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import type { Settings } from "~/model/settings";
-    import { responseIndicatorFailure, responseIndicatorSuccess } from "./helpers/responseIndicator";
+    import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
 
 
     const settings: Ref<Settings> = ref({

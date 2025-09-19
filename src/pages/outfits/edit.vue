@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:24
+ * Last Modified: 2025-09-19 17:46:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -33,7 +33,7 @@
 <script setup lang="ts">
     import { PhCheck } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import { responseIndicatorFailure, responseIndicatorSuccess } from "../helpers/responseIndicator";
+    import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
 
 
     // Get ID of the outfit to view from query parameters
