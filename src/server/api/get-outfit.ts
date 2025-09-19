@@ -4,7 +4,7 @@
  * Created Date: 2025-09-10 18:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:43
+ * Last Modified: 2025-09-19 17:57:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
             clothing: {
                 id: "1",
                 title: "Dress 2",
-                imgPath: "favicon.png",
+                imgPath: "/favicon.png",
                 addedTimestamp: Date.now() - (Math.random() * 10000),
                 labels: [
                     {
