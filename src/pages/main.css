@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 19:37:33
+ * Last Modified: 2025-09-20 19:35:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -34,6 +34,7 @@
     --color-bg-field-light: #f2f3f4;
     --color-bg-field-dark: #2a2d2f;
 
+    --color-bg-embed-hover-dark: #26292b;
     --color-bg-embed-light: #d6dce4;
     --color-bg-embed-dark: #242729;
 
