@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 00:23:02
+ * Last Modified: 2025-09-21 00:24:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -34,7 +34,7 @@
     </TitleBarBasic>
 
     <!-- Title bar for edit -->
-    <TitleBarBasic :backRedirectTo="'/outfits/view?id=' + thisOutfitId" v-if="editModeEnabled">
+    <TitleBarBasic :backRedirectTo="clothingId == 'new' ? '/outfits' : '/outfits/view?id=' + thisOutfitId" v-if="editModeEnabled">
         <button class="flex items-center justify-center" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
