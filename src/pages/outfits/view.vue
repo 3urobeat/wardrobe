@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 00:10:36
+ * Last Modified: 2025-09-21 00:23:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -169,6 +169,7 @@
     import type { Label } from "~/model/label";
     import type { Clothing } from "~/model/clothing";
     import type { Outfit } from "~/model/outfit";
+    import { defaultSortMode } from "~/model/sort-modes";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
 
 
@@ -260,7 +261,7 @@
     // Gets items to show to in the popout for each label
     function getClothesToShowInPopout(thisLabel: Label) {
         // Get all clothes that have this body part label
-        const clothesForThisLabel = getItemsToShow(storedClothes.value, '', [ thisLabel.name ]) as Clothing[];
+        const clothesForThisLabel = getItemsToShow(storedClothes.value, defaultSortMode, [ thisLabel.name ]) as Clothing[];
 
         // Remove clothes that are already added to this outfit
         const clothesNotAddedYet = clothesForThisLabel.filter((e) => !thisOutfit.value?.clothes.some((f) => f.clothing.id == e.id));

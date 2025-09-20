@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 19:01:24
+ * Last Modified: 2025-09-21 00:13:55
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -16,6 +16,7 @@
 
 
 import type { Item } from "~/model/item";
+import { sortModes } from "~/model/sort-modes";
 
 
 /**
@@ -24,7 +25,7 @@ import type { Item } from "~/model/item";
  * @param selectedSort
  * @param selectedFilters
  */
-export default function(storedItems: Item[], selectedSort?: string, selectedFilters?: string[]) {
+export default function(storedItems: Item[], selectedSort?: sortModes, selectedFilters?: string[]) {
 
     // Apply filter
     if (selectedFilters && selectedFilters.length > 0) {
@@ -33,19 +34,19 @@ export default function(storedItems: Item[], selectedSort?: string, selectedFilt
 
     // Apply sort to storedItems
     switch (selectedSort) {
-        case "date-desc":
+        case sortModes.dateDesc:
             storedItems = storedItems.sort((a, b) => b.addedTimestamp - a.addedTimestamp);
             break;
 
-        case "date-asc":
+        case sortModes.dateAsc:
             storedItems = storedItems.sort((a, b) => a.addedTimestamp - b.addedTimestamp);
             break;
 
-        case "name-desc":
+        case sortModes.nameDesc:
             storedItems = storedItems.sort((a, b) => a.title.charCodeAt(0) - b.title.charCodeAt(0)); /* TODO: Does not sort e.g. "Bc 1" & "Bd 2" */
             break;
 
-        case "name-asc":
+        case sortModes.nameAsc:
             storedItems = storedItems.sort((a, b) => b.title.charCodeAt(0) - a.title.charCodeAt(0));
             break;
 

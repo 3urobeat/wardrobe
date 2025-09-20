@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:06
+ * Last Modified: 2025-09-21 00:15:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -27,10 +27,10 @@
             <!-- Sort dropdown -->
             <div class="flex justify-end overflow-scroll rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
                 <select class="w-full px-2 m-0.5" v-model="selectedSort">
-                    <option value="date-desc">Date (Newest first)</option>
-                    <option value="date-asc">Date (Oldest first)</option>
-                    <option value="name-desc">Name (A-Z)</option>
-                    <option value="name-asc">Name (Z-A)</option>
+                    <option :value="sortModes.dateDesc">Date (Newest first)</option>
+                    <option :value="sortModes.dateAsc">Date (Oldest first)</option>
+                    <option :value="sortModes.nameDesc">Name (A-Z)</option>
+                    <option :value="sortModes.nameAsc">Name (Z-A)</option>
                 </select>
             </div>
 
@@ -80,10 +80,12 @@
 
 
 <script setup lang="ts">
+    import { sortModes } from '~/model/sort-modes';
+
 
     // Refs
-    const selectedSort:    Ref<string>   = ref("date-desc");
-    const selectedFilters: Ref<string[]> = ref([]);
+    const selectedSort:    Ref<sortModes> = ref(sortModes.dateDesc);
+    const selectedFilters: Ref<string[]>  = ref([]);
 
 
     /**
