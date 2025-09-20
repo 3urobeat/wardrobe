@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-20 23:55:45
+ * Last Modified: 2025-09-21 00:06:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -186,7 +186,10 @@
     const editModeEnabled = (useRoute().name == "outfits-edit");
 
     // Get ID of the outfit to view from query parameters
-    const clothingId = useRoute().query.id;
+    const clothingId = useRoute().query.id || "new";
+
+    // Redirect to edit page if view was opened with id new
+    if (!editModeEnabled && clothingId == "new") useRouter().push("/outfits/edit?id=new");
 
     // Get all labels on page load
     let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
