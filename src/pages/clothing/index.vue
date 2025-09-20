@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:51:26
+ * Last Modified: 2025-09-20 16:57:40
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -37,7 +37,7 @@
             <!-- Clothing --> <!-- TODO: This outer button must be something else, e.g. an anchor, to prevent the inner button applying its styling to the outer one. If this gets fixed, remove cursor-pointer from the anchor element. -->
             <a
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                v-for="thisClothing in getItemsToShow(storedClothing, titleBarFull.selectedSort, titleBarFull.selectedFilters) as Clothing[]"
+                v-for="thisClothing in (getItemsToShow(storedClothing, titleBarFull.selectedSort, titleBarFull.selectedFilters) as Clothing[])"
                 :key="thisClothing.id"
                 @click="viewClothing(thisClothing)"
             >
