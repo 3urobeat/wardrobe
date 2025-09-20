@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 00:06:29
+ * Last Modified: 2025-09-21 00:10:36
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -108,17 +108,24 @@
                                 <!-- Content -->
                                 <dialog id="clothing-picker" class="relative flex flex-col items-center z-50 w-180 max-h-140 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
 
-                                    <!-- Search -->
-                                    <div class="w-full p-4">
+                                    <!-- Search and Close button -->
+                                    <div class="flex w-full p-4 gap-4">
                                         <input
                                             class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
                                             placeholder="Search"
                                             v-model.trim="searchStr"
                                         />
+
+                                        <button
+                                            class="w-fit self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all"
+                                            @click="toggleClothingPicker(thisLabel.name)"
+                                        >
+                                            Close
+                                        </button>
                                     </div>
 
                                     <!-- Clothes --> <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
-                                    <div class="grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                    <div class="grid grid-cols-3 gap-4 pb-5 overflow-y-scroll" v-if="getClothesToShowInPopout(thisLabel).length > 0"> <!-- TODO: overflow-y-scroll clips shadow -->
                                         <button
                                             class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel)"
@@ -126,10 +133,10 @@
                                             @click="addClothing(thisClothing)"
                                         >
                                             <img class="h-35 my-1.5 self-center" :src="thisClothing.imgPath" :alt="'Image for ' + thisClothing.title">
-                                            <label class="self-start font-semibold ml-1">{{ thisClothing.title }}</label>
+                                            <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
 
                                             <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
-                                            <div class="flex mt-1">
+                                            <div class="flex mt-1 ml-1">
                                                 <div
                                                     class="w-fit rounded-xl shadow-md px-2 m-0.5 text-sm text-gray-100 bg-gray-400 dark:bg-gray-600"
                                                     v-for="thisLabel in thisClothing.labels"
@@ -140,17 +147,7 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <label class="self-start px-5 pt-2" v-if="getClothesToShowInPopout(thisLabel).length == 0">No items to show.</label>
-
-                                    <!-- Close Button -->
-                                    <div class="p-4">
-                                        <button
-                                            class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all"
-                                            @click="toggleClothingPicker(thisLabel.name)"
-                                        >
-                                            Close
-                                        </button>
-                                    </div>
+                                    <label class="self-start pl-5 pb-5" v-else>No items to show.</label>
 
                                 </dialog>
 
