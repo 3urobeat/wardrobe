@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-20 20:42:03
+ * Last Modified: 2025-09-21 14:59:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -34,6 +34,7 @@ export default defineEventHandler(async () => {
         {
             id: "0",
             title: "Dress 1",
+            description: "abcdef",
             imgPath: "/favicon.png",
             addedTimestamp: Date.now() - (Math.random() * 10000),
             labels: [
@@ -50,6 +51,7 @@ export default defineEventHandler(async () => {
         {
             id: "1",
             title: "Dress 2",
+            description: "abcdef",
             imgPath: "/favicon.png",
             addedTimestamp: Date.now() - (Math.random() * 10000),
             labels: [
@@ -82,6 +84,7 @@ export default defineEventHandler(async () => {
         {
             id: "2",
             title: "Shirt 1",
+            description: "abcdef",
             imgPath: "/favicon.png",
             addedTimestamp: Date.now() - (Math.random() * 10000),
             labels: [
@@ -106,6 +109,7 @@ export default defineEventHandler(async () => {
         {
             id: "3",
             title: "Pants 1",
+            description: "abcdef",
             imgPath: "/favicon.png",
             addedTimestamp: Date.now() - (Math.random() * 10000),
             labels: [

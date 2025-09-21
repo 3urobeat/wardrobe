@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:10
+ * Last Modified: 2025-09-21 13:21:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -24,6 +24,7 @@ import type { Label } from "./label";
 export type Clothing = Implements<Item, {
     id: string,
     title: string,
+    description: string,
     imgPath: string,
     labels: Label[],
     addedTimestamp: number
