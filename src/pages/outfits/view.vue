@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 12:02:47
+ * Last Modified: 2025-09-21 15:48:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -34,7 +34,7 @@
     </TitleBarBasic>
 
     <!-- Title bar for edit -->
-    <TitleBarBasic :backRedirectTo="clothingId == 'new' ? '/outfits' : '/outfits/view?id=' + thisOutfitId" v-if="editModeEnabled">
+    <TitleBarBasic :backRedirectTo="outfitId == 'new' ? '/outfits' : '/outfits/view?id=' + thisOutfitId" v-if="editModeEnabled">
         <button class="flex items-center justify-center" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
@@ -46,7 +46,7 @@
     <div class="py-20">
         <div class="w-1/3 ml-0.5 mb-4 md:mb-8 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
             <p     v-if="!editModeEnabled" class="w-full py-1 px-3 select-none">{{ thisOutfit.title }}</p>
-            <input v-if="editModeEnabled"  class="w-full py-1 px-3 rounded-md outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all" placeholder="Name" v-model.trim="thisOutfit.title" />
+            <input v-if="editModeEnabled"  class="w-full py-1 px-3 rounded-md outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all" placeholder="Name" v-model.trim="thisOutfit.title" />
         </div>
 
         <div class="flex gap-4 md:gap-8 select-none" @change="changesMade = true">
@@ -187,10 +187,10 @@
     const editModeEnabled = (useRoute().name == "outfits-edit");
 
     // Get ID of the outfit to view from query parameters
-    const clothingId = useRoute().query.id || "new";
+    const outfitId = useRoute().query.id || "new";
 
     // Redirect to edit page if view was opened with id new
-    if (!editModeEnabled && clothingId == "new") useRouter().push("/outfits/edit?id=new");
+    if (!editModeEnabled && outfitId == "new") useRouter().push("/outfits/edit?id=new");
 
     // Get all labels on page load
     let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
@@ -202,14 +202,14 @@
 
     // Get outfit
     onBeforeMount(async () => {
-        if (clothingId != "new") {
+        if (outfitId != "new") {
             const res = await useFetch<Outfit>("/api/get-outfit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    id: clothingId
+                    id: outfitId
                 })
             });
 

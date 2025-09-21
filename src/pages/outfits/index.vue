@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 18:02:22
+ * Last Modified: 2025-09-21 12:34:51
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -68,13 +68,14 @@
     import { PhPlus } from "@phosphor-icons/vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
     import type { Outfit } from "~/model/outfit";
+    import { defaultSortMode, type sortModes } from "~/model/sort-modes";
 
 
     // Cache
     const storedOutfits: Ref<Outfit[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
-    const titleBarFull: Ref<{ selectedSort: string, selectedFilters: string[], toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: "", selectedFilters: [], toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
+    const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
 
 
     // Get all outfits and their details on load
