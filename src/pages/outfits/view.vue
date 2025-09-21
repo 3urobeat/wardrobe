@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 00:24:47
+ * Last Modified: 2025-09-21 12:02:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -90,7 +90,10 @@
                     <!-- Add clothing to label button when in edit mode -->
                     <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">
                         <div class="flex m-2 items-center">
-                            <button class="h-fit p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" title="Add Item" @click="toggleClothingPicker(thisLabel.name)">
+                            <button
+                                class="h-fit p-1 z-20 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all"
+                                title="Add Item" @click="toggleClothingPicker(thisLabel.name)"
+                            >           <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click -->
                                 <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                             </button>
                         </div>
@@ -103,7 +106,7 @@
                             <div class="relative flex flex-col transition-all">
 
                                 <!-- Triangle -->
-                                <p class="self-center text-2xl -mb-1.5 shadow-md text-bg-field-light dark:text-bg-field-dark">&#x25B2;</p>
+                                <p class="self-center text-2xl -mb-1.5 text-bg-field-light dark:text-bg-field-dark">&#x25B2;</p>
 
                                 <!-- Content -->
                                 <dialog id="clothing-picker" class="relative flex flex-col items-center z-50 w-180 max-h-140 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
@@ -117,7 +120,7 @@
                                         />
 
                                         <button
-                                            class="w-fit self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all"
+                                            class="w-fit self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all"
                                             @click="toggleClothingPicker(thisLabel.name)"
                                         >
                                             Close
@@ -237,9 +240,15 @@
     });
 
 
+    // Opens a new clothing picker or closes the current one for a label
     function toggleClothingPicker(labelName: string) {
-        const res = clothingPickerIsOpen.value.find((e) => e.name == labelName);
-        res!.isOpen = !res!.isOpen;
+        clothingPickerIsOpen.value.forEach((e, i) => {
+            if (labelName == e.name) {
+                clothingPickerIsOpen.value[i]!.isOpen = !clothingPickerIsOpen.value[i]!.isOpen; // Toggle this picker
+            } else {
+                clothingPickerIsOpen.value[i]!.isOpen = false;                                  // Close all other currently open pickers
+            }
+        });
     }
 
 
