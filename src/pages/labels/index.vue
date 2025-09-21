@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 18:02:25
+ * Last Modified: 2025-09-21 17:25:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -43,7 +43,7 @@
                         class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                         v-for="thisLabel in storedLabels.filter((e: Label) => e.category.name == thisCategory.name)"
                         :key="thisLabel.id"
-                    >
+                    >                               <!-- TODO: Doing this by ID could fix disappearing on rename bug -->
                         <!-- Label title bar -->
                         <div class="flex w-full mt-2 mb-1">
                             <div class="flex justify-start ml-1">
@@ -68,7 +68,7 @@
             </div>
 
             <!-- Add label button -->
-            <div class="flex m-2 items-center">
+            <div class="flex m-2 items-center"> <!-- TODO: Auto scroll label container to the end? -->
                 <button class="h-fit p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addLabel(thisCategory)" title="Add Label">
                     <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                 </button>
@@ -117,17 +117,35 @@
     });
 
 
+    // Add a new label to a category
+    function addLabel(category: Category) {
+        storedLabels.value.push({
+            id: "0",
+            name: "",
+            category: category
+        });
 
-    async function addLabel(category: Category) {
-
+        // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
+        changesMade.value = true;
     }
 
-    async function deleteLabel(selectedLabel: Label) {
+    // Delete a label
+    function deleteLabel(selectedLabel: Label) {
+        storedLabels.value = storedLabels.value.filter((e) => e != selectedLabel);
 
+        // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
+        changesMade.value = true;
     }
 
-    async function addCategory() {
+    // Add a new category
+    function addCategory() {
+        storedCategories.value.push({
+            id: "0",
+            name: ""
+        });
 
+        // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
+        changesMade.value = true;
     }
 
 
