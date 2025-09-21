@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 17:04:15
+ * Last Modified: 2025-09-21 17:45:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -219,13 +219,31 @@
 
 
     // Label quick add function
-    async function quickAddLabel(category: Category) {
+    async function quickAddLabel(thisCategory: Category) {
+        const name = prompt("Quick Add Label: Enter a name");
 
+        if (name) {
+            const newLabel: Label = {
+                id: "0",
+                name: name,
+                category: thisCategory
+            };
+
+            storedLabels.value.push(newLabel);
+
+            // Directly select new label
+            thisClothing.value.labels.push(newLabel);
+
+            // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
+            changesMade.value = true;
+        }
     }
 
 
     // Sends changes to the database
     async function saveChanges() {
+
+        // Do not forget to save storedLabels (if quick add was used)
 
         // Indicate success/failure
         /* if (success.data.value) {
