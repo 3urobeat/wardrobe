@@ -27,6 +27,13 @@ export default defineNuxtConfig({
                 file: "~/pages/clothing/index.vue"
             });
 
+            // Re-Route clothing/edit to clothing/view and toggle components to re-use code
+            pages.push({
+                name: "clothing-edit",
+                path: "/clothing/edit",
+                file: "~/pages/clothing/view.vue"
+            });
+
             // Re-Route outfits/edit to outfits/view and toggle components to re-use code
             pages.push({
                 name: "outfits-edit",

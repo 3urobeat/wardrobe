@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:54
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:39
+ * Last Modified: 2025-09-21 14:59:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,10 +23,41 @@
 
 
 // This function is executed when this API route is called
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
 
-    console.log("API get-clothing: Received request");
+    // Read body of the request we received
+    const params = await readBody(event);
 
-    return;
+    if (!params || params.id === null) return {};
+
+    console.log(`API get-clothing: Received request for id '${params.id}'...`);
+
+    const clothing = {
+        id: "2",
+        title: "Shirt 1",
+        description: "abcdef",
+        imgPath: "/favicon.png",
+        addedTimestamp: Date.now() - (Math.random() * 10000),
+        labels: [
+            {
+                id: "0",
+                name: "Winter",
+                category: {
+                    id: "0",
+                    name: "season"
+                }
+            },
+            {
+                id: "4",
+                name: "Blue",
+                category: {
+                    id: "4",
+                    name: "color"
+                }
+            }
+        ]
+    };
+
+    return clothing;
 
 });
