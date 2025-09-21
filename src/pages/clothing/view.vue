@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 17:45:54
+ * Last Modified: 2025-09-21 21:37:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -48,19 +48,17 @@
         <div class="flex flex-col w-full md:w-xl h-200 px-8 py-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
 
             <!-- Image (Upload) -->
-            <div class="flex justify-center h-3/6">
+            <div
+                class="flex m-6 justify-center h-3/6 rounded-2xl shadow-md select-none bg-bg-field-light/35 dark:bg-bg-field-dark/35 outline-border-primary-light dark:outline-border-primary-dark outline-dashed hover:bg-bg-field-hover-light/50 dark:hover:bg-bg-field-hover-dark/50 transition-all"
+                :class="editModeEnabled ? 'outline-2 cursor-pointer' : 'outline-0'"
+                @click="uploadImg()"
+            >
                 <img
-                    class="m-6 rounded-2xl shadow-md select-none"
+                    class="rounded-2xl h-full select-none"
                     :class="editModeEnabled ? 'opacity-50' : ''"
                     :src="thisClothing.imgPath" alt=""
                 >
-                <button
-                    class="absolute flex justify-center items-center self-center h-2/6 aspect-square m-6 rounded-2xl shadow-md select-none bg-bg-field-light/35 dark:bg-bg-field-dark/35 outline-border-primary-light dark:outline-border-primary-dark outline-2 outline-dashed hover:bg-bg-field-hover-light/50 dark:hover:bg-bg-field-hover-dark/50 transition-all"
-                    @click=""
-                    v-if="editModeEnabled"
-                >
-                    <PhUploadSimple class="text-4xl text-text-light dark:text-text-dark"></PhUploadSimple>
-                </button>
+                <PhUploadSimple v-if="editModeEnabled" class="absolute self-center text-4xl text-text-light dark:text-text-dark"></PhUploadSimple>
             </div>
 
             <div class="flex flex-col w-full h-2/3">
@@ -143,7 +141,6 @@
 
     // Refs
     const thisClothing: Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labels: [], addedTimestamp: 0 });
-    const uploadImg = ref(null);
 
     const storedLabels: Ref<Label[]> = ref([]);
     const storedCategories: Ref<Category[]> = ref([]);
@@ -199,6 +196,13 @@
         next();
     });
 
+
+    // Process image upload
+    function uploadImg() {
+        if (editModeEnabled) {
+
+        }
+    }
 
     // Adds/Removes a label
     async function toggleLabel(selectedLabel: Label) {
