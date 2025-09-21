@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 12:34:51
+ * Last Modified: 2025-09-21 17:34:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -51,7 +51,7 @@
                         :class="titleBarFull.selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
                         v-for="thisLabel in thisOutfit.labels"
                         :key="thisLabel.name"
-                        @click="titleBarFull.toggleFilter(thisLabel.name)"
+                        @click.prevent="titleBarFull.toggleFilter(thisLabel.name)"
                     >
                         {{ thisLabel.name }}
                     </button>
