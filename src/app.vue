@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 18:02:14
+ * Last Modified: 2025-09-22 13:00:11
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,24 +18,42 @@
 
 
 <template>
-    <div class="flex flex-col h-screen bg-bg-light dark:bg-bg-dark">
+    <div class="flex flex-col h-screen bg-bg-light dark:bg-bg-dark" @click="globalSearchStr === '' ? globalSearchStr = null : ''"> <!-- Collapse search input when clicking anywhere with empty search bar -->
         <!-- Title bar -->
         <PhList :class="!showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhList>
         <PhCaretLeft :class="showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhCaretLeft>
 
         <header
             id="titlebar"
-            class="flex justify-center items-center shrink-0 h-15 dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
-        >                                                                                                                                                 <!-- The extra lg: tags in :class fix a bg color bug when the window is resized while the navbar was open. The opacities are applied seperately here to avoid page elements fading through -->
+            class="flex items-center shrink-0 w-full h-15 dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
+        >
             <!-- Title -->
-            <div class="fixed flex justify-center items-center select-none font-semibold transition-opacity duration-500">
+            <div class="absolute flex w-full justify-start sm:justify-center left-12 sm:left-0 items-center select-none font-semibold transition-opacity duration-500" :class="globalSearchStr === null ? '' : ''">
                 <PhDresser class="mr-2 size-5"></PhDresser>
                 Wardrobe
             </div>
 
-            <!-- Light/Dark Mode toggle -->
-            <div class="w-full pr-3 select-none flex justify-end font-semibold">
-                <button class="p-0.5 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
+            <!-- Right side -->
+            <div class="absolute flex w-full justify-end pr-3 gap-4 select-none">
+                <!-- Search input. Use click.prevent to prevent click from passing through and thus preventing search bar from expanding -->
+                <div
+                    class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                    type="search"
+                    @click.stop="globalSearchStr = globalSearchStr || ''"
+                >                                                                                       <!-- bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light dark:hover:bg-bg-input-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 -->
+                    <PhMagnifyingGlass class="self-center mx-2 size-5"></PhMagnifyingGlass>
+                    <input
+                        class="w-0 py-1 outline-0 transition-all"
+                        :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50' : 'invisible w-0'"
+                        placeholder="Search"
+                        type="search"
+                        v-model.trim="globalSearchStr"
+                        autofocus
+                    />                  <!-- TODO: This dummy does not want to autofocus -->
+                </div>
+
+                <!-- Light/Dark Mode toggle -->
+                <button class="p-0.5 rounded-md shadow-md font-semibold bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
                     <PhMoon :class="darkModeEnabled ? 'opacity-100' : 'opacity-0'" class="fixed size-7 p-0.5 transition-opacity"></PhMoon>
                     <PhSun :class="darkModeEnabled ? 'opacity-0' : 'opacity-100'" class="size-7 p-0.5 transition-opacity"></PhSun>
                 </button>
@@ -57,7 +75,7 @@
                     <div class="my-3"></div> <!-- Add some space above everything-->
 
                     <NuxtLink to="/" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                        <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index'">|</span>
+                        <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index' || route.name === 'clothing'">|</span>
                         <div class="flex mx-4 items-center justify-center w-full">
                             <PhHouse class="mr-2"></PhHouse> Browse
                         </div>
@@ -140,7 +158,7 @@
 
 
 <script setup lang="ts">
-    import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhDresser, PhTag } from "@phosphor-icons/vue";
+    import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhDresser, PhTag, PhMagnifyingGlass } from "@phosphor-icons/vue";
     import packagejson from "../package.json";
 
     const route = useRoute();
@@ -150,6 +168,7 @@
     const showNavbar      = ref(false);
     const darkModeEnabled = ref(false);
     const onlineVersion   = ref("");
+    const globalSearchStr = ref(); // null on page load, set to "" on click to expand input
 
 
     // Executed on page load
