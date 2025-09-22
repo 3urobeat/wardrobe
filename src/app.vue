@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-22 13:00:11
+ * Last Modified: 2025-09-22 15:39:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -169,6 +169,8 @@
     const darkModeEnabled = ref(false);
     const onlineVersion   = ref("");
     const globalSearchStr = ref(); // null on page load, set to "" on click to expand input
+
+    provide("globalSearchStr", globalSearchStr); // Expose search str to other files
 
 
     // Executed on page load
