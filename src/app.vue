@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-03 19:27:00
+ * Last Modified: 2025-12-03 20:01:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -39,17 +39,17 @@
                 <div
                     class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark transition-all"
                     type="search"
-                    @click.stop="globalSearchStr = globalSearchStr || ''"
+                    @click.stop="showGlobalSearchBar()"
                 >                                                                                       <!-- bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light dark:hover:bg-bg-input-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 -->
                     <PhMagnifyingGlass class="self-center mx-2 size-5"></PhMagnifyingGlass>
                     <input
+                        ref="globalSearchInput"
                         class="w-0 py-1 outline-0 transition-all"
                         :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50' : 'invisible w-0'"
                         placeholder="Search"
                         type="search"
                         v-model.trim="globalSearchStr"
-                        autofocus
-                    />                  <!-- TODO: This dummy does not want to autofocus -->
+                    />
                 </div>
 
                 <!-- Light/Dark Mode toggle -->
@@ -166,9 +166,10 @@
 
 
     // Refs
-    const showNavbar      = ref(false);
-    const onlineVersion   = ref("");
-    const globalSearchStr = ref(); // null on page load, set to "" on click to expand input
+    const showNavbar        = ref(false);
+    const onlineVersion     = ref("");
+    const globalSearchStr   = ref(); // null on page load, set to "" on click to expand input
+    const globalSearchInput = useTemplateRef("globalSearchInput");
 
     provide("globalSearchStr", globalSearchStr); // Expose search str to other files
 
@@ -213,5 +214,16 @@
 
             console.log("checkForUpdate: Failed to check GitHub repository for an available update. " + err)
         }
+    }
+
+
+    // Sets globalSearchStr to !null to expand search bar and sets focus
+    function showGlobalSearchBar() {
+        globalSearchStr.value = globalSearchStr.value || "";
+
+        // Wait a moment as we cannot focus the non-expanded input. nextTick() is not enough
+        setTimeout(() => {
+            globalSearchInput.value!.focus();
+        }, 50);
     }
 </script>
