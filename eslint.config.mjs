@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:19:23
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-08 15:19:29
+ * Last Modified: 2025-12-03 18:24:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -41,6 +41,7 @@ export default [
                 ...globals.commonjs,
                 ...globals.es6,
                 ...globals.node,
+                ...globals.browser
             },
             parser: tsParser
         },

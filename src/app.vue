@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-22 15:39:26
+ * Last Modified: 2025-12-03 19:27:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -53,9 +53,10 @@
                 </div>
 
                 <!-- Light/Dark Mode toggle -->
-                <button class="p-0.5 rounded-md shadow-md font-semibold bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="setDarkMode(!darkModeEnabled)">
-                    <PhMoon :class="darkModeEnabled ? 'opacity-100' : 'opacity-0'" class="fixed size-7 p-0.5 transition-opacity"></PhMoon>
-                    <PhSun :class="darkModeEnabled ? 'opacity-0' : 'opacity-100'" class="size-7 p-0.5 transition-opacity"></PhSun>
+                <button class="p-0.5 rounded-md shadow-md font-semibold bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="toggleDarkMode()">
+                    <!-- This must tailwind tags instead of nuxt refs in order to work on page load (see global.js) -->
+                    <PhMoon class="hidden dark:block size-7 p-0.5 transition-opacity"></PhMoon>
+                    <PhSun class="block dark:hidden size-7 p-0.5 transition-opacity"></PhSun>
                 </button>
             </div>
         </header>
@@ -166,41 +167,10 @@
 
     // Refs
     const showNavbar      = ref(false);
-    const darkModeEnabled = ref(false);
     const onlineVersion   = ref("");
     const globalSearchStr = ref(); // null on page load, set to "" on click to expand input
 
     provide("globalSearchStr", globalSearchStr); // Expose search str to other files
-
-
-    // Executed on page load
-    onMounted(() => {
-
-        // Enable dark mode if user had it enabled on the last visit (yeah, it is a string)
-        if (localStorage.darkModeEnabled == "true") setDarkMode(true);
-
-        // Check if update available note should be displayed in navbar
-        checkForUpdate();
-
-    });
-
-
-    // Enables or disables dark mode
-    function setDarkMode(enable: boolean) {
-        console.log("setDarkMode: Set to " + enable);
-
-        darkModeEnabled.value = enable;
-
-        // Save to localstorage so that it will be saved when reloading the page
-        localStorage.darkModeEnabled = enable;
-
-        // Tell tailwind to get crackin
-        if (enable) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
-    }
 
 
     // Specify page information
@@ -212,8 +182,21 @@
     });
 
     useHead({
-        link: [{ rel: "icon", type: "image/png", href: "favicon.png" }]
+        link: [{ rel: "icon", type: "image/png", href: "favicon.png" }],
+        script: [{ src: "global.js" }] // Sets initial dark mode. Defined in header to fix transition load - https://stackoverflow.com/a/14416030
     });
+
+    onMounted(() => {
+        // Check if update available note should be displayed in navbar
+        checkForUpdate();
+    })
+
+
+    // Toggles dark mode
+    function toggleDarkMode() {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("darkModeEnabled", String(isDark));
+    }
 
 
     // Checks for an available update and displays a notification in the navbar
