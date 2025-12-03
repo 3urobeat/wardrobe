@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-03 20:01:41
+ * Last Modified: 2025-12-03 20:02:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -183,8 +183,8 @@
     });
 
     useHead({
-        link: [{ rel: "icon", type: "image/png", href: "favicon.png" }],
-        script: [{ src: "global.js" }] // Sets initial dark mode. Defined in header to fix transition load - https://stackoverflow.com/a/14416030
+        link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+        script: [{ src: "/global.js" }] // Sets initial dark mode. Defined in header to fix transition load - https://stackoverflow.com/a/14416030
     });
 
     onMounted(() => {
