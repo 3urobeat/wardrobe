@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-06 19:58:30
+ * Last Modified: 2025-12-06 23:28:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -49,16 +49,22 @@
 
             <!-- Image (Upload) -->
             <div
-                class="flex m-6 justify-center h-3/6 rounded-2xl shadow-md select-none bg-bg-field-light/35 dark:bg-bg-field-dark/35 outline-border-primary-light dark:outline-border-primary-dark outline-dashed transition-all"
+                class="relative flex m-6 justify-center h-3/6 rounded-2xl shadow-md select-none bg-bg-field-light/35 dark:bg-bg-field-dark/35 outline-border-primary-light dark:outline-border-primary-dark outline-dashed transition-all"
                 :class="editModeEnabled ? 'outline-2 cursor-pointer hover:bg-bg-field-hover-light/50 dark:hover:bg-bg-field-hover-dark/50' : 'outline-0'"
-                @click="uploadImg()"
             >
+                <!-- Show image if available -->
                 <img
                     class="rounded-2xl h-full select-none"
                     :class="editModeEnabled ? 'opacity-50' : ''"
-                    :src="thisClothing.imgPath" alt=""
+                    :src="'data:image/png;base64,' + thisClothingImgBlob"
+                    alt=""
                 >
+
+                <!-- Upload icon -->
                 <PhUploadSimple v-if="editModeEnabled" class="absolute self-center text-4xl text-text-light dark:text-text-dark"></PhUploadSimple>
+
+                <!-- Full size dummy component that handles file uploading. Position it absolute to parent by setting parent to relative -->
+                <FileUpload v-if="editModeEnabled" class="absolute w-full h-full" ref="fileUpload" @uploadSuccess="updateImage"></FileUpload>
             </div>
 
             <div class="flex flex-col w-full h-2/3">
@@ -134,7 +140,7 @@
 <script setup lang="ts">
     import { PhCheck, PhPencil, PhPlus, PhUploadSimple } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
+    import FileUpload from "~/components/fileUpload.vue";
     import type { Clothing } from "~/model/clothing";
     import type { Category, Label } from "~/model/label";
 
@@ -144,6 +150,8 @@
 
     const storedLabels: Ref<Label[]> = ref([]);
     const storedCategories: Ref<Category[]> = ref([]);
+
+    const thisClothingImgBlob: Ref<string> = ref(await getImage(thisClothing.value.imgPath))
 
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
@@ -197,13 +205,6 @@
     });
 
 
-    // Process image upload
-    function uploadImg() {
-        if (editModeEnabled) {
-
-        }
-    }
-
     // Adds/Removes a label
     async function toggleLabel(selectedLabel: Label) {
         console.log("DEBUG - add: Toggling label " + selectedLabel.id);
@@ -241,6 +242,36 @@
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
             changesMade.value = true;
         }
+    }
+
+
+    // Gets image from server
+    async function getImage(imgPath: string) {
+        if (!imgPath) return "";
+
+        const res = await fetch("/api/get-image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                type: "clothing", // TODO: Image type is hardcoded
+                name: imgPath
+            })
+        });
+
+        return await res.text();
+    }
+
+
+    // Triggered when new image was uploaded
+    async function updateImage(fileName: string) {
+        if (!fileName) throw("Error: Image was uploaded without file name?");
+
+        thisClothing.value.imgPath = fileName;
+        console.log("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
+
+        thisClothingImgBlob.value = await getImage(fileName);
     }
 
 

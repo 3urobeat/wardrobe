@@ -1,0 +1,83 @@
+/*
+ * File: upload-img.ts
+ * Project: wardrobe
+ * Created Date: 2025-12-06 17:23:26
+ * Author: 3urobeat
+ *
+ * Last Modified: 2025-12-06 22:52:08
+ * Modified By: 3urobeat
+ *
+ * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
+import { saveImage } from "~/composables/useImagesStorage";
+
+
+/**
+ * This API route accepts an image upload
+ * Params: { type: string, file: MultiPartData }
+ * Returns: string
+ */
+
+
+// Used guide: https://vueschool.io/articles/vuejs-tutorials/handling-file-uploads-in-nuxt-with-usestorage/
+
+
+// This function is executed when this API route is called
+export default defineEventHandler(async (event) => {
+
+    // Get image from form data
+    const formData = await readMultipartFormData(event);
+
+    if (!formData || formData.length === 0) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "No file to upload!",
+        });
+    }
+
+    const file = formData[0];
+
+    console.log("API upload-img: Received request");
+
+    // Validate file size
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB in bytes
+
+    if (file.data.length > MAX_FILE_SIZE) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: `File exceeds maximum size of ${MAX_FILE_SIZE} bytes`
+        });
+    }
+
+    // Validate file type
+    const allowedTypes = ["image/jpeg",  "image/png",  "image/gif"];
+
+    if (!file.type || !allowedTypes.includes(file.type)) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: `File type ${file.type || "unknown"} is not allowed`
+        });
+    }
+
+    // Save image
+    const fileName = await saveImage(file.data)
+        .catch(() => {
+            throw createError({
+                statusCode: 500,
+                statusMessage: "Failed to upload image!"
+            });
+        });
+
+    const res = {
+        fileName: fileName
+    };
+
+    return res;
+
+});

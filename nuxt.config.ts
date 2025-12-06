@@ -42,5 +42,14 @@ export default defineNuxtConfig({
             });
 
         }
-    }
+    },
+    nitro: {
+        // Storage buckets
+        storage: {
+            images: {
+                driver: "fs",
+                base: "./data/images",
+            },
+        },
+    },
 });
