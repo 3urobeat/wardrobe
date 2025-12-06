@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 21:37:33
+ * Last Modified: 2025-12-06 19:58:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -45,12 +45,12 @@
     <!-- Page content -->
     <div class="flex justify-center items-center py-20" @change="changesMade = true">
         <!-- TODO: Pop-In Animation -->
-        <div class="flex flex-col w-full md:w-xl h-200 px-8 py-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
+        <div class="flex flex-col w-full md:w-xl h-200 px-8 pb-8 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
 
             <!-- Image (Upload) -->
             <div
-                class="flex m-6 justify-center h-3/6 rounded-2xl shadow-md select-none bg-bg-field-light/35 dark:bg-bg-field-dark/35 outline-border-primary-light dark:outline-border-primary-dark outline-dashed hover:bg-bg-field-hover-light/50 dark:hover:bg-bg-field-hover-dark/50 transition-all"
-                :class="editModeEnabled ? 'outline-2 cursor-pointer' : 'outline-0'"
+                class="flex m-6 justify-center h-3/6 rounded-2xl shadow-md select-none bg-bg-field-light/35 dark:bg-bg-field-dark/35 outline-border-primary-light dark:outline-border-primary-dark outline-dashed transition-all"
+                :class="editModeEnabled ? 'outline-2 cursor-pointer hover:bg-bg-field-hover-light/50 dark:hover:bg-bg-field-hover-dark/50' : 'outline-0'"
                 @click="uploadImg()"
             >
                 <img
