@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 13:21:37
+ * Last Modified: 2025-12-07 19:55:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -17,7 +17,6 @@
 
 import type { Implements } from "./Implements";
 import type { Item } from "./item";
-import type { Label } from "./label";
 
 
 // Implements Item
@@ -26,6 +25,6 @@ export type Clothing = Implements<Item, {
     title: string,
     description: string,
     imgPath: string,
-    labels: Label[],
+    labelIDs: string[], // Label[],
     addedTimestamp: number
 }>

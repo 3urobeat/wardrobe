@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:45:56
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:15
+ * Last Modified: 2025-12-07 19:54:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,13 +15,10 @@
  */
 
 
-import type { Label } from "./label";
-
-
 // Base type for Clothing & Outfit, used by generic components & composables.
 export type Item = {
     id: string,
     title: string,          // Used for sorting
-    labels: Label[],        // Used as filters/for filtering
+    labelIDs: string[], // Label[],        // Used as filters/for filtering
     addedTimestamp: number  // Used for sorting
 }

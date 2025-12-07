@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-06 23:28:21
+ * Last Modified: 2025-12-07 23:01:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -106,7 +106,7 @@
                         <!-- List all labels for this category -->
                         <p
                             class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600"
-                            v-for="thisLabel in thisClothing.labels.filter((e: Label) => e.category.name == thisCategory.name)"
+                            v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id) && e.category.name == thisCategory.name)"
                             :key="thisLabel.id"
                             v-if="!editModeEnabled"
                         >
@@ -115,7 +115,7 @@
 
                         <button
                             class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                            :class="thisClothing.labels.some((e) => e.id == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                            :class="thisClothing.labelIDs.some((e) => e == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
                             v-for="thisLabel in storedLabels.filter((e: Label) => e.category.name == thisCategory.name)"
                             :key="thisLabel.id"
                             @click="toggleLabel(thisLabel)"
@@ -146,7 +146,7 @@
 
 
     // Refs
-    const thisClothing: Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labels: [], addedTimestamp: 0 });
+    const thisClothing: Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0 });
 
     const storedLabels: Ref<Label[]> = ref([]);
     const storedCategories: Ref<Category[]> = ref([]);
@@ -210,15 +210,15 @@
         console.log("DEBUG - add: Toggling label " + selectedLabel.id);
 
         // Get all selected labels without this one
-        const filtered = thisClothing.value.labels.filter((e: Label) => e.id != selectedLabel.id);
+        const filtered = thisClothing.value.labelIDs.filter((e: string) => e != selectedLabel.id);
 
         // If length does not match, the label must be selected
-        if (filtered.length != thisClothing.value.labels.length) {
+        if (filtered.length != thisClothing.value.labelIDs.length) {
             // ...and we can simply remove it without filtering again
-            thisClothing.value.labels = filtered;
+            thisClothing.value.labelIDs = filtered;
         } else {
             // ...otherwise we can simply add it
-            thisClothing.value.labels.push(selectedLabel);
+            thisClothing.value.labelIDs.push(selectedLabel.id);
         }
     }
 
@@ -237,7 +237,7 @@
             storedLabels.value.push(newLabel);
 
             // Directly select new label
-            thisClothing.value.labels.push(newLabel);
+            thisClothing.value.labelIDs.push(newLabel.id);
 
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
             changesMade.value = true;
