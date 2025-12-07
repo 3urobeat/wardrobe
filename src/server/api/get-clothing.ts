@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:54
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 14:59:49
+ * Last Modified: 2025-12-07 22:10:17
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,10 +15,13 @@
  */
 
 
+import { getClothing } from "~/composables/useClothesDb";
+
+
 /**
  * This API route gets details for a stored clothing and returns them
- * Params: {}
- * Returns: { }
+ * Params: { id: string }
+ * Returns: Clothing?
  */
 
 
@@ -28,36 +31,18 @@ export default defineEventHandler(async (event) => {
     // Read body of the request we received
     const params = await readBody(event);
 
-    if (!params || params.id === null) return {};
+    if (!params || params.id === null) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "ID parameter is required",
+        });
+    }
 
     console.log(`API get-clothing: Received request for id '${params.id}'...`);
 
-    const clothing = {
-        id: "2",
-        title: "Shirt 1",
-        description: "abcdef",
-        imgPath: "/favicon.png",
-        addedTimestamp: Date.now() - (Math.random() * 10000),
-        labels: [
-            {
-                id: "0",
-                name: "Winter",
-                category: {
-                    id: "0",
-                    name: "season"
-                }
-            },
-            {
-                id: "4",
-                name: "Blue",
-                category: {
-                    id: "4",
-                    name: "color"
-                }
-            }
-        ]
-    };
+    // Ask db helper to retrieve item
+    const clothing = await getClothing(params.id);
 
-    return clothing;
+    return clothing ? clothing[0] : null;
 
 });

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 23:01:33
+ * Last Modified: 2025-12-07 23:03:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -178,6 +178,8 @@
             });
 
             thisClothing.value = res.data.value!;
+
+            thisClothingImgBlob.value = await getImage(thisClothing.value.imgPath);
         }
     });
 
@@ -278,7 +280,18 @@
     // Sends changes to the database
     async function saveChanges() {
 
-        // Do not forget to save storedLabels (if quick add was used)
+        // TODO: Do not forget to save storedLabels (if quick add was used)
+
+        // Send data to API
+        const res = await fetch("/api/set-clothing", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                clothing: thisClothing.value
+            })
+        });
 
         // Indicate success/failure
         /* if (success.data.value) {
@@ -287,7 +300,18 @@
             changesMade.value = false;
         } else {
             responseIndicatorFailure();
+            return;
         } */
+
+        const resBody = await res.json();
+
+        // Update local refs
+        thisClothing.value = resBody.document;
+        changesMade.value = false;
+        thisClothingImgBlob.value = await getImage(resBody.document.imgPath);
+
+        // Redirect back on success
+        useRouter().push("/clothing/view?id=" + thisClothing.value.id);
 
     }
 

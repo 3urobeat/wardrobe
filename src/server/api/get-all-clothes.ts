@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 14:59:02
+ * Last Modified: 2025-12-07 22:13:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 
-import type { Clothing } from "~/model/clothing";
+import { getClothing } from "~/composables/useClothesDb";
 
 
 /**
@@ -25,113 +25,49 @@ import type { Clothing } from "~/model/clothing";
  */
 
 
+/* [
+    {
+        id: "0",
+        title: "Dress 1",
+        description: "abcdef",
+        imgPath: "/favicon.png",
+        addedTimestamp: Date.now() - (Math.random() * 10000),
+        labelIDs: ["0"]
+    },
+    {
+        id: "1",
+        title: "Dress 2",
+        description: "abcdef",
+        imgPath: "/favicon.png",
+        addedTimestamp: Date.now() - (Math.random() * 10000),
+        labelIDs: ["0", "2", "7"]
+    },
+    {
+        id: "2",
+        title: "Shirt 1",
+        description: "abcdef",
+        imgPath: "/favicon.png",
+        addedTimestamp: Date.now() - (Math.random() * 10000),
+        labelIDs: ["0", "4"]
+    },
+    {
+        id: "3",
+        title: "Pants 1",
+        description: "abcdef",
+        imgPath: "/favicon.png",
+        addedTimestamp: Date.now() - (Math.random() * 10000),
+        labelIDs: ["2", "8"]
+    }
+] */
+
+
 // This function is executed when this API route is called
 export default defineEventHandler(async () => {
 
     console.log("API get-all-clothes: Received request");
 
-    const clothes: Clothing[] = [
-        {
-            id: "0",
-            title: "Dress 1",
-            description: "abcdef",
-            imgPath: "/favicon.png",
-            addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "0",
-                    name: "Summer",
-                    category: {
-                        id: "0",
-                        name: "season"
-                    }
-                }
-            ]
-        },
-        {
-            id: "1",
-            title: "Dress 2",
-            description: "abcdef",
-            imgPath: "/favicon.png",
-            addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "0",
-                    name: "Spring",
-                    category: {
-                        id: "0",
-                        name: "season"
-                    }
-                },
-                {
-                    id: "2",
-                    name: "2025",
-                    category: {
-                        id: "2",
-                        name: "year"
-                    }
-                },
-                {
-                    id: "7",
-                    name: "Torso",
-                    category: {
-                        id: "5",
-                        name: "body part"
-                    }
-                }
-            ]
-        },
-        {
-            id: "2",
-            title: "Shirt 1",
-            description: "abcdef",
-            imgPath: "/favicon.png",
-            addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "0",
-                    name: "Winter",
-                    category: {
-                        id: "0",
-                        name: "season"
-                    }
-                },
-                {
-                    id: "4",
-                    name: "Blue",
-                    category: {
-                        id: "4",
-                        name: "color"
-                    }
-                }
-            ]
-        },
-        {
-            id: "3",
-            title: "Pants 1",
-            description: "abcdef",
-            imgPath: "/favicon.png",
-            addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "2",
-                    name: "2025",
-                    category: {
-                        id: "2",
-                        name: "year"
-                    }
-                },
-                {
-                    id: "8",
-                    name: "Legs",
-                    category: {
-                        id: "5",
-                        name: "body part"
-                    }
-                }
-            ]
-        }
-    ];
+    // Ask db helper to retrieve item
+    const clothes = await getClothing(null);
 
     return clothes;
 
