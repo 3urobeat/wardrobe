@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 17:34:22
+ * Last Modified: 2025-12-07 23:11:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -41,7 +41,11 @@
                 :key="thisClothing.id"
                 :to="'/clothing/view?id=' + thisClothing.id"
             >
-                <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisClothing.imgPath" :alt="'Image for ' + thisClothing.title">
+                <img
+                    class="w-fit h-50 sm:h-60 mb-1 self-center"
+                    :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
+                    :alt="'Image for ' + thisClothing.title"
+                >
                 <label class="self-start font-semibold mb-1">{{ thisClothing.title }}</label>
 
                 <!-- Filter Labels -->
@@ -49,7 +53,7 @@
                     <button
                         class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
                         :class="titleBarFull.selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                        v-for="thisLabel in thisClothing.labels"
+                        v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
                         :key="thisLabel.name"
                         @click.prevent="titleBarFull.toggleFilter(thisLabel.name)"
                     >
@@ -67,11 +71,14 @@
     import { PhPlus } from "@phosphor-icons/vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
     import type { Clothing } from "~/model/clothing";
+    import type { Label } from "~/model/label";
     import { defaultSortMode, sortModes } from "~/model/sort-modes";
 
 
     // Cache
-    const storedClothing: Ref<Clothing[]> = ref([]);
+    const storedLabels: Ref<Label[]> = ref([]);
+    const storedClothing: Ref<Clothing[]>                        = ref([]);
+    const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
@@ -82,10 +89,35 @@
 
     storedClothing.value = res.data.value!;
 
+    // Load images for clothes // TODO: Lazy load
+    storedClothing.value.forEach(async (e) => {
+        clothingImages.value.push({
+            id: e.id,
+            imgBlob: await getImage(e.imgPath)
+        })
+    })
 
-    // Redirect to view page (or a popup?)
-    function viewClothing(selectedClothing: Clothing) {
+    // Get all labels and categories
+    let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
+    storedLabels.value = labelsRes.data.value!;
 
+
+    // Gets image from server
+    async function getImage(imgPath: string) {
+        if (!imgPath) return "";
+
+        const res = await fetch("/api/get-image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                type: "clothing", // TODO: Image type is hardcoded
+                name: imgPath
+            })
+        });
+
+        return await res.text();
     }
 
 </script>

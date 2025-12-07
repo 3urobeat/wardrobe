@@ -4,7 +4,7 @@
  * Created Date: 2025-12-07 18:39:22
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 22:55:00
+ * Last Modified: 2025-12-07 23:11:40
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -68,8 +68,6 @@ export default defineEventHandler(async (event) => {
 
     // Ask db helper to upsert entry
     const res = await upsertClothing(params.clothing);
-
-    console.log(res)
 
     return res;
 
