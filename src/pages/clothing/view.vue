@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 17:01:57
+ * Last Modified: 2025-12-08 22:34:11
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -106,7 +106,7 @@
                         <!-- List all labels for this category -->
                         <p
                             class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600"
-                            v-for="thisLabel in storedLabels.filter((e: Label) => thisClothing.labelIDs.includes(e.id) && e.category.id == thisCategory.id)"
+                            v-for="thisLabel in storedLabels.filter((e: Label) => thisClothing.labelIDs.includes(e.id) && e.categoryID == thisCategory.id)"
                             :key="thisLabel.id"
                             v-if="!editModeEnabled"
                         >
@@ -116,7 +116,7 @@
                         <button
                             class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
                             :class="thisClothing.labelIDs.some((e) => e == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                            v-for="thisLabel in storedLabels.filter((e: Label) => e.category.name == thisCategory.name)"
+                            v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
                             :key="thisLabel.id"
                             @click="toggleLabel(thisLabel)"
                             v-if="editModeEnabled"
@@ -220,9 +220,9 @@
 
         if (name) {
             const newLabel: Label = {
-                id: "0",
+                id: crypto.randomUUID(), // TODO: This should be server sided
                 name: name,
-                category: thisCategory
+                categoryID: thisCategory.id
             };
 
             storedLabels.value.push(newLabel);

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 16:43:11
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 16:23:48
+ * Last Modified: 2025-12-08 21:45:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,14 +15,75 @@
  */
 
 
-import type { Label } from "~/model/label";
+import { getAllLabels } from "~/composables/useLabelsDb";
 
 
 /**
  * This API route gets all stored labels and returns them
  * Params: {}
- * Returns: { }
+ * Returns: Label[]
  */
+
+/* {
+    id: "0",
+    name: "Summer",
+    categoryID: "0"
+},
+{
+    id: "1",
+    name: "Cocktail Dress",
+    categoryID: "1"
+},
+{
+    id: "2",
+    name: "2025",
+    categoryID: "2"
+},
+{
+    id: "3",
+    name: "Special",
+    categoryID: "3"
+},
+{
+    id: "4",
+    name: "Red",
+    categoryID: "4"
+},
+{
+    id: "5",
+    name: "Spring",
+    categoryID: "0"
+},
+{
+    id: "6",
+    name: "Fall",
+    categoryID: "0"
+},
+{
+    id: "7",
+    name: "Torso",
+    categoryID: "5"
+},
+{
+    id: "8",
+    name: "Legs",
+    categoryID: "5"
+},
+{
+    id: "9",
+    name: "Feet",
+    categoryID: "5"
+},
+{
+    id: "0",
+    name: "Winter",
+    categoryID: "0"
+},
+{
+    id: "4",
+    name: "Blue",
+    categoryID: "4"
+} */
 
 
 // This function is executed when this API route is called
@@ -30,105 +91,8 @@ export default defineEventHandler(async () => {
 
     console.log("API get-all-labels: Received request");
 
-    const labels: Label[] = [
-        {
-            id: "0",
-            name: "Summer",
-            category: {
-                id: "0",
-                name: "season"
-            }
-        },
-        {
-            id: "1",
-            name: "Cocktail Dress",
-            category: {
-                id: "1",
-                name: "type"
-            }
-        },
-        {
-            id: "2",
-            name: "2025",
-            category: {
-                id: "2",
-                name: "year"
-            }
-        },
-        {
-            id: "3",
-            name: "Special",
-            category: {
-                id: "3",
-                name: "occasion"
-            }
-        },
-        {
-            id: "4",
-            name: "Red",
-            category: {
-                id: "4",
-                name: "color"
-            }
-        },
-        {
-            id: "5",
-            name: "Spring",
-            category: {
-                id: "0",
-                name: "season"
-            }
-        },
-        {
-            id: "6",
-            name: "Fall",
-            category: {
-                id: "0",
-                name: "season"
-            }
-        },
-        {
-            id: "7",
-            name: "Torso",
-            category: {
-                id: "5",
-                name: "body part"
-            }
-        },
-        {
-            id: "8",
-            name: "Legs",
-            category: {
-                id: "5",
-                name: "body part"
-            }
-        },
-        {
-            id: "9",
-            name: "Feet",
-            category: {
-                id: "5",
-                name: "body part"
-            }
-        },
-        {
-            id: "0",
-            name: "Winter",
-            category: {
-                id: "0",
-                name: "season"
-            }
-        },
-        {
-            id: "4",
-            name: "Blue",
-            category: {
-                id: "4",
-                name: "color"
-            }
-        }
-
-    ];
+    // Ask db helper to retrieve items
+    const labels = await getAllLabels();
 
     return labels;
 

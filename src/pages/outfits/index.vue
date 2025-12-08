@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 17:34:09
+ * Last Modified: 2025-12-08 22:37:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -49,9 +49,9 @@
                     <button
                         class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
                         :class="titleBarFull.selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                        v-for="thisLabel in thisOutfit.labels"
-                        :key="thisLabel.name"
-                        @click.prevent="titleBarFull.toggleFilter(thisLabel.name)"
+                        v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
+                        :key="thisLabel.id"
+                        @click.prevent="titleBarFull.toggleFilter(thisLabel.id)"
                     >
                         {{ thisLabel.name }}
                     </button>
@@ -67,9 +67,14 @@
 <script setup lang="ts">
     import { PhPlus } from "@phosphor-icons/vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
+    import type { Category, Label } from "~/model/label";
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode, type sortModes } from "~/model/sort-modes";
 
+
+    // Get global cache from app.vue
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
+    //const storedCategories: Ref<Category[]> = useState("storedCategories");
 
     // Cache
     const storedOutfits: Ref<Outfit[]> = ref([]);

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 17:01:25
+ * Last Modified: 2025-12-08 22:30:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -41,7 +41,7 @@
                 <div class="flex h-44 mx-2 overflow-x-scroll"> <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                     <div
                         class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
-                        v-for="thisLabel in storedLabels.filter((e: Label) => e.category.name == thisCategory.name)"
+                        v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
                         :key="thisLabel.id"
                     >                               <!-- TODO: Doing this by ID could fix disappearing on rename bug -->
                         <!-- Label title bar -->
@@ -111,9 +111,9 @@
     // Add a new label to a category
     function addLabel(category: Category) {
         storedLabels.value.push({
-            id: "0",
+            id: crypto.randomUUID(), // TODO: This should be server sided
             name: "",
-            category: category
+            categoryID: category.id
         });
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -131,7 +131,7 @@
     // Add a new category
     function addCategory() {
         storedCategories.value.push({
-            id: "0",
+            id: crypto.randomUUID(), // TODO: This should be server sided
             name: ""
         });
 
@@ -143,22 +143,33 @@
     // Sends changes to the database
     async function saveChanges() {
 
-        /* const success = await useFetch("/api/set-settings", {
+        // Send label categories data to API
+
+        // Send labels data to API
+        const res = await fetch("/api/set-labels", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(settings.value)
+            body: JSON.stringify({
+                categories: storedCategories.value,
+                labels: storedLabels.value
+            })
         });
 
         // Indicate success/failure
-        if (success.data.value) {
+        /* if (success.data.value) {
             responseIndicatorSuccess();
 
             changesMade.value = false;
         } else {
             responseIndicatorFailure();
         } */
+
+        const resBody = await res.json();
+
+        // TODO: Use response and update ref?
+        console.log(resBody)
 
     }
 

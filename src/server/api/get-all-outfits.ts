@@ -4,7 +4,7 @@
  * Created Date: 2025-09-10 16:55:08
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-17 21:52:37
+ * Last Modified: 2025-12-08 18:42:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -36,64 +36,21 @@ export default defineEventHandler(async () => {
             title: "Outfit 1",
             clothes: [],
             addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "0",
-                    name: "Summer",
-                    category: {
-                        id: "0",
-                        name: "season"
-                    }
-                }
-            ]
+            labelIDs: ["0"]
         },
         {
             id: "1",
             title: "Outfit 2",
             clothes: [],
             addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "0",
-                    name: "Spring",
-                    category: {
-                        id: "0",
-                        name: "season"
-                    }
-                },
-                {
-                    id: "2",
-                    name: "2025",
-                    category: {
-                        id: "2",
-                        name: "year"
-                    }
-                }
-            ]
+            labelIDs: ["0", "2"]
         },
         {
             id: "2",
             title: "Outfit 3",
             clothes: [],
             addedTimestamp: Date.now() - (Math.random() * 10000),
-            labels: [
-                {
-                    id: "0",
-                    name: "Winter",
-                    category: {
-                        id: "0",
-                        name: "season"
-                    }
-                },
-                {
-                    id: "4",
-                    name: "Blue",
-                    category: {
-                        id: "4",
-                        name: "color"
-                    }
-                }
-            ]
+            labelIDs: ["0", "4"]
         }
     ];
 

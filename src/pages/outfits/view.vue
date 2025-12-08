@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 17:56:00
+ * Last Modified: 2025-12-08 22:43:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -67,7 +67,7 @@
                         <div class="flex h-50 mx-2 overflow-x-scroll"> <!-- TODO: Make clothes clickable in view mode to view them -->
                             <div
                                 class="flex flex-col w-55 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
-                                v-for="thisItem in (thisOutfit ? thisOutfit.clothes.filter((e) => e.clothing.labels.some((f: Label) => f.id == thisLabel.id)) : [])"
+                                v-for="thisItem in (thisOutfit ? thisOutfit.clothes.filter((e) => e.clothing.labelIDs.some((f) => f == thisLabel.id)) : [])"
                                 :key="thisItem.order"
                             >
                                 <!-- Label title bar when in edit mode, let it clip over the image -->
@@ -143,7 +143,7 @@
                                             <div class="flex mt-1 ml-1">
                                                 <div
                                                     class="w-fit rounded-xl shadow-md px-2 m-0.5 text-sm text-gray-100 bg-gray-400 dark:bg-gray-600"
-                                                    v-for="thisLabel in thisClothing.labels"
+                                                    v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
                                                     :key="thisLabel.name"
                                                 >
                                                     {{ thisLabel.name }}
@@ -177,8 +177,11 @@
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
 
 
+    // Get global cache from app.vue
+    const storedLabels:   Ref<Label[]>    = useState("storedLabels");
+
     // Refs
-    const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], addedTimestamp: 0, labels: [] });
+    const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], addedTimestamp: 0, labelIDs: [] });
     const thisOutfitId:   Ref<string>     = ref(thisOutfit.value ? thisOutfit.value.id : "new");
     const bodyPartLabels: Ref<Label[]>    = ref([]);
     const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
@@ -195,7 +198,7 @@
 
     // Get all labels on page load
     let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-    bodyPartLabels.value = labelsRes.data.value!.filter((e) => e.category.name == "body part");
+    bodyPartLabels.value = labelsRes.data.value!.filter((e) => e.categoryID == "015534ff-94b6-4465-b3b2-8a2a3d8fb971"); // TODO: Filter for special label, temp hardcoded id
 
     // Save open state for every clothing picker for every label
     const clothingPickerIsOpen = ref(Array.from({ length: bodyPartLabels.value.length }, (_, i) => ({ name: bodyPartLabels.value[i]?.name, isOpen: false })));
@@ -271,7 +274,7 @@
     // Gets items to show to in the popout for each label
     function getClothesToShowInPopout(thisLabel: Label) {
         // Get all clothes that have this body part label
-        const clothesForThisLabel = getItemsToShow(storedClothes.value, defaultSortMode, [ thisLabel.name ]) as Clothing[];
+        const clothesForThisLabel = getItemsToShow(storedClothes.value, defaultSortMode, [ thisLabel.id ]) as Clothing[];
 
         // Remove clothes that are already added to this outfit
         const clothesNotAddedYet = clothesForThisLabel.filter((e) => !thisOutfit.value?.clothes.some((f) => f.clothing.id == e.id));

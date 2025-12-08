@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-09 22:01:51
+ * Last Modified: 2025-12-08 17:57:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,7 +18,7 @@
 export type Label = {
     id: string,
     name: string,
-    category: Category
+    categoryID: string
 }
 
 

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 17:40:37
+ * Last Modified: 2025-12-08 22:19:45
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -186,7 +186,7 @@
         storedLabels.value = labelsRes.data.value!;
 
         // Get all labels and categories
-        let categoriesRes = await useFetch<Category[]>("/api/get-all-categories");
+        let categoriesRes = await useFetch<Category[]>("/api/get-all-label-categories");
         storedCategories.value = categoriesRes.data.value!;
     });
 

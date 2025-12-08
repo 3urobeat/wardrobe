@@ -1,10 +1,10 @@
 /*
- * File: get-all-categories.ts
+ * File: get-all-label-categories.ts
  * Project: wardrobe
  * Created Date: 2025-09-09 22:04:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-10 21:20:22
+ * Last Modified: 2025-12-08 22:47:03
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,47 +15,48 @@
  */
 
 
-import type { Category } from "~/model/label";
+import { getAllLabelCategories } from "~/composables/useLabelsDb";
 
 
 /**
  * This API route gets all stored categories and returns them
  * Params: {}
- * Returns: { }
+ * Returns: Category[]
  */
+
+/* {
+    id: "0",
+    name: "season"
+},
+{
+    id: "1",
+    name: "type"
+},
+{
+    id: "2",
+    name: "year"
+},
+{
+    id: "3",
+    name: "occasion"
+},
+{
+    id: "4",
+    name: "color"
+},
+{
+    id: "5",
+    name: "body part"
+} */
 
 
 // This function is executed when this API route is called
 export default defineEventHandler(async () => {
 
-    console.log("API get-all-labels: Received request");
+    console.log("API get-all-label-categories: Received request");
 
-    const categories: Category[] = [
-        {
-            id: "0",
-            name: "season"
-        },
-        {
-            id: "1",
-            name: "type"
-        },
-        {
-            id: "2",
-            name: "year"
-        },
-        {
-            id: "3",
-            name: "occasion"
-        },
-        {
-            id: "4",
-            name: "color"
-        },
-        {
-            id: "5",
-            name: "body part"
-        }
-    ];
+    // Ask db helper to retrieve categories
+    const categories = await getAllLabelCategories();
 
     return categories;
 
