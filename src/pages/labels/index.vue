@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 17:25:37
+ * Last Modified: 2025-12-08 17:01:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -89,18 +89,9 @@
     import type { Category, Label } from "~/model/label";
 
 
-    // Cache
-    const storedLabels:     Ref<Label[]>    = ref([]);
-    const storedCategories: Ref<Category[]> = ref([]);
-
-
-    // Get all labels & categories on page load
-    let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-    storedLabels.value = labelsRes.data.value!;
-
-    let categoriesRes = await useFetch<Category[]>("/api/get-all-categories");
-    storedCategories.value = categoriesRes.data.value!;
-
+    // Get global cache from app.vue
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
+    const storedCategories: Ref<Category[]> = useState("storedCategories");
 
 
     // Track if user made changes

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-21 00:15:38
+ * Last Modified: 2025-12-08 17:40:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -38,12 +38,12 @@
             <div class="flex justify-end rounded-xl overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all" :class="selectedFilters.length > 0 ? 'h-0 md:h-fit w-0 md:w-full lg:w-1/3' : 'w-0 invisible'">
                 <button
                     class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="selectedFilters.includes(thisFilter) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                    v-for="thisFilter in selectedFilters"
-                    :key="thisFilter"
-                    @click="toggleFilter(thisFilter)"
+                    :class="selectedFilters.includes(thisFilter.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                    v-for="thisFilter in storedLabels.filter((e) => selectedFilters.includes(e.id))"
+                    :key="thisFilter.id"
+                    @click="toggleFilter(thisFilter.id)"
                 >
-                    {{ thisFilter }}
+                    {{ thisFilter.name }}
                 </button>
             </div>
 
@@ -64,12 +64,12 @@
             <div class="flex justify-center rounded-xl overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all" :class="selectedFilters.length > 0 ? 'h-fit md:h-0 w-full md:w-0 lg:w-1/3' : 'w-0 invisible'">
                 <button
                     class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="selectedFilters.includes(thisFilter) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                    v-for="thisFilter in selectedFilters"
-                    :key="thisFilter"
-                    @click="toggleFilter(thisFilter)"
+                    :class="selectedFilters.includes(thisFilter.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                    v-for="thisFilter in storedLabels.filter((e) => selectedFilters.includes(e.id))"
+                    :key="thisFilter.id"
+                    @click="toggleFilter(thisFilter.id)"
                 >
-                    {{ thisFilter }}
+                    {{ thisFilter.name }}
                 </button>
             </div>
         </div>
@@ -80,8 +80,12 @@
 
 
 <script setup lang="ts">
+    import type { Label } from '~/model/label';
     import { sortModes } from '~/model/sort-modes';
 
+
+    // Get global cache from app.vue
+    const storedLabels:    Ref<Label[]>   = useState("storedLabels");
 
     // Refs
     const selectedSort:    Ref<sortModes> = ref(sortModes.dateDesc);

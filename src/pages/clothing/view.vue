@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 23:03:08
+ * Last Modified: 2025-12-08 17:01:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -106,7 +106,7 @@
                         <!-- List all labels for this category -->
                         <p
                             class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600"
-                            v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id) && e.category.name == thisCategory.name)"
+                            v-for="thisLabel in storedLabels.filter((e: Label) => thisClothing.labelIDs.includes(e.id) && e.category.id == thisCategory.id)"
                             :key="thisLabel.id"
                             v-if="!editModeEnabled"
                         >
@@ -145,14 +145,13 @@
     import type { Category, Label } from "~/model/label";
 
 
+    // Get global cache from app.vue
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
+    const storedCategories: Ref<Category[]> = useState("storedCategories");
+
     // Refs
     const thisClothing: Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0 });
-
-    const storedLabels: Ref<Label[]> = ref([]);
-    const storedCategories: Ref<Category[]> = ref([]);
-
     const thisClothingImgBlob: Ref<string> = ref(await getImage(thisClothing.value.imgPath))
-
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
     const editModeEnabled = (useRoute().name == "clothing-edit");
@@ -182,16 +181,6 @@
             thisClothingImgBlob.value = await getImage(thisClothing.value.imgPath);
         }
     });
-
-
-    // Get all labels and categories
-    let categoriesRes = await useFetch<Category[]>("/api/get-all-categories");
-    storedCategories.value = categoriesRes.data.value!;
-
-    if (editModeEnabled) {
-        let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-        storedLabels.value = labelsRes.data.value!;
-    }
 
     // Track if user made changes
     const changesMade = ref(false);

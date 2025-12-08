@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 23:11:27
+ * Last Modified: 2025-12-08 17:01:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -52,10 +52,10 @@
                 <div class="mt-4">
                     <button
                         class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                        :class="titleBarFull.selectedFilters.includes(thisLabel.name) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                        :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
                         v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
-                        :key="thisLabel.name"
-                        @click.prevent="titleBarFull.toggleFilter(thisLabel.name)"
+                        :key="thisLabel.id"
+                        @click.prevent="titleBarFull.toggleFilter(thisLabel.id)"
                     >
                         {{ thisLabel.name }}
                     </button>
@@ -75,8 +75,10 @@
     import { defaultSortMode, sortModes } from "~/model/sort-modes";
 
 
+    // Get global cache from app.vue
+    const storedLabels: Ref<Label[]> = useState("storedLabels");
+
     // Cache
-    const storedLabels: Ref<Label[]> = ref([]);
     const storedClothing: Ref<Clothing[]>                        = ref([]);
     const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]);
 
@@ -95,11 +97,7 @@
             id: e.id,
             imgBlob: await getImage(e.imgPath)
         })
-    })
-
-    // Get all labels and categories
-    let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-    storedLabels.value = labelsRes.data.value!;
+    });
 
 
     // Gets image from server

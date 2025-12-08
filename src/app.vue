@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-03 20:02:49
+ * Last Modified: 2025-12-08 17:40:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -161,6 +161,7 @@
 <script setup lang="ts">
     import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhDresser, PhTag, PhMagnifyingGlass } from "@phosphor-icons/vue";
     import packagejson from "../package.json";
+    import type { Category, Label } from "~/model/label";
 
     const route = useRoute();
 
@@ -172,6 +173,22 @@
     const globalSearchInput = useTemplateRef("globalSearchInput");
 
     provide("globalSearchStr", globalSearchStr); // Expose search str to other files
+
+
+    // Global cache, accessed by pages
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
+    const storedCategories: Ref<Category[]> = useState("storedCategories");
+
+
+    // Get all labels and categories
+    callOnce(async () => {
+        let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
+        storedLabels.value = labelsRes.data.value!;
+
+        // Get all labels and categories
+        let categoriesRes = await useFetch<Category[]>("/api/get-all-categories");
+        storedCategories.value = categoriesRes.data.value!;
+    });
 
 
     // Specify page information
