@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 21:25:51
+ * Last Modified: 2025-12-09 21:45:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -206,12 +206,12 @@
 
     // Get outfits and their data
     onBeforeMount(async () => {
-        let clothingRes = await useFetch<Clothing[]>("/api/get-all-clothes");
-        storedClothes.value = clothingRes.data.value!;
+        let clothingRes = await fetch("/api/get-all-clothes");
+        storedClothes.value = await clothingRes.json(); // TODO: Error handling
 
         // Get outfit data if not new
         if (outfitId != "new") {
-            const outfitRes = await useFetch<Outfit>("/api/get-outfit", {
+            const outfitRes = await fetch("/api/get-outfit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -221,7 +221,7 @@
                 })
             });
 
-            thisOutfit.value = outfitRes.data.value!;
+            thisOutfit.value = await outfitRes.json(); // TODO: Error handling
         }
 
         // Load images for clothes // TODO: Lazy load

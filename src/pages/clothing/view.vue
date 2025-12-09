@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:34:11
+ * Last Modified: 2025-12-09 21:43:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -166,7 +166,7 @@
     // Get clothing
     onBeforeMount(async () => {
         if (clothingId != "new") {
-            const res = await useFetch<Clothing>("/api/get-clothing", {
+            const res = await fetch("/api/get-clothing", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -176,7 +176,7 @@
                 })
             });
 
-            thisClothing.value = res.data.value!;
+            thisClothing.value = await res.json(); // TODO: Error handling
 
             thisClothingImgBlob.value = await getImage(thisClothing.value.imgPath);
         }

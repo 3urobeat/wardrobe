@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:37:21
+ * Last Modified: 2025-12-09 21:56:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -84,9 +84,10 @@
 
 
     // Get all outfits and their details on load
-    let res = await useFetch<Outfit[]>("/api/get-all-outfits");
-
-    storedOutfits.value  = res.data.value!;
+    onBeforeMount(async () => {
+        let res = await fetch("/api/get-all-outfits");
+        storedOutfits.value = await res.json();
+    });
 
 
     // Redirect to view page (or a popup?)

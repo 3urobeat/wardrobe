@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:19:45
+ * Last Modified: 2025-12-09 21:58:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -176,18 +176,17 @@
 
 
     // Global cache, accessed by pages
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    const storedCategories: Ref<Category[]> = useState("storedCategories");
-
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels", () => []);
+    const storedCategories: Ref<Category[]> = useState("storedCategories", () => []);
 
     // Get all labels and categories
-    callOnce(async () => {
-        let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-        storedLabels.value = labelsRes.data.value!;
+    onBeforeMount(async () => {
+        let labelsRes = await fetch("/api/get-all-labels");
+        storedLabels.value = await labelsRes.json(); // TODO: Error handling
 
         // Get all labels and categories
-        let categoriesRes = await useFetch<Category[]>("/api/get-all-label-categories");
-        storedCategories.value = categoriesRes.data.value!;
+        let categoriesRes = await fetch("/api/get-all-label-categories");
+        storedCategories.value = await categoriesRes.json(); // TODO: Error handling
     });
 
 
@@ -204,10 +203,8 @@
         script: [{ src: "/global.js" }] // Sets initial dark mode. Defined in header to fix transition load - https://stackoverflow.com/a/14416030
     });
 
-    onMounted(() => {
-        // Check if update available note should be displayed in navbar
-        checkForUpdate();
-    })
+    // Check if update available note should be displayed in navbar
+    checkForUpdate();
 
 
     // Toggles dark mode
