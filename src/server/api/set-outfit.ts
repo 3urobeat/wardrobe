@@ -1,10 +1,10 @@
 /*
- * File: get-outfit.ts
+ * File: set-outfit.ts
  * Project: wardrobe
- * Created Date: 2025-09-10 18:51:02
+ * Created Date: 2025-12-09 21:00:14
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 19:08:10
+ * Last Modified: 2025-12-09 21:01:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,25 +15,14 @@
  */
 
 
-import { getOutfit } from "~/composables/useOutfitsDb";
+import { upsertOutfit } from "~/composables/useOutfitsDb";
 
 
 /**
- * This API route gets details for a stored clothing and returns them
- * Params: { id: string }
- * Returns: Outfit?
+ * This API route inserts/updates an outfit
+ * Params: { outfit: Outfit }
+ * Returns:
  */
-
-/* {
-    id: "1",
-    title: "Outfit 2",
-    clothes: [{
-        order: 0,
-        clothingID: "1"
-    }],
-    addedTimestamp: Date.now() - (Math.random() * 10000),
-    labelIDs: ["6"]
-} */
 
 
 // This function is executed when this API route is called
@@ -42,18 +31,18 @@ export default defineEventHandler(async (event) => {
     // Read body of the request we received
     const params = await readBody(event);
 
-    if (!params || params.id === null) {
+    if (!params || !params.outfit) {
         throw createError({
             statusCode: 400,
-            statusMessage: "ID parameter is required",
+            statusMessage: "No outfit data to set!",
         });
     }
 
-    console.log(`API get-outfit: Received request for id '${params.id}'...`);
+    console.log("API set-outfit: Received request for: ", params.outfit);
 
-    // Ask db helper to retrieve item
-    const outfit = await getOutfit(params.id);
+    // Ask db helper to upsert entry
+    const res = await upsertOutfit(params.outfit);
 
-    return outfit ? outfit[0] : null;
+    return res;
 
 });

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:43:42
+ * Last Modified: 2025-12-09 21:25:51
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -27,14 +27,14 @@
 
     <!-- Title Bar for view -->
     <TitleBarBasic backRedirectTo="/outfits" v-if="!editModeEnabled">
-        <NuxtLink :to="'/outfits/edit?id=' + thisOutfitId" class="flex items-center justify-center">
+        <NuxtLink :to="'/outfits/edit?id=' + (thisOutfit ? thisOutfit.id : 'new')" class="flex items-center justify-center">
             <PhPencil class="mr-2 size-5"></PhPencil>
             Edit
         </NuxtLink>
     </TitleBarBasic>
 
     <!-- Title bar for edit -->
-    <TitleBarBasic :backRedirectTo="outfitId == 'new' ? '/outfits' : '/outfits/view?id=' + thisOutfitId" v-if="editModeEnabled">
+    <TitleBarBasic :backRedirectTo="outfitId == 'new' ? '/outfits' : '/outfits/view?id=' + (thisOutfit ? thisOutfit.id : 'new')" v-if="editModeEnabled">
         <button class="flex items-center justify-center" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
@@ -67,22 +67,22 @@
                         <div class="flex h-50 mx-2 overflow-x-scroll"> <!-- TODO: Make clothes clickable in view mode to view them -->
                             <div
                                 class="flex flex-col w-55 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
-                                v-for="thisItem in (thisOutfit ? thisOutfit.clothes.filter((e) => e.clothing.labelIDs.some((f) => f == thisLabel.id)) : [])"
-                                :key="thisItem.order"
+                                v-for="thisClothing in storedClothes.filter((e) => thisOutfit.clothes.some((f) => f.clothingID == e.id) && e.labelIDs.includes(thisLabel.id))"
+                                :key="thisClothing.id"
                             >
                                 <!-- Label title bar when in edit mode, let it clip over the image -->
                                 <div class="flex w-full mt-2 -mb-2 justify-end" v-if="editModeEnabled">
                                     <button
                                         class="absolute p-1 z-20 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                                        @click="removeClothing(thisItem.clothing)"
+                                        @click="removeClothing(thisClothing.id)"
                                         title="Remove Item"
                                     >               <!-- Give this button a higher z-level than the close-popover-dummy to be able to delete clothes while the picker stays open -->
                                         <PhX class="size-5 text-red-500"></PhX>
                                     </button>
                                 </div>
 
-                                <img class="h-35 my-1.5 self-center" :src="thisItem.clothing.imgPath" :alt="'Image for ' + thisItem.clothing.title">
-                                <label class="self-start font-semibold mx-1">{{ thisItem.clothing.title }}</label>
+                                <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
+                                <label class="self-start font-semibold mx-1">{{ thisClothing.title }}</label>
                             </div>
                         </div>
                     </div>
@@ -134,9 +134,9 @@
                                             class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel)"
                                             :key="thisClothing.id"
-                                            @click="addClothing(thisClothing)"
+                                            @click="addClothing(thisClothing.id)"
                                         >
-                                            <img class="h-35 my-1.5 self-center" :src="thisClothing.imgPath" :alt="'Image for ' + thisClothing.title">
+                                            <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
                                             <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
 
                                             <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
@@ -182,9 +182,9 @@
 
     // Refs
     const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], addedTimestamp: 0, labelIDs: [] });
-    const thisOutfitId:   Ref<string>     = ref(thisOutfit.value ? thisOutfit.value.id : "new");
     const bodyPartLabels: Ref<Label[]>    = ref([]);
     const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
+    const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]); // Edit Mode only
     const searchStr:      Ref<string>     = ref("");
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
@@ -204,10 +204,14 @@
     const clothingPickerIsOpen = ref(Array.from({ length: bodyPartLabels.value.length }, (_, i) => ({ name: bodyPartLabels.value[i]?.name, isOpen: false })));
 
 
-    // Get outfit
+    // Get outfits and their data
     onBeforeMount(async () => {
+        let clothingRes = await useFetch<Clothing[]>("/api/get-all-clothes");
+        storedClothes.value = clothingRes.data.value!;
+
+        // Get outfit data if not new
         if (outfitId != "new") {
-            const res = await useFetch<Outfit>("/api/get-outfit", {
+            const outfitRes = await useFetch<Outfit>("/api/get-outfit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -217,17 +221,17 @@
                 })
             });
 
-            thisOutfit.value = res.data.value!;
+            thisOutfit.value = outfitRes.data.value!;
         }
+
+        // Load images for clothes // TODO: Lazy load
+        storedClothes.value.forEach(async (e) => {
+            clothingImages.value.push({
+                id: e.id,
+                imgBlob: await getImage(e.imgPath)
+            })
+        });
     });
-
-
-    // Get all clothes for clothing picker dialog when in edit mode. Do this after page load to reduce wait time, the picker is closed anyway
-    if (editModeEnabled) {
-        let res = await useFetch<Clothing[]>("/api/get-all-clothes");
-
-        storedClothes.value = res.data.value!;
-    }
 
 
     // Track if user made changes when in edit mode
@@ -244,6 +248,25 @@
     });
 
 
+    // Gets image from server
+    async function getImage(imgPath: string) {
+        if (!imgPath) return "";
+
+        const res = await fetch("/api/get-image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                type: "clothing", // TODO: Image type is hardcoded
+                name: imgPath
+            })
+        });
+
+        return await res.text();
+    }
+
+
     // Opens a new clothing picker or closes the current one for a label
     function toggleClothingPicker(labelName: string) {
         clothingPickerIsOpen.value.forEach((e, i) => {
@@ -257,17 +280,17 @@
 
 
     // Add clothing to a label of this outfit
-    function addClothing(clothing: Clothing) {
+    function addClothing(id: string) {
         thisOutfit.value.clothes.push({
-            order: 0,
-            clothing: clothing
+            order: 0,       // TODO: Order
+            clothingID: id
         });
     }
 
 
     // Remove clothing from a label of this outfit
-    function removeClothing(clothing: Clothing) {
-        thisOutfit.value.clothes = thisOutfit.value.clothes.filter((e) => e.clothing.id != clothing.id);
+    function removeClothing(id: string) {
+        thisOutfit.value.clothes = thisOutfit.value.clothes.filter((e) => e.clothingID != id);
     }
 
 
@@ -277,7 +300,7 @@
         const clothesForThisLabel = getItemsToShow(storedClothes.value, defaultSortMode, [ thisLabel.id ]) as Clothing[];
 
         // Remove clothes that are already added to this outfit
-        const clothesNotAddedYet = clothesForThisLabel.filter((e) => !thisOutfit.value?.clothes.some((f) => f.clothing.id == e.id));
+        const clothesNotAddedYet = clothesForThisLabel.filter((e) => !thisOutfit.value?.clothes.some((f) => f.clothingID == e.id));
 
         // Remove clothes that do not match search string
         const clothesMatchingSearch = clothesNotAddedYet.filter((e) => e.title.toLowerCase().includes(searchStr.value.toLowerCase())); // TODO: How much does this search suck compared to some guideline?
@@ -289,6 +312,17 @@
     // Sends changes to the database in edit mode
     async function saveChanges() {
 
+        // Send data to API
+        const res = await fetch("/api/set-outfit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                outfit: thisOutfit.value
+            })
+        });
+
         // Indicate success/failure
         /* if (success.data.value) {
             responseIndicatorSuccess();
@@ -297,6 +331,17 @@
         } else {
             responseIndicatorFailure();
         } */
+
+        const resBody = await res.json();
+
+        console.log(resBody)
+
+        // Update local refs
+        thisOutfit.value = resBody.document;
+        changesMade.value = false;
+
+        // Redirect back on success
+        useRouter().push("/outfits/view?id=" + thisOutfit.value.id);
 
     }
 

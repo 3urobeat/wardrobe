@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 20:13:08
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 19:54:51
+ * Last Modified: 2025-12-09 19:05:46
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -17,14 +17,13 @@
 
 import type { Implements } from "./Implements";
 import type { Item } from "./item";
-import type { Clothing } from "./clothing";
 
 
 // Implements Item
 export type Outfit = Implements<Item, {
     id: string,
     title: string,
-    clothes: { order: number, clothing: Clothing }[],
+    clothes: { order: number, clothingID: string }[],
     addedTimestamp: number,
     labelIDs: string[] // Label[]
 }>
