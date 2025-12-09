@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 22:57:27
+ * Last Modified: 2025-12-09 19:02:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -47,7 +47,6 @@ export async function upsertClothing(clothing: Clothing) {
 
     return clothesDb.updateAsync({ id: clothing.id }, { $set: clothing }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
-            console.log(res)
             return {
                 success: true,
                 message: "",
@@ -70,7 +69,5 @@ export async function upsertClothing(clothing: Clothing) {
  * @returns Returns an array of all matching clothes
  */
 export async function getClothing(id: string|null): Promise<Clothing[]> {
-
     return await clothesDb.findAsync(id ? { id: id } : {});
-
 }
