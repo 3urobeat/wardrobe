@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:30:37
+ * Last Modified: 2025-12-09 19:12:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -167,6 +167,9 @@
         } */
 
         const resBody = await res.json();
+
+        // Update local refs
+        changesMade.value = false;
 
         // TODO: Use response and update ref?
         console.log(resBody)
