@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:22:31
+ * Last Modified: 2025-12-11 20:05:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -72,13 +72,12 @@ function upsertLabel(label: Label) {
 export async function upsertLabels(labels: Label[]) {
 
     // Call upsertLabel for every label and await all resulting promises
-    await Promise.all(labels.map((e) => upsertLabel(e)))
+    return Promise.all(labels.map((e) => upsertLabel(e)))
         .then((res) => {
-            console.log(res)
             return {
                 success: true,
                 message: "",
-                //document: res.affectedDocuments
+                document: res.map((e) => e.document)
             };
         })
         .catch((err) => {
