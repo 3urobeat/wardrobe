@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 21:45:01
+ * Last Modified: 2025-12-23 23:30:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -44,9 +44,27 @@
 
     <!-- Page content -->
     <div class="py-20">
-        <div class="w-1/3 ml-0.5 mb-4 md:mb-8 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
-            <p     v-if="!editModeEnabled" class="w-full py-1 px-3 select-none">{{ thisOutfit.title }}</p>
-            <input v-if="editModeEnabled"  class="w-full py-1 px-3 rounded-md outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all" placeholder="Name" v-model.trim="thisOutfit.title" />
+        <div class="flex justify-between">
+            <div class="w-1/3 ml-0.5 mb-4 md:mb-8 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                <p     v-if="!editModeEnabled" class="w-full py-1 px-3 select-none">{{ thisOutfit.title }}</p>
+                <input v-if="editModeEnabled"  class="w-full py-1 px-3 rounded-md outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all" placeholder="Name" v-model.trim="thisOutfit.title" />
+            </div>
+
+            <!-- Label selector bar with expanding popup -->
+            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all h-8 w-full lg:w-1/2">
+                <!-- Selected labels list -->
+                <button
+                    class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
+                    :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                    v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
+                    :key="thisLabel.id"
+                    @click="toggleLabel(thisLabel)"
+                >
+                    {{ thisLabel.name }}
+                </button>
+
+                <!-- Labels selector popout -->
+            </div>
         </div>
 
         <div class="flex gap-4 md:gap-8 select-none" @change="changesMade = true">
@@ -306,6 +324,24 @@
         const clothesMatchingSearch = clothesNotAddedYet.filter((e) => e.title.toLowerCase().includes(searchStr.value.toLowerCase())); // TODO: How much does this search suck compared to some guideline?
 
         return clothesMatchingSearch;
+    }
+
+
+    // Adds/Removes a label
+    async function toggleLabel(selectedLabel: Label) {
+        console.log("DEBUG: Toggling label " + selectedLabel.id);
+
+        // Get all selected labels without this one
+        const filtered = thisOutfit.value.labelIDs.filter((e: string) => e != selectedLabel.id);
+
+        // If length does not match, the label must be selected
+        if (filtered.length != thisOutfit.value.labelIDs.length) {
+            // ...and we can simply remove it without filtering again
+            thisOutfit.value.labelIDs = filtered;
+        } else {
+            // ...otherwise we can simply add it
+            thisOutfit.value.labelIDs.push(selectedLabel.id);
+        }
     }
 
 

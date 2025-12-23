@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 21:43:15
+ * Last Modified: 2025-12-23 23:26:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -198,7 +198,7 @@
 
     // Adds/Removes a label
     async function toggleLabel(selectedLabel: Label) {
-        console.log("DEBUG - add: Toggling label " + selectedLabel.id);
+        console.log("DEBUG: Toggling label " + selectedLabel.id);
 
         // Get all selected labels without this one
         const filtered = thisClothing.value.labelIDs.filter((e: string) => e != selectedLabel.id);
