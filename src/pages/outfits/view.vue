@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-23 23:30:49
+ * Last Modified: 2025-12-24 18:02:51
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -107,75 +107,41 @@
 
                     <!-- Add clothing to label button when in edit mode -->
                     <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">
-                        <div class="flex m-2 items-center">
-                            <button
-                                class="h-fit p-1 z-20 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all"
-                                title="Add Item" @click="toggleClothingPicker(thisLabel.name)"
-                            >           <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click -->
+                        <PickerDialog
+                            toggleText="Add Item"
+                            ref="pickerDialog"
+                        >
+                            <!-- This is the element that will be displayed in the open/close button -->
+                            <template v-slot:toggle>
                                 <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
-                            </button>
-                        </div>
+                            </template>
 
-                        <!-- Position dialog absolute to parent by setting parent to relative -->
-                        <div v-if="clothingPickerIsOpen.find((e) => e.name == thisLabel.name)!.isOpen" class="absolute top-0 mt-33 transition-all"> <!-- TODO: top is necessary so box grows downward, which then requires that stupid mt... -->
-                            <!-- Dummy filling the entire page to close popout when clicking on anything outside popout -->
-                            <div class="fixed top-0 left-0 h-screen w-screen opacity-0" @click="toggleClothingPicker(thisLabel.name)"></div>
+                            <!-- Items area -->
+                            <template v-slot:items>
+                                <button
+                                    class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
+                                    v-for="thisClothing in getClothesToShowInPopout(thisLabel, pickerDialog.searchStr)"
+                                    :key="thisClothing.id"
+                                    @click="addClothing(thisClothing.id)"
+                                >
+                                    <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
+                                    <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
 
-                            <div class="relative flex flex-col transition-all">
-
-                                <!-- Triangle -->
-                                <p class="self-center text-2xl -mb-1.5 text-bg-field-light dark:text-bg-field-dark">&#x25B2;</p>
-
-                                <!-- Content -->
-                                <dialog id="clothing-picker" class="relative flex flex-col items-center z-50 w-180 max-h-140 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
-
-                                    <!-- Search and Close button -->
-                                    <div class="flex w-full p-4 gap-4">
-                                        <input
-                                            class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
-                                            placeholder="Search"
-                                            v-model.trim="searchStr"
-                                            type="search"
-                                        />
-
-                                        <button
-                                            class="w-fit self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all"
-                                            @click="toggleClothingPicker(thisLabel.name)"
+                                    <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
+                                    <div class="flex mt-1 ml-1">
+                                        <div
+                                            class="w-fit rounded-xl shadow-md px-2 m-0.5 text-sm text-gray-100 bg-gray-400 dark:bg-gray-600"
+                                            v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
+                                            :key="thisLabel.name"
                                         >
-                                            Close
-                                        </button>
+                                            {{ thisLabel.name }}
+                                        </div>
                                     </div>
+                                </button>
 
-                                    <!-- Clothes --> <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
-                                    <div class="grid grid-cols-3 gap-4 pb-5 overflow-y-scroll" v-if="getClothesToShowInPopout(thisLabel).length > 0"> <!-- TODO: overflow-y-scroll clips shadow -->
-                                        <button
-                                            class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
-                                            v-for="thisClothing in getClothesToShowInPopout(thisLabel)"
-                                            :key="thisClothing.id"
-                                            @click="addClothing(thisClothing.id)"
-                                        >
-                                            <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
-                                            <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
-
-                                            <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
-                                            <div class="flex mt-1 ml-1">
-                                                <div
-                                                    class="w-fit rounded-xl shadow-md px-2 m-0.5 text-sm text-gray-100 bg-gray-400 dark:bg-gray-600"
-                                                    v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
-                                                    :key="thisLabel.name"
-                                                >
-                                                    {{ thisLabel.name }}
-                                                </div>
-                                            </div>
-                                        </button>
-                                    </div>
-                                    <label class="self-start pl-5 pb-5" v-else>No items to show.</label>
-
-                                </dialog>
-
-                            </div>
-                        </div>
-                        <!-- End of clothing picker -->
+                                <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, pickerDialog.searchStr).length == 0">No items to show.</label>
+                            </template>
+                        </PickerDialog>
                     </div>
                 </div>
             </div>
@@ -188,6 +154,7 @@
 <script setup lang="ts">
     import { PhCheck, PhPencil, PhPlus, PhX } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
+    import PickerDialog from "~/components/pickerDialog.vue";
     import type { Label } from "~/model/label";
     import type { Clothing } from "~/model/clothing";
     import type { Outfit } from "~/model/outfit";
@@ -203,7 +170,10 @@
     const bodyPartLabels: Ref<Label[]>    = ref([]);
     const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
     const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]); // Edit Mode only
-    const searchStr:      Ref<string>     = ref("");
+
+    // Get refs to props exported by defineExpose() in PickerDialog
+    const pickerDialog: Ref<{ isOpen: boolean, searchStr: string }> = ref({ isOpen: false, searchStr: "" });
+
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
     const editModeEnabled = (useRoute().name == "outfits-edit");
@@ -217,9 +187,6 @@
     // Get all labels on page load
     let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
     bodyPartLabels.value = labelsRes.data.value!.filter((e) => e.categoryID == "015534ff-94b6-4465-b3b2-8a2a3d8fb971"); // TODO: Filter for special label, temp hardcoded id
-
-    // Save open state for every clothing picker for every label
-    const clothingPickerIsOpen = ref(Array.from({ length: bodyPartLabels.value.length }, (_, i) => ({ name: bodyPartLabels.value[i]?.name, isOpen: false })));
 
 
     // Get outfits and their data
@@ -285,18 +252,6 @@
     }
 
 
-    // Opens a new clothing picker or closes the current one for a label
-    function toggleClothingPicker(labelName: string) {
-        clothingPickerIsOpen.value.forEach((e, i) => {
-            if (labelName == e.name) {
-                clothingPickerIsOpen.value[i]!.isOpen = !clothingPickerIsOpen.value[i]!.isOpen; // Toggle this picker
-            } else {
-                clothingPickerIsOpen.value[i]!.isOpen = false;                                  // Close all other currently open pickers
-            }
-        });
-    }
-
-
     // Add clothing to a label of this outfit
     function addClothing(id: string) {
         thisOutfit.value.clothes.push({
@@ -313,7 +268,9 @@
 
 
     // Gets items to show to in the popout for each label
-    function getClothesToShowInPopout(thisLabel: Label) {
+    function getClothesToShowInPopout(thisLabel: Label, searchStr: string = "") {
+        console.log(searchStr)
+
         // Get all clothes that have this body part label
         const clothesForThisLabel = getItemsToShow(storedClothes.value, defaultSortMode, [ thisLabel.id ]) as Clothing[];
 
@@ -321,7 +278,7 @@
         const clothesNotAddedYet = clothesForThisLabel.filter((e) => !thisOutfit.value?.clothes.some((f) => f.clothingID == e.id));
 
         // Remove clothes that do not match search string
-        const clothesMatchingSearch = clothesNotAddedYet.filter((e) => e.title.toLowerCase().includes(searchStr.value.toLowerCase())); // TODO: How much does this search suck compared to some guideline?
+        const clothesMatchingSearch = clothesNotAddedYet.filter((e) => e.title.toLowerCase().includes(searchStr.toLowerCase())); // TODO: How much does this search suck compared to some guideline?
 
         return clothesMatchingSearch;
     }
