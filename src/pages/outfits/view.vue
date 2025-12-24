@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-24 18:57:37
+ * Last Modified: 2025-12-24 20:02:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -64,6 +64,44 @@
                 </button>
 
                 <!-- Labels selector popout -->
+                <PickerDialog
+                    toggleText="Open labels selector"
+                    hideSearch
+                >
+                    <template v-slot:toggle>
+                        <PhCaretDown class="self-center mx-2 size-5"></PhCaretDown>
+                    </template>
+
+                    <template v-slot:items>
+                        <div class="flex flex-col">
+                            <!-- Separate labels by category -->
+                            <div class="flex text-nowrap px-2 m-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                                <label class="text-md text-text-light dark:text-text-dark">{{ thisCategory.name }}: </label>
+
+                                <!-- List all labels for this category -->
+                                <p
+                                    class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600"
+                                    v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id) && e.categoryID == thisCategory.id)"
+                                    :key="thisLabel.id"
+                                    v-if="!editModeEnabled"
+                                >
+                                    {{ thisLabel.name }}
+                                </p>
+
+                                <button
+                                    class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
+                                    :class="thisOutfit.labelIDs.some((e) => e == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                                    v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
+                                    :key="thisLabel.id"
+                                    @click="toggleLabel(thisLabel)"
+                                    v-if="editModeEnabled"
+                                >
+                                    {{ thisLabel.name }}
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </PickerDialog>
             </div>
         </div>
 
@@ -154,10 +192,10 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPencil, PhPlus, PhX } from "@phosphor-icons/vue";
+    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import PickerDialog from "~/components/pickerDialog.vue";
-    import type { Label } from "~/model/label";
+    import type { Category, Label } from "~/model/label";
     import type { Clothing } from "~/model/clothing";
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode } from "~/model/sort-modes";
@@ -165,7 +203,8 @@
 
 
     // Get global cache from app.vue
-    const storedLabels:   Ref<Label[]>    = useState("storedLabels");
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
+    const storedCategories: Ref<Category[]> = useState("storedCategories");
 
     // Refs
     const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], addedTimestamp: 0, labelIDs: [] });
