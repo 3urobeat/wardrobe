@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-24 18:02:51
+ * Last Modified: 2025-12-24 18:57:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -113,7 +113,9 @@
                         >
                             <!-- This is the element that will be displayed in the open/close button -->
                             <template v-slot:toggle>
-                                <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
+                                <div class="p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all">
+                                    <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
+                                </div>
                             </template>
 
                             <!-- Items area -->

@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-24 17:53:37
+ * Last Modified: 2025-12-24 19:03:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -20,9 +20,9 @@
 <template>
 
     <!-- Open/Close button -->
-    <div class="flex m-2 items-center">
+    <div class="flex items-center">
         <button
-            class="h-fit p-1 z-20 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all"
+            class="h-fit z-20"
             :title="toggleText" @click="isOpen = !isOpen"
         >           <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click -->
             <slot name="toggle"></slot>
@@ -43,12 +43,13 @@
             <dialog id="picker-dialog" class="relative flex flex-col items-center z-50 w-180 max-h-140 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
 
                 <!-- Search and Close button -->
-                <div class="flex w-full p-4 gap-4">
+                <div class="flex justify-end w-full p-4 gap-4">
                     <input
                         class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
                         placeholder="Search"
                         v-model.trim="searchStr"
                         type="search"
+                        v-if="!hideSearch"
                     />
 
                     <button
@@ -82,6 +83,10 @@
         toggleText: {
             type: String,
             required: true
+        },
+        hideSearch: {
+            type: Boolean,
+            required: false
         }
     });
 
