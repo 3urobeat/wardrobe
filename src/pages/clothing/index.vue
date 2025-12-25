@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 21:54:42
+ * Last Modified: 2025-12-25 16:51:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -61,6 +61,7 @@
                     </button>
                 </div>
             </NuxtLink>
+
         </div>
 
     </div>
