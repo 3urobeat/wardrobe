@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-24 20:02:41
+ * Last Modified: 2025-12-25 17:35:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -147,7 +147,6 @@
                     <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">
                         <PickerDialog
                             toggleText="Add Item"
-                            ref="pickerDialog"
                         >
                             <!-- This is the element that will be displayed in the open/close button -->
                             <template v-slot:toggle>
@@ -157,10 +156,10 @@
                             </template>
 
                             <!-- Items area -->
-                            <template v-slot:items>
+                            <template v-slot:items="slotProps">
                                 <button
                                     class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
-                                    v-for="thisClothing in getClothesToShowInPopout(thisLabel, pickerDialog.searchStr)"
+                                    v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
                                     :key="thisClothing.id"
                                     @click="addClothing(thisClothing.id)"
                                 >
@@ -179,7 +178,7 @@
                                     </div>
                                 </button>
 
-                                <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, pickerDialog.searchStr).length == 0">No items to show.</label>
+                                <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
                             </template>
                         </PickerDialog>
                     </div>
@@ -211,9 +210,6 @@
     const bodyPartLabels: Ref<Label[]>    = ref([]);
     const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
     const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]); // Edit Mode only
-
-    // Get refs to props exported by defineExpose() in PickerDialog
-    const pickerDialog: Ref<{ isOpen: boolean, searchStr: string }> = ref({ isOpen: false, searchStr: "" });
 
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit

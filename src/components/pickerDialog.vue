@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-24 19:03:08
+ * Last Modified: 2025-12-25 17:34:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -62,7 +62,7 @@
 
                 <!-- Items --> <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
                 <div class="grid grid-cols-3 gap-4 pb-5 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
-                    <slot name="items"></slot>
+                    <slot name="items" :searchStr="searchStr"></slot>
                 </div>
 
             </dialog>
