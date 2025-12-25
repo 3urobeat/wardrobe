@@ -5,18 +5,22 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     compatibilityDate: "2025-09-08",
     css: ["~/pages/main.css"],
+
     vite: {
         plugins: [
             tailwindcss(),
         ],
     },
+
     srcDir: "src/",
     serverDir: "src/server",
+
     dir: {
         public: "src/public",
         modules: "src/modules",
         shared: "src/shared",
     },
+
     hooks: {
         "pages:extend"(pages) {
 
@@ -43,6 +47,7 @@ export default defineNuxtConfig({
 
         }
     },
+
     nitro: {
         // Storage buckets
         storage: {
@@ -52,4 +57,8 @@ export default defineNuxtConfig({
             },
         },
     },
+
+    modules: [
+        "@vueuse/nuxt"
+    ],
 });

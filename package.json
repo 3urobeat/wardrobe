@@ -35,15 +35,19 @@
     "@phosphor-icons/vue": "^2.2.1",
     "@seald-io/nedb": "^4.1.2",
     "@tailwindcss/vite": "^4.1.17",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/integrations": "^14.1.0",
+    "@vueuse/nuxt": "^14.1.0",
     "nuxt": "^4.2.1",
-    "tailwindcss": "^4.1.17"
+    "sortablejs": "^1.15.6",
+    "tailwindcss": "^4.1.17",
+    "vue": "^3.5.26"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@nuxt/devtools": "latest",
     "@types/node": "^24.10.1",
     "@typescript-eslint/parser": "^8.48.1",
-    "@vueuse/core": "^14.1.0",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
     "eslint-plugin-jsdoc": "^61.5.0",
