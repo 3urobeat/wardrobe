@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 21:43:19
+ * Last Modified: 2025-12-26 23:05:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -126,6 +126,10 @@
         useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, onUpdate: moveLabel });
     });
 
+    // Cache labels & categories that should be deleted
+    let labelIDsToDelete:    string[] = [];
+    //let categoryIDsToDelete: string[] = []; // TODO
+
     // Track if user made changes
     const changesMade = ref(false);
 
@@ -158,6 +162,7 @@
 
     // Delete a label
     function deleteLabel(selectedLabel: Label) {
+        labelIDsToDelete.push(selectedLabel.id);
         storedLabels.value = storedLabels.value.filter((e) => e != selectedLabel);
         labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
 
@@ -219,7 +224,9 @@
             },
             body: JSON.stringify({
                 categories: storedCategories.value,
-                labels: storedLabels.value
+                labels: storedLabels.value,
+                labelIDsToDelete: labelIDsToDelete,
+                //categoryIDsToDelete: categoryIDsToDelete // TODO
             })
         });
 
@@ -236,6 +243,9 @@
 
         // Update local refs
         changesMade.value = false;
+        labelIDsToDelete = [];
+        //categoryIDsToDelete = [];
+
 
         // TODO: Use response and update ref?
         console.log(resBody)
