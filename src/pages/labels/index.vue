@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 15:12:34
+ * Last Modified: 2025-12-26 21:43:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -107,8 +107,8 @@
 <script setup lang="ts">
     import { PhCheck, PhPlus, PhTag, PhX } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import { getLabelsOfCategory, getNewLastLabelOrderIndex, type Category, type Label } from "~/model/label";
-    import { useSortable } from "@vueuse/integrations/useSortable";
+    import { getLabelOrderIndexBetween, getLabelsOfCategory, getNewLastLabelOrderIndex, sortLabelsList, type Category, type Label } from "~/model/label";
+    import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
 
 
@@ -116,13 +116,14 @@
     const storedLabels:     Ref<Label[]>    = useState("storedLabels");
     const storedCategories: Ref<Category[]> = useState("storedCategories");
 
-
-    // Prepare drag & and droppable lists. Key/Index is category id
+    // Prepare temporary drag & and droppable lists. Changes in this list must be synced to global storedLabels & storedCategories!
+    // Key/Index is category id
     const labelsPerCategory: Reactive<{ [key: string]: Label[] }> = reactive({}); // Nested data structure must use reactive to update correctly in template when dragged
 
     storedCategories.value.forEach((thisCategory) => {
-        labelsPerCategory[thisCategory.id] = getLabelsOfCategory(storedLabels.value, thisCategory.id);
-        useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150 });
+        labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(storedLabels.value, thisCategory.id));
+
+        useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, onUpdate: moveLabel });
     });
 
     // Track if user made changes
@@ -141,12 +142,15 @@
 
     // Add a new label to a category
     function addLabel(category: Category) {
-        storedLabels.value.push({
+        const newLabel: Label = {
             id: crypto.randomUUID(), // TODO: This should be server sided
             name: "",
             orderIndex: getNewLastLabelOrderIndex(labelsPerCategory[category.id]!),
             categoryID: category.id
-        });
+        };
+
+        storedLabels.value.push(newLabel);
+        labelsPerCategory[category.id]!.push(newLabel);
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
         changesMade.value = true;
@@ -155,9 +159,41 @@
     // Delete a label
     function deleteLabel(selectedLabel: Label) {
         storedLabels.value = storedLabels.value.filter((e) => e != selectedLabel);
+        labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
         changesMade.value = true;
+    }
+
+    // Called when label is moved using useSortable() and synchronizes labelsPerCategory with storedLabels
+    function moveLabel(event: any) { // This is of type Sortable.SortableEvent but there are no TS type definitons - https://vueuse.org/integrations/useSortable/#usesortable
+
+        // Get data from event
+        const categoryID = String(event.from.id).replace("labels-", ""); // Get category id from div id prop
+        const labelIndex = event.newIndex;                               // Index of moved element in labelsPerCategory[categoryID]
+
+        if (!labelsPerCategory[categoryID]) throw("Move event for invalid category: " + categoryID); // Uhh
+
+        // Interject - Move item (would be automatic but we overwrote that by hooking our function: https://vueuse.org/integrations/useSortable/#tips)
+        moveArrayElement(labelsPerCategory[categoryID], event.oldIndex, labelIndex, event);
+
+        // Calculate new orderIndex after moveArrayElement() microtask has finished
+        nextTick(() => {
+            const list = labelsPerCategory[categoryID]!;
+
+            const prev = (labelIndex > 0) ? list[labelIndex - 1] : undefined;               // Preceding element. If label was moved to the front, there is no preceding slot -> undefined.
+            const succ = (labelIndex < list.length - 1) ? list[labelIndex + 1] : undefined; // Succeeding element. If label was moved to the last slot, ...
+
+            const newOrderIndex = getLabelOrderIndexBetween(prev, succ);
+
+            // Apply orderIndex change to both lists
+            labelsPerCategory[categoryID]![labelIndex]!.orderIndex = newOrderIndex;
+            storedLabels.value.find((e) => e.id == list[labelIndex]!.id)!.orderIndex = newOrderIndex;
+
+            //console.log(list[labelIndex].name)
+            //console.log(labelsPerCategory[categoryID].map((e) => e.orderIndex))
+        });
+
     }
 
     // Add a new category
@@ -175,9 +211,7 @@
     // Sends changes to the database
     async function saveChanges() {
 
-        // Send label categories data to API
-
-        // Send labels data to API
+        // Send labels & categories data to API
         const res = await fetch("/api/set-labels", {
             method: "POST",
             headers: {
@@ -198,7 +232,7 @@
             responseIndicatorFailure();
         } */
 
-        const resBody = await res.json();
+        const resBody = await res.json(); // TODO: Write into storedLabels & labelsPerCategory to visualize change
 
         // Update local refs
         changesMade.value = false;
