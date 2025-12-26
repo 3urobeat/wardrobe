@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-25 23:56:22
+ * Last Modified: 2025-12-26 15:02:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -144,6 +144,7 @@
         storedLabels.value.push({
             id: crypto.randomUUID(), // TODO: This should be server sided
             name: "",
+            orderIndex: 0.0, // TODO
             categoryID: category.id
         });
 

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-24 18:38:00
+ * Last Modified: 2025-12-26 15:02:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -223,6 +223,7 @@
             const newLabel: Label = {
                 id: crypto.randomUUID(), // TODO: This should be server sided
                 name: name,
+                orderIndex: 0.0, // TODO
                 categoryID: thisCategory.id
             };
 

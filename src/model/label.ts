@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 17:57:42
+ * Last Modified: 2025-12-26 14:52:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,6 +18,7 @@
 export type Label = {
     id: string,
     name: string,
+    orderIndex: number, // Floating point number
     categoryID: string
 }
 
