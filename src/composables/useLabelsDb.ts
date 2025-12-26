@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-11 20:05:28
+ * Last Modified: 2025-12-26 22:54:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -47,7 +47,6 @@ function upsertLabel(label: Label) {
 
     return labelsDb.updateAsync({ id: label.id }, { $set: label }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
-            //console.log(res)
             return {
                 success: true,
                 message: "",
@@ -90,6 +89,54 @@ export async function upsertLabels(labels: Label[]) {
 
 }
 
+
+/**
+ * Removes label
+ * @param labelID Label ID to remove
+ * @returns
+ */
+function removeLabel(labelID: string) {
+
+    return labelsDb.removeAsync({ id: labelID }, {})
+        .then((res) => {
+            return {
+                success: true,
+                message: ""
+            };
+        })
+        .catch((err) => {
+            return {
+                success: false,
+                message: err
+            };  // TODO: Does this return work?
+        });
+
+}
+
+/**
+ * Removes list of labels
+ * @param labelIDs Labels to remove
+ * @returns
+ */
+export async function removeLabels(labelIDs: string[]) {
+
+    // Call removeLabel for every label and await all resulting promises
+    return Promise.all(labelIDs.map((e) => removeLabel(e)))
+        .then((res) => {
+            return {
+                success: true,
+                message: ""
+            };
+        })
+        .catch((err) => {
+            return {
+                success: false,
+                message: err
+            };  // TODO: Does this return work?
+        });
+
+}
+
 /**
  * Retrieves all labels from the database
  * @returns Returns an array of all matching labels
@@ -97,6 +144,7 @@ export async function upsertLabels(labels: Label[]) {
 export async function getAllLabels(): Promise<Label[]> {
     return await labelsDb.findAsync({});
 }
+
 
 
 /**
@@ -113,7 +161,6 @@ function upsertLabelCategory(category: Category) {
 
     return labelCategoriesDb.updateAsync({ id: category.id }, { $set: category }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
-            //console.log(res)
             return {
                 success: true,
                 message: "",
@@ -140,7 +187,6 @@ export async function upsertLabelCategories(categories: Category[]) {
     // Call upsertLabelCategory for every category and await all resulting promises
     await Promise.all(categories.map((e) => upsertLabelCategory(e)))
         .then((res) => {
-            //console.log(res)
             return {
                 success: true,
                 message: "",
@@ -152,6 +198,55 @@ export async function upsertLabelCategories(categories: Category[]) {
                 success: false,
                 message: err,
                 document: null
+            };  // TODO: Does this return work?
+        });
+
+}
+
+/**
+ * Removes category
+ * @param categoryID Category ID to remove
+ * @returns
+ */
+function removeLabelCategory(categoryID: string) {
+
+    return labelCategoriesDb.removeAsync({ id: categoryID }, {})
+        .then((res) => {
+            return {
+                success: true,
+                message: ""
+            };
+        })
+        .catch((err) => {
+            return {
+                success: false,
+                message: err
+            };  // TODO: Does this return work?
+        });
+
+    // TODO: Delete labels referencing this category
+
+}
+
+/**
+ * Removes list of categories
+ * @param categoryIDs Labels to remove
+ * @returns
+ */
+export async function removeLabelCategories(categoryIDs: string[]) {
+
+    // Call removeLabelCategory for every category and await all resulting promises
+    return Promise.all(categoryIDs.map((e) => removeLabelCategory(e)))
+        .then((res) => {
+            return {
+                success: true,
+                message: ""
+            };
+        })
+        .catch((err) => {
+            return {
+                success: false,
+                message: err
             };  // TODO: Does this return work?
         });
 

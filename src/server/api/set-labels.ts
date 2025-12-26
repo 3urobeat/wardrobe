@@ -4,7 +4,7 @@
  * Created Date: 2025-12-08 17:43:05
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 22:17:32
+ * Last Modified: 2025-12-26 22:55:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,12 +15,12 @@
  */
 
 
-import { upsertLabelCategories, upsertLabels } from "~/composables/useLabelsDb";
+import { removeLabelCategories, removeLabels, upsertLabelCategories, upsertLabels } from "~/composables/useLabelsDb";
 
 
 /**
- * This API route inserts/updates labels and label categories
- * Params: { labels: Label[]?, categories: Category[]? }
+ * This API route inserts/updates/removes labels and label categories
+ * Params: { labels?: Label[], categories?: Category[], labelIDsToDelete?: string[], categoryIDsToDelete?: string[] }
  * Returns:
  */
 
@@ -42,31 +42,37 @@ export default defineEventHandler(async (event) => {
     // Read body of the request we received
     const params = await readBody(event);
 
-    if (!params || (!params.labels && !params.categories)) {
+    if (!params || (!params.labels && !params.categories && !params.labelIDsToDelete && !params.categoryIDsToDelete)) {
         throw createError({
             statusCode: 400,
             statusMessage: "No labels or categories to set!",
         });
     }
 
-    console.log("API set-labels: Received request for: ", params.labels, params.categories);
+    console.log("API set-labels: Received request for: ", params.labels, params.categories, params.labelIDsToDelete, params.categoryIDsToDelete);
 
-    // Ask db helper to upsert entries
+    // Ask db helper to process entries
+    let labelRmRes;
+    if (params.labelIDsToDelete) {
+        labelRmRes = await removeLabels(params.labelIDsToDelete);
+    }
+
+    let categoryRmRes;
+    if (params.categoryIDsToDelete) {
+        categoryRmRes = await removeLabelCategories(params.categoryIDsToDelete);
+    }
+
     let categoriesRes;
-
     if (params.categories) {
         categoriesRes = await upsertLabelCategories(params.categories);
     }
 
-    /* if (!categoriesRes) { // TODO: Abort if setting categories already failed
-        return categoriesRes;
-    } */
-
     let labelsRes;
-
     if (params.labels) {
         labelsRes = await upsertLabels(params.labels);
     }
+
+    // TODO: Process failure, return success/failure info
 
     return labelsRes;
 
