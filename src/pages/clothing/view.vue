@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 15:11:28
+ * Last Modified: 2025-12-26 22:09:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -116,7 +116,7 @@
                         <button
                             class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
                             :class="thisClothing.labelIDs.some((e) => e == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
-                            v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
+                            v-for="thisLabel in sortLabelsList(getLabelsOfCategory(storedLabels, thisCategory.id))"
                             :key="thisLabel.id"
                             @click="toggleLabel(thisLabel)"
                             v-if="editModeEnabled"
@@ -143,7 +143,7 @@
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import FileUpload from "~/components/fileUpload.vue";
     import type { Clothing } from "~/model/clothing";
-    import { getLabelsOfCategory, getNewLastLabelOrderIndex, type Category, type Label } from "~/model/label";
+    import { getLabelsOfCategory, getNewLastLabelOrderIndex, sortLabelsList, type Category, type Label } from "~/model/label";
 
 
     // Get global cache from app.vue
@@ -151,8 +151,8 @@
     const storedCategories: Ref<Category[]> = useState("storedCategories");
 
     // Refs
-    const thisClothing: Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0 });
-    const thisClothingImgBlob: Ref<string> = ref(await getImage(thisClothing.value.imgPath))
+    const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0 });
+    const thisClothingImgBlob: Ref<string>   = ref(await getImage(thisClothing.value.imgPath))
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
     const editModeEnabled = (useRoute().name == "clothing-edit");

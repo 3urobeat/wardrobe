@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-25 17:43:15
+ * Last Modified: 2025-12-26 22:03:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -194,7 +194,7 @@
     import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import PickerDialog from "~/components/pickerDialog.vue";
-    import type { Category, Label } from "~/model/label";
+    import { getLabelsOfCategory, sortLabelsList, type Category, type Label } from "~/model/label";
     import type { Clothing } from "~/model/clothing";
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode } from "~/model/sort-modes";
@@ -223,7 +223,7 @@
 
     // Get all labels on page load
     let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-    bodyPartLabels.value = labelsRes.data.value!.filter((e) => e.categoryID == "015534ff-94b6-4465-b3b2-8a2a3d8fb971"); // TODO: Filter for special label, temp hardcoded id
+    bodyPartLabels.value = sortLabelsList(getLabelsOfCategory(labelsRes.data.value!, "015534ff-94b6-4465-b3b2-8a2a3d8fb971")); // TODO: Filter for special label, temp hardcoded id
 
 
     // Get outfits and their data
