@@ -4,7 +4,7 @@
  * Created Date: 2025-12-08 17:43:05
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:31:00
+ * Last Modified: 2025-12-26 22:17:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -52,13 +52,21 @@ export default defineEventHandler(async (event) => {
     console.log("API set-labels: Received request for: ", params.labels, params.categories);
 
     // Ask db helper to upsert entries
-    const categoriesRes = await upsertLabelCategories(params.categories);
+    let categoriesRes;
+
+    if (params.categories) {
+        categoriesRes = await upsertLabelCategories(params.categories);
+    }
 
     /* if (!categoriesRes) { // TODO: Abort if setting categories already failed
         return categoriesRes;
     } */
 
-    const labelsRes = await upsertLabels(params.labels);
+    let labelsRes;
+
+    if (params.labels) {
+        labelsRes = await upsertLabels(params.labels);
+    }
 
     return labelsRes;
 

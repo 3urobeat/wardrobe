@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 22:09:52
+ * Last Modified: 2025-12-26 22:22:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -228,6 +228,17 @@
                 categoryID: thisCategory.id
             };
 
+            // Send new label to server
+            const res = await fetch("/api/set-labels", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    labels: [ newLabel ]
+                })
+            });
+
             storedLabels.value.push(newLabel);
 
             // Directly select new label
@@ -271,8 +282,6 @@
 
     // Sends changes to the database
     async function saveChanges() {
-
-        // TODO: Do not forget to save storedLabels (if quick add was used)
 
         // Send data to API
         const res = await fetch("/api/set-clothing", {
