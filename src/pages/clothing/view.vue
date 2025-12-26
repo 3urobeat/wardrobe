@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 15:02:29
+ * Last Modified: 2025-12-26 15:11:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -143,7 +143,7 @@
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import FileUpload from "~/components/fileUpload.vue";
     import type { Clothing } from "~/model/clothing";
-    import type { Category, Label } from "~/model/label";
+    import { getLabelsOfCategory, getNewLastLabelOrderIndex, type Category, type Label } from "~/model/label";
 
 
     // Get global cache from app.vue
@@ -219,11 +219,12 @@
     async function quickAddLabel(thisCategory: Category) {
         const name = prompt("Quick Add Label: Enter a name");
 
+        // If prompt was submitted with content
         if (name) {
             const newLabel: Label = {
                 id: crypto.randomUUID(), // TODO: This should be server sided
                 name: name,
-                orderIndex: 0.0, // TODO
+                orderIndex: getNewLastLabelOrderIndex(getLabelsOfCategory(storedLabels.value, thisCategory.id)),
                 categoryID: thisCategory.id
             };
 

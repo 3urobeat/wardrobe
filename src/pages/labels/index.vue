@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 15:02:32
+ * Last Modified: 2025-12-26 15:12:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -107,7 +107,7 @@
 <script setup lang="ts">
     import { PhCheck, PhPlus, PhTag, PhX } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import type { Category, Label } from "~/model/label";
+    import { getLabelsOfCategory, getNewLastLabelOrderIndex, type Category, type Label } from "~/model/label";
     import { useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
 
@@ -121,7 +121,7 @@
     const labelsPerCategory: Reactive<{ [key: string]: Label[] }> = reactive({}); // Nested data structure must use reactive to update correctly in template when dragged
 
     storedCategories.value.forEach((thisCategory) => {
-        labelsPerCategory[thisCategory.id] = storedLabels.value.filter((e: Label) => e.categoryID == thisCategory.id);
+        labelsPerCategory[thisCategory.id] = getLabelsOfCategory(storedLabels.value, thisCategory.id);
         useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150 });
     });
 
@@ -144,7 +144,7 @@
         storedLabels.value.push({
             id: crypto.randomUUID(), // TODO: This should be server sided
             name: "",
-            orderIndex: 0.0, // TODO
+            orderIndex: getNewLastLabelOrderIndex(labelsPerCategory[category.id]!),
             categoryID: category.id
         });
 
