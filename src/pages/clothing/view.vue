@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 21:26:42
+ * Last Modified: 2025-12-27 21:47:55
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -271,8 +271,7 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                type: "clothing", // TODO: Image type is hardcoded
-                name: imgPath
+                filePath: imgPath
             })
         });
 

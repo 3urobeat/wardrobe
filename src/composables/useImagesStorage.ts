@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-06 23:29:18
+ * Last Modified: 2025-12-27 21:51:17
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,21 +23,17 @@ const imagesStorage = useStorage("images");
 
 /**
  * Retrieves an image from storage
- * @param type Type of the image to retrieve (Clothing/Outfit)
- * @param name Name of the image to retrieve
+ * @param filePath File path of the image to retrieve
  * @returns Image buffer
  */
-export async function getImage(type: string, name: string): Promise<Buffer<ArrayBufferLike>|null> {
-    if (!type || !name) throw("Parameters type & name are required");
-
-    // Construct path
-    const path = `${type}/${name}`;
+export async function getImage(filePath: string): Promise<Buffer<ArrayBufferLike>|null> {
+    if (!filePath) throw("filePath parameter is required");
 
     // Get item
-    const item = await imagesStorage.getItemRaw(path);
+    const item = await imagesStorage.getItemRaw(filePath);
 
     if (!item) {
-        console.error(`Server getImage: No image found at '${path}'!`);
+        console.error(`Server getImage: No image found at '${filePath}'!`);
         return null;
     }
 
@@ -47,10 +43,11 @@ export async function getImage(type: string, name: string): Promise<Buffer<Array
 
 /**
  * Saves an image to the image storage
+ * @param type Type of image, used as directory name in storage
  * @param fileBuffer File buffer to save
  * @returns Path of image in storage
  */
-export async function saveImage(fileBuffer: Buffer<ArrayBufferLike>): Promise<string> {
+export async function saveImage(type: string, fileBuffer: Buffer<ArrayBufferLike>): Promise<string> {
     if (!fileBuffer) throw("File parameter is required");
 
     try {
@@ -61,9 +58,10 @@ export async function saveImage(fileBuffer: Buffer<ArrayBufferLike>): Promise<st
 
         // Save file with hash as name
         const fileName = hash.digest("hex");
-        await imagesStorage.setItemRaw(`clothing/${fileName}`, fileBuffer); // TODO: Image type is hardcoded
+        const path = `${type}/${fileName}`;
+        await imagesStorage.setItemRaw(path, fileBuffer); // TODO: Image type is hardcoded
 
-        return fileName;
+        return path;
 
     } catch (err) {
         console.error("Server saveImage: Failed to upload image! " + err);

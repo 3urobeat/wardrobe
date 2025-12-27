@@ -1,10 +1,10 @@
 /*
- * File: upload-img.ts
+ * File: set-clothing-image.ts
  * Project: wardrobe
  * Created Date: 2025-12-06 17:23:26
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-06 22:52:08
+ * Last Modified: 2025-12-27 21:53:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,7 +19,7 @@ import { saveImage } from "~/composables/useImagesStorage";
 
 
 /**
- * This API route accepts an image upload
+ * This API route accepts an image upload for a piece of clothing and returns a file path
  * Params: { type: string, file: MultiPartData }
  * Returns: string
  */
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 
     const file = formData[0];
 
-    console.log("API upload-img: Received request");
+    console.log("API set-clothing-image: Received request");
 
     // Validate file size
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB in bytes
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Save image
-    const fileName = await saveImage(file.data)
+    const filePath = await saveImage("clothing", file.data) // Type "clothing" is hard coded since this route is (currently) exclusively meant for clothes
         .catch(() => {
             throw createError({
                 statusCode: 500,
@@ -75,7 +75,7 @@ export default defineEventHandler(async (event) => {
         });
 
     const res = {
-        fileName: fileName
+        filePath: filePath
     };
 
     return res;

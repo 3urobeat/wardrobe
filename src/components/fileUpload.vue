@@ -5,7 +5,7 @@
  * Created Date: 2025-12-06 19:23:27
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-06 23:06:58
+ * Last Modified: 2025-12-27 21:53:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -56,8 +56,8 @@
 
         try {
 
-            // Attempt to post file to upload-img API endpoint
-            const res = await fetch("/api/upload-img", {
+            // Attempt to post file to API
+            const res = await fetch("/api/set-clothing-image", {
                 method: "POST",
                 body: formData
             });
@@ -70,7 +70,7 @@
             const resBody = await res.json();
 
             // Emit uploadSuccess event for parent to listen for
-            emit("uploadSuccess", resBody.fileName);
+            emit("uploadSuccess", resBody.filePath);
 
         } catch(err) {
             throw("Failed to upload image: " + err);
