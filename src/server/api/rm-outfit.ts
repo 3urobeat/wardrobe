@@ -1,0 +1,48 @@
+/*
+ * File: rm-outfit.ts
+ * Project: wardrobe
+ * Created Date: 2025-12-27 11:53:02
+ * Author: 3urobeat
+ *
+ * Last Modified: 2025-12-27 11:54:45
+ * Modified By: 3urobeat
+ *
+ * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
+import { deleteOutfit } from "~/composables/useOutfitsDb";
+
+
+/**
+ * This API route deletes an outfit
+ * Params: { id: string }
+ * Returns:
+ */
+
+
+// This function is executed when this API route is called
+export default defineEventHandler(async (event) => {
+
+    // Read body of the request we received
+    const params = await readBody(event);
+
+    if (!params || !params.id) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "ID parameter is required",
+        });
+    }
+
+    console.log("API rm-outfit: Received request for: ", params.id);
+
+    // Ask db helper to upsert entry
+    const res = await deleteOutfit(params.id);
+
+    return res;
+
+});

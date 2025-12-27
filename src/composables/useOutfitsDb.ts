@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 19:02:18
+ * Last Modified: 2025-12-27 11:54:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -58,6 +58,29 @@ export async function upsertOutfit(outfit: Outfit) {
                 success: false,
                 message: err,
                 document: null
+            };  // TODO: Does this return work?
+        });
+
+}
+
+/**
+ * Deletes an outfit
+ * @param outfitID ID of the outfit to remove
+ * @returns
+ */
+export async function deleteOutfit(outfitID: string) {
+
+    return outfitsDb.removeAsync({ id: outfitID }, { })
+        .then((res) => {
+            return {
+                success: true,
+                message: ""
+            };
+        })
+        .catch((err) => {
+            return {
+                success: false,
+                message: err
             };  // TODO: Does this return work?
         });
 
