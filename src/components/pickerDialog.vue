@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 19:20:42
+ * Last Modified: 2025-12-27 19:36:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -40,10 +40,10 @@
             <p class="self-center text-2xl -mb-1.5 text-bg-field-light dark:text-bg-field-dark">&#x25B2;</p>
 
             <!-- Content -->
-            <dialog id="picker-dialog" class="relative flex flex-col items-center z-50 w-180 max-h-140 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
+            <dialog id="picker-dialog" class="relative flex flex-col z-50 w-180 max-h-140 p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
 
                 <!-- Search and Close button -->
-                <div class="flex justify-end w-full p-4 gap-4">
+                <div class="flex justify-end w-full gap-x-4">
                     <input
                         class="w-full custom-input-primary"
                         placeholder="Search"
@@ -57,8 +57,8 @@
                     </button>
                 </div>
 
-                <!-- Items --> <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
-                <div class="grid grid-cols-3 gap-4 pb-5 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                <!-- Items -->
+                <div>
                     <slot name="items" :searchStr="searchStr"></slot>
                 </div>
 

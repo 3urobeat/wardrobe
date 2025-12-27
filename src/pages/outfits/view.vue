@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 19:20:39
+ * Last Modified: 2025-12-27 19:38:03
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -74,34 +74,32 @@
                     </template>
 
                     <template v-slot:items>
-                        <div class="flex flex-col">
-                            <!-- Separate labels by category -->
-                            <div class="flex m-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
-                                <div class="custom-label-primary py-0! px-2!">
-                                    {{ thisCategory.name }}:
-                                </div>
-
-                                <!-- List all labels for this category -->
-                                <p
-                                    class="custom-wardrobe-label"
-                                    v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id) && e.categoryID == thisCategory.id)"
-                                    :key="thisLabel.id"
-                                    v-if="!editModeEnabled"
-                                >
-                                    {{ thisLabel.name }}
-                                </p>
-
-                                <button
-                                    class="custom-wardrobe-label-clickable"
-                                    :class="thisOutfit.labelIDs.some((e) => e == thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
-                                    v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
-                                    :key="thisLabel.id"
-                                    @click="toggleLabel(thisLabel)"
-                                    v-if="editModeEnabled"
-                                >
-                                    {{ thisLabel.name }}
-                                </button>
+                        <!-- Separate labels by category -->
+                        <div class="flex my-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                            <div class="custom-label-primary py-0! px-2!">
+                                {{ thisCategory.name }}:
                             </div>
+
+                            <!-- List all labels for this category -->
+                            <p
+                                class="custom-wardrobe-label"
+                                v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id) && e.categoryID == thisCategory.id)"
+                                :key="thisLabel.id"
+                                v-if="!editModeEnabled"
+                            >
+                                {{ thisLabel.name }}
+                            </p>
+
+                            <button
+                                class="custom-wardrobe-label-clickable"
+                                :class="thisOutfit.labelIDs.some((e) => e == thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
+                                v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
+                                :key="thisLabel.id"
+                                @click="toggleLabel(thisLabel)"
+                                v-if="editModeEnabled"
+                            >
+                                {{ thisLabel.name }}
+                            </button>
                         </div>
                     </template>
                 </PickerDialog>
@@ -147,7 +145,7 @@
                     </div>
 
                     <!-- Add clothing to label button when in edit mode -->
-                    <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">
+                    <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">  <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
                         <PickerDialog
                             toggleText="Add Item"
                         >
@@ -160,28 +158,30 @@
 
                             <!-- Items area -->
                             <template v-slot:items="slotProps">
-                                <button
-                                    class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
-                                    v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
-                                    :key="thisClothing.id"
-                                    @click="addClothing(thisClothing.id)"
-                                >
-                                    <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
-                                    <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
+                                <div class="grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                    <button
+                                        class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
+                                        v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
+                                        :key="thisClothing.id"
+                                        @click="addClothing(thisClothing.id)"
+                                    >
+                                        <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
+                                        <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
 
-                                    <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
-                                    <div class="flex mt-1 ml-1">
-                                        <div
-                                            class="custom-wardrobe-label"
-                                            v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
-                                            :key="thisLabel.name"
-                                        >
-                                            {{ thisLabel.name }}
+                                        <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
+                                        <div class="flex mt-1 ml-1">
+                                            <div
+                                                class="custom-wardrobe-label"
+                                                v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
+                                                :key="thisLabel.name"
+                                            >
+                                                {{ thisLabel.name }}
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
+                                    </button>
 
-                                <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
+                                    <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
+                                </div>
                             </template>
                         </PickerDialog>
                     </div>
