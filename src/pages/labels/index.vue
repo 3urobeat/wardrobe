@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 18:23:44
+ * Last Modified: 2025-12-27 20:05:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,7 +19,7 @@
 
 <template>
     <TitleBarBasic>
-        <button class="flex items-center justify-center" @click="saveChanges">
+        <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
         </button>

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 18:23:26
+ * Last Modified: 2025-12-27 20:02:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -27,9 +27,9 @@
         </div>
 
         <div class="flex gap-4 w-full justify-end">
-            <div class="custom-button-primary">
-                <slot></slot>
-            </div>
+            <slot name="secondary"></slot>
+
+            <slot></slot>
         </div>
     </div>
 

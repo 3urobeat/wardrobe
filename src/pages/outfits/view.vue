@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 19:38:03
+ * Last Modified: 2025-12-27 20:04:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -27,7 +27,7 @@
 
     <!-- Title Bar for view -->
     <TitleBarBasic backRedirectTo="/outfits" v-if="!editModeEnabled">
-        <NuxtLink :to="'/outfits/edit?id=' + (thisOutfit ? thisOutfit.id : 'new')" class="flex items-center justify-center">
+        <NuxtLink :to="'/outfits/edit?id=' + (thisOutfit ? thisOutfit.id : 'new')" class="custom-button-primary">
             <PhPencil class="mr-2 size-5"></PhPencil>
             Edit
         </NuxtLink>
@@ -35,7 +35,7 @@
 
     <!-- Title bar for edit -->
     <TitleBarBasic :backRedirectTo="outfitId == 'new' ? '/outfits' : '/outfits/view?id=' + (thisOutfit ? thisOutfit.id : 'new')" v-if="editModeEnabled">
-        <button class="flex items-center justify-center" @click="saveChanges">
+        <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
         </button>
