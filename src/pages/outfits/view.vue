@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 20:19:45
+ * Last Modified: 2025-12-27 21:25:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -50,7 +50,7 @@
 
 
     <!-- Page content -->
-    <div class="py-20">
+    <div class="py-20" @change="changesMade = true">
         <div class="flex mb-4 md:mb-8 justify-between">
             <!-- Outfit title -->
             <div class="w-1/3 ml-0.5">
@@ -123,7 +123,7 @@
             </div>
         </div>
 
-        <div class="flex gap-4 md:gap-8 select-none" @change="changesMade = true">
+        <div class="flex gap-4 md:gap-8 select-none">
             <!-- Preview container --> <!-- TODO: Highlight item here when hovering it in the label container? -->
             <div class="w-1/3 rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
             </div>
@@ -315,12 +315,16 @@
             order: 0,       // TODO: Order
             clothingID: id
         });
+
+        changesMade.value = true;
     }
 
 
     // Remove clothing from a label of this outfit
     function removeClothing(id: string) {
         thisOutfit.value.clothes = thisOutfit.value.clothes.filter((e) => e.clothingID != id);
+
+        changesMade.value = true;
     }
 
 
@@ -341,8 +345,6 @@
 
     // Adds/Removes a label
     async function toggleLabel(selectedLabel: Label) {
-        console.log("DEBUG: Toggling label " + selectedLabel.id);
-
         // Get all selected labels without this one
         const filtered = thisOutfit.value.labelIDs.filter((e: string) => e != selectedLabel.id);
 
@@ -354,6 +356,8 @@
             // ...otherwise we can simply add it
             thisOutfit.value.labelIDs.push(selectedLabel.id);
         }
+
+        changesMade.value = true;
     }
 
 
