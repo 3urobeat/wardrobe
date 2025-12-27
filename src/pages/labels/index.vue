@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 23:05:05
+ * Last Modified: 2025-12-27 12:03:36
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -217,7 +217,24 @@
     async function saveChanges() {
 
         // Send labels & categories data to API
-        const res = await fetch("/api/set-labels", {
+        let rmResBody;
+
+        if (labelIDsToDelete.length > 0) { // || categoryIDsToDelete.length > 0)
+            const rmRes = await fetch("/api/rm-labels", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    //categoryIDs: categoryIDsToDelete, // TODO
+                    labelIDs: labelIDsToDelete
+                })
+            });
+
+            rmResBody = await rmRes.json();
+        }
+
+        const setRes = await fetch("/api/set-labels", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -239,16 +256,18 @@
             responseIndicatorFailure();
         } */
 
-        const resBody = await res.json(); // TODO: Write into storedLabels & labelsPerCategory to visualize change
 
-        // Update local refs
+        const setResBody = await setRes.json(); // TODO: Write into storedLabels & labelsPerCategory to visualize change
+
+        // Update local refs // TODO: Only on success
         changesMade.value = false;
         labelIDsToDelete = [];
         //categoryIDsToDelete = [];
 
 
         // TODO: Use response and update ref?
-        console.log(resBody)
+        console.log(rmResBody)
+        console.log(setResBody)
 
     }
 

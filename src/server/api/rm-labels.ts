@@ -1,10 +1,10 @@
 /*
- * File: set-labels.ts
+ * File: rm-labels.ts
  * Project: wardrobe
- * Created Date: 2025-12-08 17:43:05
+ * Created Date: 2025-12-27 11:55:39
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 12:05:01
+ * Last Modified: 2025-12-27 12:06:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,25 +15,14 @@
  */
 
 
-import { upsertLabelCategories, upsertLabels } from "~/composables/useLabelsDb";
+import { removeLabelCategories, removeLabels } from "~/composables/useLabelsDb";
 
 
 /**
- * This API route inserts/updates labels and label categories
- * Params: { labels?: Label[], categories?: Category[] }
+ * This API route deletes labels and label categories
+ * Params: { labelIDs?: string[], categoryIDs?: string[] }
  * Returns:
  */
-
-/* {
-    id: "0",
-    name: "Winter",
-    categoryID: "0"
-},
-{
-    id: "4",
-    name: "Blue",
-    categoryID: "4"
-} */
 
 
 // This function is executed when this API route is called
@@ -42,28 +31,28 @@ export default defineEventHandler(async (event) => {
     // Read body of the request we received
     const params = await readBody(event);
 
-    if (!params || (!params.labels && !params.categories)) {
+    if (!params || (!params.labelIDs && !params.categoryIDs)) {
         throw createError({
             statusCode: 400,
-            statusMessage: "No labels or categories to set!",
+            statusMessage: "No labelIDs or categoryIDs to remove!",
         });
     }
 
-    //console.log("API set-labels: Received request for: ", params.labels, params.categories);
+    console.log("API rm-labels: Received request for: ", params.labelIDs, params.categoryIDs);
 
     // Ask db helper to process entries
-    let categoriesRes;
-    if (params.categories) {
-        categoriesRes = await upsertLabelCategories(params.categories);
+    let labelRmRes;
+    if (params.labelIDs) {
+        labelRmRes = await removeLabels(params.labelIDs);
     }
 
-    let labelsRes;
-    if (params.labels) {
-        labelsRes = await upsertLabels(params.labels);
+    let categoryRmRes;
+    if (params.categoryIDs) {
+        categoryRmRes = await removeLabelCategories(params.categoryIDs);
     }
 
     // TODO: Process failure, return success/failure info
 
-    return labelsRes;
+    return labelRmRes;
 
 });
