@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 20:09:38
+ * Last Modified: 2025-12-27 20:19:45
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -59,14 +59,24 @@
             </div>
 
             <!-- Label selector bar with expanding popup -->
-            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none p-1 gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
+            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none p-1 gap-1.5 bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
                 <!-- Selected labels list -->
-                <button
+                <p
                     class="custom-wardrobe-label"
+                    v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id))"
+                    :key="thisLabel.id"
+                    v-if="!editModeEnabled"
+                >
+                    {{ thisLabel.name }}
+                </p>
+
+                <button
+                    class="custom-wardrobe-label-clickable"
                     :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                     v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
                     :key="thisLabel.id"
                     @click="toggleLabel(thisLabel)"
+                    v-if="editModeEnabled"
                 >
                     {{ thisLabel.name }}
                 </button>
