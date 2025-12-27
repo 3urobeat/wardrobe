@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 20:04:33
+ * Last Modified: 2025-12-27 20:09:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -35,6 +35,13 @@
 
     <!-- Title bar for edit -->
     <TitleBarBasic :backRedirectTo="outfitId == 'new' ? '/outfits' : '/outfits/view?id=' + (thisOutfit ? thisOutfit.id : 'new')" v-if="editModeEnabled">
+        <template v-slot:secondary>
+            <button class="custom-button-primary" @click="deleteOutfit">
+                <PhTrash class="mr-2 size-5 text-red-600"></PhTrash>
+                Delete
+            </button>
+        </template>
+
         <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
@@ -194,7 +201,7 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown } from "@phosphor-icons/vue";
+    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown, PhTrash } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import PickerDialog from "~/components/pickerDialog.vue";
     import { getLabelsOfCategory, sortLabelsList, type Category, type Label } from "~/model/label";
@@ -337,6 +344,40 @@
             // ...otherwise we can simply add it
             thisOutfit.value.labelIDs.push(selectedLabel.id);
         }
+    }
+
+
+    // Sends delete request to the database
+    async function deleteOutfit() {
+
+        const confirmed = confirm(`Are you sure you want to delete '${thisOutfit.value.title}'?\nThis action cannot be undone!`);
+
+        // Send request to API if user confirmed
+        if (confirmed) {
+            const res = await fetch("/api/rm-outfit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: thisOutfit.value.id
+                })
+            });
+
+            // Indicate success/failure
+            /* if (success.data.value) {
+                responseIndicatorSuccess();
+
+                changesMade.value = false;
+            } else {
+                responseIndicatorFailure();
+                return;
+            } */
+
+            // Redirect back to outfits page on success
+            useRouter().push("/outfits");
+        }
+
     }
 
 

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 20:04:26
+ * Last Modified: 2025-12-27 20:09:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -35,6 +35,13 @@
 
     <!-- Title bar for edit -->
     <TitleBarBasic :backRedirectTo="clothingId == 'new' ? '/clothing' : '/clothing/view?id=' + clothingId" v-if="editModeEnabled">
+        <template v-slot:secondary>
+            <button class="custom-button-primary" @click="deleteClothing">
+                <PhTrash class="mr-2 size-5 text-red-600"></PhTrash>
+                Delete
+            </button>
+        </template>
+
         <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
             Save
@@ -141,7 +148,7 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPencil, PhPlus, PhUploadSimple } from "@phosphor-icons/vue";
+    import { PhCheck, PhPencil, PhPlus, PhTrash, PhUploadSimple } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import FileUpload from "~/components/fileUpload.vue";
     import type { Clothing } from "~/model/clothing";
@@ -279,6 +286,40 @@
         console.log("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
 
         thisClothingImgBlob.value = await getImage(fileName);
+    }
+
+
+    // Sends delete request to the database
+    async function deleteClothing() {
+
+        const confirmed = confirm(`Are you sure you want to delete '${thisClothing.value.title}'?\nThis action cannot be undone!`);
+
+        // Send request to API if user confirmed
+        if (confirmed) {
+            const res = await fetch("/api/rm-clothing", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: thisClothing.value.id
+                })
+            });
+
+            // Indicate success/failure
+            /* if (success.data.value) {
+                responseIndicatorSuccess();
+
+                changesMade.value = false;
+            } else {
+                responseIndicatorFailure();
+                return;
+            } */
+
+            // Redirect back to Browse page on success
+            useRouter().push("/");
+        }
+
     }
 
 
