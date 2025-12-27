@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-25 17:34:43
+ * Last Modified: 2025-12-27 19:20:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -45,17 +45,14 @@
                 <!-- Search and Close button -->
                 <div class="flex justify-end w-full p-4 gap-4">
                     <input
-                        class="w-full self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
+                        class="w-full custom-input-primary"
                         placeholder="Search"
                         v-model.trim="searchStr"
                         type="search"
                         v-if="!hideSearch"
                     />
 
-                    <button
-                        class="w-fit self-center py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all"
-                        @click="isOpen = !isOpen"
-                    >
+                    <button class="custom-input-primary" @click="isOpen = !isOpen">
                         Close
                     </button>
                 </div>

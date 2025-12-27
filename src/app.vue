@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 21:58:52
+ * Last Modified: 2025-12-27 18:23:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -52,8 +52,8 @@
                     />
                 </div>
 
-                <!-- Light/Dark Mode toggle -->
-                <button class="p-0.5 rounded-md shadow-md font-semibold bg-bg-input-light dark:bg-bg-input-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="toggleDarkMode()">
+                <!-- Light/Dark Mode toggle. "p-0.5!" overwrites custom-button-icon-only's p-1 to make button smaller -->
+                <button class="custom-button-icon-only p-0.5!" @click="toggleDarkMode()">
                     <!-- This must tailwind tags instead of nuxt refs in order to work on page load (see global.js) -->
                     <PhMoon class="hidden dark:block size-7 p-0.5 transition-opacity"></PhMoon>
                     <PhSun class="block dark:hidden size-7 p-0.5 transition-opacity"></PhSun>

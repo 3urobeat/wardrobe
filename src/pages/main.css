@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-17 21:35:02
+ * Last Modified: 2025-12-27 19:17:11
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -17,8 +17,8 @@
 
 @import "tailwindcss";
 
-/* @config "../../tailwind.config.js"; */
 
+/* Colors */
 @theme {
     --color-bg-light: #f8f9fa;
     --color-bg-dark: #181a1b;
@@ -40,13 +40,18 @@
     --color-text-light: #000000;
     --color-text-dark: #e8e6e3;
 
-    --color-border-primary-light: #585c63;
+    --color-border-primary-light: #585c63; /* TODO: Where is this used? custom-input-primary uses secondary border but custom-input-secondary uses this primary one, bit weird */
     --color-border-primary-dark: #565d5f;
 
     --color-border-secondary-light: #9198a3;
     --color-border-secondary-dark: #697274;
 }
 
+/* Color combinations */
+/* TODO: Pre-made combinations of "x-light dark:x-dark" would clean up so much */
+
+
+/* Dark Mode */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
@@ -54,4 +59,47 @@
     [role="button"]:not(:disabled) {
         cursor: pointer;
     }
+}
+
+
+/* Reusable Custom Components */
+
+/* Primary button, used in various places on <button> container. Put Icon and Text inside. */
+.custom-button-primary {
+    @apply flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md cursor-pointer bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all;
+}
+
+/* Small square button without text, used on <button> container. Put Icon inside. */
+.custom-button-icon-only {
+    @apply p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all;
+}
+
+/* Primary input, used in various places on <input> or even secondary <button> container */
+.custom-input-primary {
+    @apply h-8 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-2 outline-border-secondary-light dark:outline-border-secondary-dark hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all;
+}
+
+/* Duplicates custom-input-primary with different outline, sadly cannot reference component in this component */
+.custom-input-secondary {
+    @apply h-8 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-2 outline-border-primary-light dark:outline-border-primary-dark hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all;
+}
+
+/* Primary label to display text */
+.custom-label-primary {
+    @apply py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark;
+}
+
+/* Application specific labels feature, not HTML labels */
+.custom-wardrobe-label {
+    @apply text-nowrap rounded-xl shadow-md px-2 text-gray-100 bg-gray-400 dark:bg-gray-600;
+}
+
+/* Duplicates custom-wardrobe-label with hovering enabled, sadly cannot reference component in this component */
+.custom-wardrobe-label-clickable {
+    @apply text-nowrap rounded-xl shadow-md px-2 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all;
+}
+
+/* Add with conditional class to mark wardrobe label as selected */
+.custom-wardrobe-label-selected-outline {
+    @apply bg-green-600/60 outline-green-700 dark:outline-green-500 outline-2;
 }

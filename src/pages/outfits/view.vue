@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 22:03:52
+ * Last Modified: 2025-12-27 19:20:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -44,18 +44,19 @@
 
     <!-- Page content -->
     <div class="py-20">
-        <div class="flex justify-between">
-            <div class="w-1/3 ml-0.5 mb-4 md:mb-8 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
-                <p     v-if="!editModeEnabled" class="w-full py-1 px-3 select-none">{{ thisOutfit.title }}</p>
-                <input v-if="editModeEnabled"  class="w-full py-1 px-3 rounded-md outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark transition-all" placeholder="Name" v-model.trim="thisOutfit.title" />
+        <div class="flex mb-4 md:mb-8 justify-between">
+            <!-- Outfit title -->
+            <div class="w-1/3 ml-0.5">
+                <p     v-if="!editModeEnabled" class="custom-label-primary w-full">{{ thisOutfit.title }}</p>
+                <input v-if="editModeEnabled"  class="custom-input-secondary w-full" placeholder="Name" v-model.trim="thisOutfit.title" />
             </div>
 
             <!-- Label selector bar with expanding popup -->
-            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all h-8 w-full lg:w-1/2">
+            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none p-1 gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
                 <!-- Selected labels list -->
                 <button
-                    class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                    class="custom-wardrobe-label"
+                    :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                     v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
                     :key="thisLabel.id"
                     @click="toggleLabel(thisLabel)"
@@ -75,12 +76,14 @@
                     <template v-slot:items>
                         <div class="flex flex-col">
                             <!-- Separate labels by category -->
-                            <div class="flex text-nowrap px-2 m-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
-                                <label class="text-md text-text-light dark:text-text-dark">{{ thisCategory.name }}: </label>
+                            <div class="flex m-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                                <div class="custom-label-primary py-0! px-2!">
+                                    {{ thisCategory.name }}:
+                                </div>
 
                                 <!-- List all labels for this category -->
                                 <p
-                                    class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600"
+                                    class="custom-wardrobe-label"
                                     v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id) && e.categoryID == thisCategory.id)"
                                     :key="thisLabel.id"
                                     v-if="!editModeEnabled"
@@ -89,8 +92,8 @@
                                 </p>
 
                                 <button
-                                    class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                                    :class="thisOutfit.labelIDs.some((e) => e == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                                    class="custom-wardrobe-label-clickable"
+                                    :class="thisOutfit.labelIDs.some((e) => e == thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                                     v-for="thisLabel in storedLabels.filter((e: Label) => e.categoryID == thisCategory.id)"
                                     :key="thisLabel.id"
                                     @click="toggleLabel(thisLabel)"
@@ -115,7 +118,7 @@
                 <div class="flex w-full h-65 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all" v-for="thisLabel in bodyPartLabels" :key="thisLabel.id">
                     <div>
                         <!-- Title -->
-                        <div class="w-fit px-2 m-2 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                        <div class="custom-label-primary w-fit py-0! px-2! m-2">
                             {{ thisLabel.name }}
                         </div>
 
@@ -129,7 +132,7 @@
                                 <!-- Label title bar when in edit mode, let it clip over the image -->
                                 <div class="flex w-full mt-2 -mb-2 justify-end" v-if="editModeEnabled">
                                     <button
-                                        class="absolute p-1 z-20 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
+                                        class="absolute z-20 custom-button-icon-only"
                                         @click="removeClothing(thisClothing.id)"
                                         title="Remove Item"
                                     >               <!-- Give this button a higher z-level than the close-popover-dummy to be able to delete clothes while the picker stays open -->
@@ -150,7 +153,7 @@
                         >
                             <!-- This is the element that will be displayed in the open/close button -->
                             <template v-slot:toggle>
-                                <div class="p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all">
+                                <div class="custom-button-icon-only">
                                     <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                                 </div>
                             </template>
@@ -169,7 +172,7 @@
                                     <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
                                     <div class="flex mt-1 ml-1">
                                         <div
-                                            class="w-fit rounded-xl shadow-md px-2 m-0.5 text-sm text-gray-100 bg-gray-400 dark:bg-gray-600"
+                                            class="custom-wardrobe-label"
                                             v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
                                             :key="thisLabel.name"
                                         >

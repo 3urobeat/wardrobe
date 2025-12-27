@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 12:03:36
+ * Last Modified: 2025-12-27 18:23:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -33,14 +33,12 @@
             :key="thisCategory.id"
         >
             <div>
-                <!-- Title -->
-                <div class="w-fit px-1 m-2 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark">
-                    <input
-                        class="w-fit py-0.5 px-3 rounded-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
-                        placeholder="Category Name"
-                        v-model.trim="thisCategory.name"
-                    />
-                </div>
+                <!-- Category Title/Name -->
+                <input
+                    class="custom-input-primary py-0.5! h-fit! m-2"
+                    placeholder="Category Name"
+                    v-model.trim="thisCategory.name"
+                />
 
                 <!-- Labels of this category -->
                 <div
@@ -59,7 +57,7 @@
                             </div>
 
                             <div class="flex w-full justify-end">
-                                <button class="flex p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="deleteLabel(thisLabel)" title="Delete Label">
+                                <button class="custom-button-icon-only" @click="deleteLabel(thisLabel)" title="Delete Label">
                                     <PhX class="size-5 text-red-500"></PhX>
                                 </button>
                             </div>
@@ -67,7 +65,7 @@
 
                         <!-- Label content -->
                         <input
-                            class="w-full self-center sm:self-start my-2 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 transition-all"
+                            class="custom-input-primary w-full my-2"
                             placeholder="Name"
                             v-model.trim="thisLabel.name"
                         />
@@ -90,14 +88,14 @@
 
             <!-- Add label button -->
             <div class="flex m-2 items-center"> <!-- TODO: Auto scroll label container to the end? -->
-                <button class="h-fit p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addLabel(thisCategory)" title="Add Label">
+                <button class="custom-button-icon-only" @click="addLabel(thisCategory)" title="Add Label">
                     <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                 </button>
             </div>
         </div>
 
-        <!-- Add label category button -->
-        <button class="items-center justify-center p-2 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark transition-all" @click="addCategory()" title="Add Category">
+        <!-- Add label category button. "p-2!" overwrites custom-button-icon-only's p-1 to make button bigger -->
+        <button class="custom-button-icon-only p-2!" @click="addCategory()" title="Add Category">
             <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
         </button>
     </div>

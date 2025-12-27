@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-25 16:51:33
+ * Last Modified: 2025-12-27 19:01:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -34,7 +34,7 @@
         <!-- Responsive grid for clothing - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
         <div class="grid grid-cols-[repeat(auto-fill,_minmax(365px,_1fr))] gap-x-6 gap-y-10">
 
-            <!-- Clothing -->
+            <!-- Clothing Cards -->
             <NuxtLink
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
                 v-for="thisClothing in (getItemsToShow(storedClothing, titleBarFull.selectedSort, titleBarFull.selectedFilters) as Clothing[])"
@@ -48,11 +48,11 @@
                 >
                 <label class="self-start font-semibold mb-1">{{ thisClothing.title }}</label>
 
-                <!-- Filter Labels -->
+                <!-- Labels -->
                 <div class="mt-4">
                     <button
-                        class="w-fit rounded-xl shadow-md px-2 m-0.5 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                        :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                        class="custom-wardrobe-label-clickable m-0.5"
+                        :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                         v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
                         :key="thisLabel.id"
                         @click.prevent="titleBarFull.toggleFilter(thisLabel.id)"

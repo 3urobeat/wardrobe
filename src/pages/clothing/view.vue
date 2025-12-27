@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 22:22:06
+ * Last Modified: 2025-12-27 19:14:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -45,7 +45,7 @@
     <!-- Page content -->
     <div class="flex justify-center items-center py-20" @change="changesMade = true">
         <!-- TODO: Pop-In Animation -->
-        <div class="flex flex-col w-full md:w-xl h-200 px-8 pb-8 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all">
+        <div class="flex flex-col w-full md:w-xl h-200 px-8 pb-8 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"> <!-- TODO: Why does this use input when it is a field/embed? Sounds like inconsistent styling -->
 
             <!-- Image (Upload) -->
             <div
@@ -67,16 +67,16 @@
                 <FileUpload v-if="editModeEnabled" class="absolute w-full h-full" ref="fileUpload" @uploadSuccess="updateImage"></FileUpload>
             </div>
 
-            <div class="flex flex-col w-full h-2/3">
+            <div class="flex flex-col w-full gap-4 h-2/3">
                 <!-- Name label/input -->
                 <p
-                    class="w-full sm:w-1/2 self-center sm:self-start my-2 py-1 px-3 rounded-md shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark"
+                    class="custom-label-primary w-full sm:w-1/2 self-center sm:self-start"
                     v-if="!editModeEnabled"
                 >
                     {{ thisClothing.title }}
                 </p>
                 <input
-                    class="w-full sm:w-1/2 self-center sm:self-start my-2 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 transition-all"
+                    class="custom-input-secondary w-full sm:w-1/2 self-center sm:self-start"
                     placeholder="Name"
                     v-model.trim="thisClothing.title"
                     v-if="editModeEnabled"
@@ -84,28 +84,30 @@
 
                 <!-- Description label/input -->
                 <p
-                    class="w-full h-20 shrink-0 self-center my-2 py-2 px-3 rounded-md shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark"
+                    class="custom-label-primary w-full h-20! shrink-0 py-2!"
                     v-if="!editModeEnabled"
                 >
                     {{ thisClothing.description }}
                 </p>
                 <textarea
-                    class="w-full h-20 shrink-0 self-center my-2 py-2 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark hover:bg-bg-field-hover-light dark:hover:bg-bg-field-hover-dark outline-border-primary-light dark:outline-border-primary-dark outline-2"
+                    class="custom-input-secondary w-full h-20! shrink-0 py-2!"
                     placeholder="Description"
                     v-model.trim="thisClothing.description"
                     v-if="editModeEnabled"
                 />
 
                 <!-- Label selector area -->
-                <div class="w-full h-full overflow-scroll self-center my-4 rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
+                <div class="w-full h-full overflow-scroll self-center rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
 
                     <!-- Separate labels by category -->
-                    <div class="flex px-2 m-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
-                        <label class="text-md text-text-light dark:text-text-dark">{{ thisCategory.name }}: </label>
+                    <div class="flex m-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                        <div class="custom-label-primary text-md w-fit py-0! px-2!">
+                            {{ thisCategory.name }}:
+                        </div>
 
                         <!-- List all labels for this category -->
                         <p
-                            class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600"
+                            class="custom-wardrobe-label"
                             v-for="thisLabel in storedLabels.filter((e: Label) => thisClothing.labelIDs.includes(e.id) && e.categoryID == thisCategory.id)"
                             :key="thisLabel.id"
                             v-if="!editModeEnabled"
@@ -114,8 +116,8 @@
                         </p>
 
                         <button
-                            class="w-fit rounded-xl px-2 mx-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                            :class="thisClothing.labelIDs.some((e) => e == thisLabel.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                            class="custom-wardrobe-label-clickable"
+                            :class="thisClothing.labelIDs.some((e) => e == thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                             v-for="thisLabel in sortLabelsList(getLabelsOfCategory(storedLabels, thisCategory.id))"
                             :key="thisLabel.id"
                             @click="toggleLabel(thisLabel)"
@@ -125,7 +127,7 @@
                         </button>
 
                         <!-- Label Quick Add Button -->
-                        <button class="" @click="quickAddLabel(thisCategory)" v-if="editModeEnabled">
+                        <button @click="quickAddLabel(thisCategory)" v-if="editModeEnabled">
                             <PhPlus class="fill-text-light dark:fill-text-dark"></PhPlus>
                         </button>
                     </div>

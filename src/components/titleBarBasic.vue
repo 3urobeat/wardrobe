@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 18:02:31
+ * Last Modified: 2025-12-27 18:23:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -21,13 +21,13 @@
 
     <div id="title" class="absolute right-0 flex w-full pt-4 px-1 md:px-5 select-none">
         <div class="flex justify-start" v-if="backRedirectTo">
-            <NuxtLink :to="backRedirectTo" class="flex items-center justify-center h-8 py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+            <NuxtLink :to="backRedirectTo" class="custom-button-primary">
                 <PhCaretLeft class="size-5 text-text-light dark:text-text-dark"></PhCaretLeft>
             </NuxtLink>
         </div>
 
-        <div class="flex w-full justify-end">
-            <div class="h-8 py-1 px-3 rounded-md shadow-md cursor-pointer bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+        <div class="flex gap-4 w-full justify-end">
+            <div class="custom-button-primary">
                 <slot></slot>
             </div>
         </div>

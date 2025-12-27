@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 17:40:07
+ * Last Modified: 2025-12-27 18:57:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -35,10 +35,13 @@
             </div>
 
             <!-- Filters selection for Desktop --> <!-- TODO: Does not want to scroll -->
-            <div class="flex justify-end rounded-xl overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all" :class="selectedFilters.length > 0 ? 'h-0 md:h-fit w-0 md:w-full lg:w-1/3' : 'w-0 invisible'">
+            <div
+                class="justify-end rounded-xl overflow-x-scroll shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                :class="selectedFilters.length > 0 ? 'hidden md:flex w-0 md:w-full lg:w-1/3 p-1' : 'w-0 p-0'"
+            >
                 <button
-                    class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="selectedFilters.includes(thisFilter.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                    class="custom-wardrobe-label-clickable"
+                    :class="selectedFilters.includes(thisFilter.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                     v-for="thisFilter in storedLabels.filter((e) => selectedFilters.includes(e.id))"
                     :key="thisFilter.id"
                     @click="toggleFilter(thisFilter.id)"
@@ -48,7 +51,7 @@
             </div>
 
             <!-- Add button -->
-            <NuxtLink :to="buttonRedirectTo" class="flex items-center justify-center py-1 px-3 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+            <NuxtLink :to="buttonRedirectTo" class="custom-button-primary">
                 <slot></slot>
             </NuxtLink>
 
@@ -61,10 +64,13 @@
         <!-- TODO: Having to duplicate the entire filter selection sucks -->
         <div id="title-mobile-extension" v-if="selectedFilters.length > 0">
             <!-- Filters selection for Mobile --> <!-- TODO: Does not want to scroll -->
-            <div class="flex justify-center rounded-xl overflow-x-scroll shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all" :class="selectedFilters.length > 0 ? 'h-fit md:h-0 w-full md:w-0 lg:w-1/3' : 'w-0 invisible'">
+            <div
+                class="justify-center rounded-xl overflow-x-scroll shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                :class="selectedFilters.length > 0 ? 'flex md:hidden w-full md:w-0 lg:w-1/3 p-1' : 'w-0 p-0'"
+            >
                 <button
-                    class="rounded-xl px-2 m-1 text-gray-100 bg-gray-400 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-400 hover:transition-all"
-                    :class="selectedFilters.includes(thisFilter.id) ? 'outline-green-700 dark:outline-green-500 outline-2 bg-green-600/60' : ''"
+                    class="custom-wardrobe-label-clickable"
+                    :class="selectedFilters.includes(thisFilter.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                     v-for="thisFilter in storedLabels.filter((e) => selectedFilters.includes(e.id))"
                     :key="thisFilter.id"
                     @click="toggleFilter(thisFilter.id)"
