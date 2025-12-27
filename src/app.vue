@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 18:23:44
+ * Last Modified: 2025-12-27 19:55:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -27,11 +27,10 @@
             id="titlebar"
             class="flex items-center shrink-0 w-full h-15 dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
         >
-            <!-- Title -->
-            <div class="absolute flex w-full justify-start sm:justify-center left-12 sm:left-0 items-center select-none font-semibold transition-opacity duration-500" :class="globalSearchStr === null ? '' : ''">
-                <PhDresser class="mr-2 size-5"></PhDresser>
-                Wardrobe
-            </div>
+            <!-- Wardrobe Icon -->
+            <NuxtLink class="absolute left-12.5 lg:left-7.5 select-none z-20 cursor-pointer transition-opacity duration-500" to="/">
+                <img src="/logo.png" class="h-7.5">
+            </NuxtLink>
 
             <!-- Right side -->
             <div class="absolute flex w-full justify-end pr-3 gap-4 select-none">
@@ -159,7 +158,7 @@
 
 
 <script setup lang="ts">
-    import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhDresser, PhTag, PhMagnifyingGlass } from "@phosphor-icons/vue";
+    import { PhList, PhCaretLeft, PhMoon, PhSun, PhHouse, PhGear, PhCoatHanger, PhTag, PhMagnifyingGlass } from "@phosphor-icons/vue";
     import packagejson from "../package.json";
     import type { Category, Label } from "~/model/label";
 
