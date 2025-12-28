@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 23:13:03
+ * Last Modified: 2025-12-28 13:14:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -28,11 +28,11 @@ import { sortModes } from "~/model/sort-modes";
 export default function(storedItems: Item[], selectedSort?: sortModes, selectedFilters?: string[]) {
 
     // Get search string ref from app.vue
-    const searchStr = (inject("globalSearchStr") as { value: string }).value; // Fuck off Typescript
+    const searchStr: Ref<string|null> = useState("globalSearchStr");
 
     // Apply search
-    if (searchStr != null) {
-        storedItems = storedItems.filter((e) => e.title.toLowerCase().includes(searchStr.toLowerCase()));
+    if (searchStr.value != null) {
+        storedItems = storedItems.filter((e) => e.title.toLowerCase().includes(searchStr.value.toLowerCase()));
     }
 
     // Apply filter

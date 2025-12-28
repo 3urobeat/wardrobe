@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 19:55:12
+ * Last Modified: 2025-12-28 13:10:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -168,15 +168,13 @@
     // Refs
     const showNavbar        = ref(false);
     const onlineVersion     = ref("");
-    const globalSearchStr   = ref(); // null on page load, set to "" on click to expand input
     const globalSearchInput = useTemplateRef("globalSearchInput");
-
-    provide("globalSearchStr", globalSearchStr); // Expose search str to other files
 
 
     // Global cache, accessed by pages
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels", () => []);
-    const storedCategories: Ref<Category[]> = useState("storedCategories", () => []);
+    const globalSearchStr:  Ref<string|null> = useState("globalSearchStr", () => null); // null on page load, set to "" on click to expand input
+    const storedLabels:     Ref<Label[]>     = useState("storedLabels", () => []);
+    const storedCategories: Ref<Category[]>  = useState("storedCategories", () => []);
 
     // Get all labels and categories
     onBeforeMount(async () => {
