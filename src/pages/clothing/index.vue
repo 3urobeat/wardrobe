@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 21:47:50
+ * Last Modified: 2025-12-28 13:40:45
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -88,17 +88,15 @@
 
 
     // Get all clothing and their details on load
-    onBeforeMount(async () => {
-        let res = await fetch("/api/get-all-clothes");
-        storedClothing.value = await res.json();
+    let res = await useFetch("/api/get-all-clothes");
+    storedClothing.value = res.data.value!; // TODO: Error handling
 
-        // Load images for clothes // TODO: Lazy load
-        storedClothing.value.forEach(async (e) => {
-            clothingImages.value.push({
-                id: e.id,
-                imgBlob: await getImage(e.imgPath)
-            })
-        });
+    // Load images for clothes // TODO: Lazy load
+    storedClothing.value.forEach(async (e) => {
+        clothingImages.value.push({
+            id: e.id,
+            imgBlob: await getImage(e.imgPath)
+        })
     });
 
 

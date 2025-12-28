@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:10:37
+ * Last Modified: 2025-12-28 13:39:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -177,14 +177,12 @@
     const storedCategories: Ref<Category[]>  = useState("storedCategories", () => []);
 
     // Get all labels and categories
-    onBeforeMount(async () => {
-        let labelsRes = await fetch("/api/get-all-labels");
-        storedLabels.value = await labelsRes.json(); // TODO: Error handling
+    let labelsRes = await useFetch("/api/get-all-labels");
+    storedLabels.value = labelsRes.data.value!; // TODO: Error handling
 
-        // Get all labels and categories
-        let categoriesRes = await fetch("/api/get-all-label-categories");
-        storedCategories.value = await categoriesRes.json(); // TODO: Error handling
-    });
+    // Get all labels and categories
+    let categoriesRes = await useFetch("/api/get-all-label-categories");
+    storedCategories.value = categoriesRes.data.value!; // TODO: Error handling
 
 
     // Specify page information

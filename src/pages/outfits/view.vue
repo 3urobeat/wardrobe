@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 21:47:59
+ * Last Modified: 2025-12-28 13:39:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -247,32 +247,30 @@
 
 
     // Get outfits and their data
-    onBeforeMount(async () => {
-        let clothingRes = await fetch("/api/get-all-clothes");
-        storedClothes.value = await clothingRes.json(); // TODO: Error handling
+    let clothingRes = await useFetch("/api/get-all-clothes");
+    storedClothes.value = clothingRes.data.value!; // TODO: Error handling
 
-        // Get outfit data if not new
-        if (outfitId != "new") {
-            const outfitRes = await fetch("/api/get-outfit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: outfitId
-                })
-            });
-
-            thisOutfit.value = await outfitRes.json(); // TODO: Error handling
-        }
-
-        // Load images for clothes // TODO: Lazy load
-        storedClothes.value.forEach(async (e) => {
-            clothingImages.value.push({
-                id: e.id,
-                imgBlob: await getImage(e.imgPath)
+    // Get outfit data if not new
+    if (outfitId != "new") {
+        const outfitRes = await useFetch("/api/get-outfit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: outfitId
             })
         });
+
+        thisOutfit.value = outfitRes.data.value!; // TODO: Error handling
+    }
+
+    // Load images for clothes // TODO: Lazy load
+    storedClothes.value.forEach(async (e) => {
+        clothingImages.value.push({
+            id: e.id,
+            imgBlob: await getImage(e.imgPath)
+        })
     });
 
 

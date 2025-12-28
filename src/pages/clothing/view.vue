@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 21:47:55
+ * Last Modified: 2025-12-28 13:39:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -161,7 +161,7 @@
 
     // Refs
     const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0 });
-    const thisClothingImgBlob: Ref<string>   = ref(await getImage(thisClothing.value.imgPath))
+    const thisClothingImgBlob: Ref<string>   = ref("")
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
     const editModeEnabled = (useRoute().name == "clothing-edit");
@@ -174,23 +174,21 @@
 
 
     // Get clothing
-    onBeforeMount(async () => {
-        if (clothingId != "new") {
-            const res = await fetch("/api/get-clothing", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: clothingId
-                })
-            });
+    if (clothingId != "new") {
+        const res = await useFetch("/api/get-clothing", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: clothingId
+            })
+        });
 
-            thisClothing.value = await res.json(); // TODO: Error handling
+        thisClothing.value = res.data.value!; // TODO: Error handling
 
-            thisClothingImgBlob.value = await getImage(thisClothing.value.imgPath);
-        }
-    });
+        thisClothingImgBlob.value = await getImage(thisClothing.value.imgPath) || "";
+    }
 
     // Track if user made changes
     const changesMade = ref(false);
@@ -265,7 +263,7 @@
     async function getImage(imgPath: string) {
         if (!imgPath) return "";
 
-        const res = await fetch("/api/get-image", {
+        const res = await useFetch("/api/get-image", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -275,7 +273,7 @@
             })
         });
 
-        return await res.text();
+        return res.data.value;
     }
 
 
@@ -286,7 +284,7 @@
         thisClothing.value.imgPath = fileName;
         console.log("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
 
-        thisClothingImgBlob.value = await getImage(fileName);
+        thisClothingImgBlob.value = await getImage(fileName) || "";
     }
 
 
@@ -353,7 +351,7 @@
         // Update local refs
         thisClothing.value = resBody.document;
         changesMade.value = false;
-        thisClothingImgBlob.value = await getImage(resBody.document.imgPath);
+        thisClothingImgBlob.value = await getImage(resBody.document.imgPath) || "";
 
         // Redirect back on success
         useRouter().push("/clothing/view?id=" + thisClothing.value.id);
