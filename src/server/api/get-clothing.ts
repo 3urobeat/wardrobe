@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:54
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 22:10:17
+ * Last Modified: 2025-12-28 22:24:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 
-import { getClothing } from "~/composables/useClothesDb";
+import { getClothes } from "~/composables/useClothesDb";
 
 
 /**
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
     console.log(`API get-clothing: Received request for id '${params.id}'...`);
 
     // Ask db helper to retrieve item
-    const clothing = await getClothing(params.id);
+    const clothing = await getClothes([ params.id ]);
 
     return clothing ? clothing[0] : null;
 

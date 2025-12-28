@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:51:32
+ * Last Modified: 2025-12-28 22:32:31
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -94,10 +94,10 @@ export async function deleteClothing(clothingID: string) {
 }
 
 /**
- * Retrieves a piece of clothing or all from the database
- * @param id Optional: ID of the clothing to retrieve. Leave empty to get all clothes
+ * Retrieves set of clothes or all from the database
+ * @param id Optional: Array of IDs of the clothes to retrieve. Leave empty to get all clothes
  * @returns Returns an array of all matching clothes
  */
-export async function getClothing(id: string|null): Promise<Clothing[]> {
-    return await clothesDb.findAsync(id ? { id: id } : {});
+export async function getClothes(id?: string[]): Promise<Clothing[]> {
+    return await clothesDb.findAsync(id && id.length > 0 ? { id: { $in: id } } : {});
 }
