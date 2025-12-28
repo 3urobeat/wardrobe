@@ -1,5 +1,5 @@
 <div align="center">
-    <p align="center"><img width=50% src="src/public/logo.png"></p>
+    <p align="center"><img width=65% src="src/public/logo.png"></p>
     <h4>👚 Selfhosted clothing management web app for your personal wardrobe or commercial store!</h4>
     <div>
         <a href="#introduction">Introduction</a> •
@@ -23,17 +23,16 @@ Then this is for you! *...and me, cause this was the motivation behind building 
 Wardrobe features:
 - **Add your Clothes**
   - with: Image, Title, Description, Labels
-- **Browse your Clothes**
-  - Search by text, sort by name/date or filter by a set of labels
 - **Create Outfits:** Combine your Clothes!
   - with: Clothes per body part, Title, Labels
   - Preview Image will be automatically generated based on clothes added
-- **Browse your Outfits**
+- **Browse your Clothes & Outfits**
   - What do I want to wear today?
+  - Search by text, sort by name/date or filter by a combination of labels
   - Upcoming: Get recommendations based on your local weather & outfit labels
 - **Create Labels & Label Categories**
   - Keep it organized: Each label has a category
-  - Keep it *(re)*organized: Reorder your labels by dragging to sort them by relevancy
+  - Keep it *re*organized: Reorder your labels by dragging to sort them by relevancy
   - Comes pre-configured with labels for type, season, year, color & body part to get you started
 
 ...and more to come!

@@ -4,7 +4,7 @@
  * Created Date: 2025-12-08 17:43:05
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 12:05:01
+ * Last Modified: 2025-12-28 11:39:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,17 +23,6 @@ import { upsertLabelCategories, upsertLabels } from "~/composables/useLabelsDb";
  * Params: { labels?: Label[], categories?: Category[] }
  * Returns:
  */
-
-/* {
-    id: "0",
-    name: "Winter",
-    categoryID: "0"
-},
-{
-    id: "4",
-    name: "Blue",
-    categoryID: "4"
-} */
 
 
 // This function is executed when this API route is called

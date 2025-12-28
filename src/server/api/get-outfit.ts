@@ -4,7 +4,7 @@
  * Created Date: 2025-09-10 18:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 19:08:10
+ * Last Modified: 2025-12-28 11:38:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,17 +23,6 @@ import { getOutfit } from "~/composables/useOutfitsDb";
  * Params: { id: string }
  * Returns: Outfit?
  */
-
-/* {
-    id: "1",
-    title: "Outfit 2",
-    clothes: [{
-        order: 0,
-        clothingID: "1"
-    }],
-    addedTimestamp: Date.now() - (Math.random() * 10000),
-    labelIDs: ["6"]
-} */
 
 
 // This function is executed when this API route is called

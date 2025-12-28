@@ -4,7 +4,7 @@
  * Created Date: 2025-12-07 18:39:22
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-09 21:01:11
+ * Last Modified: 2025-12-27 21:30:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,32 +23,6 @@ import { upsertClothing } from "~/composables/useClothesDb";
  * Params: { clothing: Clothing }
  * Returns:
  */
-
-/* {
-    id: "2",
-    title: "Shirt 1",
-    description: "abcdef",
-    imgPath: "/favicon.png",
-    addedTimestamp: Date.now() - (Math.random() * 10000),
-    labels: [
-        {
-            id: "0",
-            name: "Winter",
-            category: {
-                id: "0",
-                name: "season"
-            }
-        },
-        {
-            id: "4",
-            name: "Blue",
-            category: {
-                id: "4",
-                name: "color"
-            }
-        }
-    ]
-} */
 
 
 // This function is executed when this API route is called

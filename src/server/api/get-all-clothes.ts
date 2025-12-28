@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 22:13:42
+ * Last Modified: 2025-12-27 21:30:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,42 +23,6 @@ import { getClothing } from "~/composables/useClothesDb";
  * Params: {}
  * Returns: { }
  */
-
-
-/* [
-    {
-        id: "0",
-        title: "Dress 1",
-        description: "abcdef",
-        imgPath: "/favicon.png",
-        addedTimestamp: Date.now() - (Math.random() * 10000),
-        labelIDs: ["0"]
-    },
-    {
-        id: "1",
-        title: "Dress 2",
-        description: "abcdef",
-        imgPath: "/favicon.png",
-        addedTimestamp: Date.now() - (Math.random() * 10000),
-        labelIDs: ["0", "2", "7"]
-    },
-    {
-        id: "2",
-        title: "Shirt 1",
-        description: "abcdef",
-        imgPath: "/favicon.png",
-        addedTimestamp: Date.now() - (Math.random() * 10000),
-        labelIDs: ["0", "4"]
-    },
-    {
-        id: "3",
-        title: "Pants 1",
-        description: "abcdef",
-        imgPath: "/favicon.png",
-        addedTimestamp: Date.now() - (Math.random() * 10000),
-        labelIDs: ["2", "8"]
-    }
-] */
 
 
 // This function is executed when this API route is called

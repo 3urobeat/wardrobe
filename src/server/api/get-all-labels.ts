@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 16:43:11
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 21:45:54
+ * Last Modified: 2025-12-28 11:38:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,67 +23,6 @@ import { getAllLabels } from "~/composables/useLabelsDb";
  * Params: {}
  * Returns: Label[]
  */
-
-/* {
-    id: "0",
-    name: "Summer",
-    categoryID: "0"
-},
-{
-    id: "1",
-    name: "Cocktail Dress",
-    categoryID: "1"
-},
-{
-    id: "2",
-    name: "2025",
-    categoryID: "2"
-},
-{
-    id: "3",
-    name: "Special",
-    categoryID: "3"
-},
-{
-    id: "4",
-    name: "Red",
-    categoryID: "4"
-},
-{
-    id: "5",
-    name: "Spring",
-    categoryID: "0"
-},
-{
-    id: "6",
-    name: "Fall",
-    categoryID: "0"
-},
-{
-    id: "7",
-    name: "Torso",
-    categoryID: "5"
-},
-{
-    id: "8",
-    name: "Legs",
-    categoryID: "5"
-},
-{
-    id: "9",
-    name: "Feet",
-    categoryID: "5"
-},
-{
-    id: "0",
-    name: "Winter",
-    categoryID: "0"
-},
-{
-    id: "4",
-    name: "Blue",
-    categoryID: "4"
-} */
 
 
 // This function is executed when this API route is called

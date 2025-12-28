@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 22:04:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-08 22:47:03
+ * Last Modified: 2025-12-28 11:38:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,31 +23,6 @@ import { getAllLabelCategories } from "~/composables/useLabelsDb";
  * Params: {}
  * Returns: Category[]
  */
-
-/* {
-    id: "0",
-    name: "season"
-},
-{
-    id: "1",
-    name: "type"
-},
-{
-    id: "2",
-    name: "year"
-},
-{
-    id: "3",
-    name: "occasion"
-},
-{
-    id: "4",
-    name: "color"
-},
-{
-    id: "5",
-    name: "body part"
-} */
 
 
 // This function is executed when this API route is called
