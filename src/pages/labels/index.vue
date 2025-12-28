@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:13:53
+ * Last Modified: 2025-12-28 15:50:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -46,7 +46,7 @@
                     :id="'labels-' + thisCategory.id"
                 >                                               <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                     <div
-                        class="shrink-0 px-2 m-2 rounded-xl shadow-md cursor-move bg-bg-field-light dark:bg-bg-field-dark"
+                        class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                         v-for="thisLabel in labelsPerCategory[thisCategory.id]"
                         :key="thisLabel.id"
                     >                               <!-- TODO: Doing this by ID could fix disappearing on rename bug -->
@@ -70,8 +70,8 @@
                             v-model.trim="thisLabel.name"
                         />
 
-                        <!-- Draggable icon --> <!-- Fixed mt should be fine here since height of container is hard coded as well -->
-                        <svg class="mt-9 ml-1 size-6 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Icon acting as handle for drag interaction and indicating that item is draggable --> <!-- Fixed mt should be fine here since height of container is hard coded as well -->
+                        <svg id="drag-handle" class="cursor-move mt-9 ml-1 size-7 text-gray-400 dark:text-neutral-500" xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="4" cy="4" r="1"></circle>
                             <circle cx="4" cy="12" r="1"></circle>
                             <circle cx="4" cy="20" r="1"></circle>
@@ -81,6 +81,9 @@
                             <circle cx="20" cy="4" r="1"></circle>
                             <circle cx="20" cy="12" r="1"></circle>
                             <circle cx="20" cy="20" r="1"></circle>
+                            <circle cx="28" cy="4" r="1"></circle>
+                            <circle cx="28" cy="12" r="1"></circle>
+                            <circle cx="28" cy="20" r="1"></circle>
                         </svg>
                     </div>
                 </div>
@@ -123,7 +126,7 @@
     storedCategories.value.forEach((thisCategory) => {
         labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(storedLabels.value, thisCategory.id));
 
-        useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, onUpdate: moveLabel });
+        useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, handle: "#drag-handle", onUpdate: moveLabel }); // Handle allows dragging action only on item with that id
     });
 
     // Cache labels & categories that should be deleted
