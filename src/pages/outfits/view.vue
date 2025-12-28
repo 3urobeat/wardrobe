@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:49:13
+ * Last Modified: 2025-12-28 15:37:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -35,7 +35,7 @@
 
     <!-- Title bar for edit -->
     <TitleBarBasic :backRedirectTo="outfitId == 'new' ? '/outfits' : '/outfits/view?id=' + (thisOutfit ? thisOutfit.id : 'new')" v-if="editModeEnabled">
-        <template v-slot:secondary>
+        <template v-slot:secondary v-if="outfitId != 'new'">
             <button class="custom-button-primary" @click="deleteOutfit">
                 <PhTrash class="mr-2 size-5 text-red-600"></PhTrash>
                 Delete
