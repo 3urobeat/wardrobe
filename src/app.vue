@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:39:35
+ * Last Modified: 2025-12-28 13:48:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
 
         <header
             id="titlebar"
-            class="flex items-center shrink-0 w-full h-15 dark:text-text-dark border-y-1 border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
+            class="flex items-center shrink-0 w-full h-15 dark:text-text-dark border-y border-y-border-primary-light dark:border-y-border-primary-dark border-t-0 transition-all duration-500"
         >
             <!-- Wardrobe Icon -->
             <NuxtLink class="absolute left-12.5 lg:left-7.5 select-none z-20 cursor-pointer transition-opacity duration-500" to="/">
@@ -68,7 +68,7 @@
             <nav
                 id="navbar"
                 :class="showNavbar ? 'backdrop-blur-md' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
-                class="z-20 w-52 min-w-52 lg:relative lg:block lg:opacity-100 dark:text-text-dark border-x-1 border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
+                class="z-20 w-52 min-w-52 lg:relative lg:block lg:opacity-100 dark:text-text-dark border-x border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
             >
 
                 <div class="absolute left-9 lg:top-4">
