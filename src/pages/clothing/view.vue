@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:39:47
+ * Last Modified: 2025-12-28 14:49:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -160,7 +160,7 @@
     const storedCategories: Ref<Category[]> = useState("storedCategories");
 
     // Refs
-    const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0 });
+    const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0, modifiedTimestamp: 0 });
     const thisClothingImgBlob: Ref<string>   = ref("")
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit

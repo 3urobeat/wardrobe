@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:45:56
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-07 19:54:58
+ * Last Modified: 2025-12-28 14:46:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -20,5 +20,6 @@ export type Item = {
     id: string,
     title: string,          // Used for sorting
     labelIDs: string[], // Label[],        // Used as filters/for filtering
-    addedTimestamp: number  // Used for sorting
+    addedTimestamp: number,  // Used for sorting
+    modifiedTimestamp: number
 }

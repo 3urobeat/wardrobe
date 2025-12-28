@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 11:54:22
+ * Last Modified: 2025-12-28 14:51:36
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -45,6 +45,13 @@ export async function upsertOutfit(outfit: Outfit) {
         outfit.id = crypto.randomUUID();
     }
 
+    // Update metadata
+    if (!outfit.addedTimestamp) {
+        outfit.addedTimestamp = Date.now();
+    }
+
+    outfit.modifiedTimestamp = Date.now();
+
     return outfitsDb.updateAsync({ id: outfit.id }, { $set: outfit }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
             return {
@@ -71,7 +78,7 @@ export async function upsertOutfit(outfit: Outfit) {
 export async function deleteOutfit(outfitID: string) {
 
     return outfitsDb.removeAsync({ id: outfitID }, { })
-        .then((res) => {
+        .then(() => {
             return {
                 success: true,
                 message: ""
