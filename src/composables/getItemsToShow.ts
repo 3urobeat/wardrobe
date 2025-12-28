@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:53:54
+ * Last Modified: 2025-12-28 15:04:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -37,7 +37,7 @@ export default function(storedItems: Item[], selectedSort?: sortModes, selectedF
 
     // Apply filter
     if (selectedFilters && selectedFilters.length > 0) {
-        storedItems = storedItems.filter((e) => e.labelIDs.some(f => selectedFilters.includes(f)));
+        storedItems = storedItems.filter((e) => selectedFilters.every((f) => e.labelIDs.includes(f)));
     }
 
     // Apply sort to storedItems
