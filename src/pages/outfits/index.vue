@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:09:20
+ * Last Modified: 2025-12-28 23:58:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -41,7 +41,11 @@
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
-                <!-- <img class="w-fit h-50 sm:h-60 mb-1 self-center" :src="thisOutfit.imgPath" :alt="'Image for ' + thisOutfit.title"> --> <!-- TODO: Pre-render preview image from view page and display that here -->
+                <img
+                    class="w-fit h-50 sm:h-60 mb-1 self-center"
+                    :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
+                    :alt="'Image for ' + thisOutfit.title"
+                >
                 <label class="self-start font-semibold mb-1">{{ thisOutfit.title }}</label>
 
                 <!-- Filter Labels --> <!-- TODO: Click goes through and triggers redirect -->
@@ -90,7 +94,8 @@
     const storedLabels: Ref<Label[]> = useState("storedLabels");
 
     // Cache
-    const storedOutfits: Ref<Outfit[]> = ref([]);
+    const storedOutfits: Ref<Outfit[]>                          = ref([]);
+    const outfitImages:  Ref<{ id: string, imgBlob: string }[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
@@ -100,13 +105,34 @@
     let res = await useFetch("/api/get-all-outfits");
     storedOutfits.value = res.data.value!; // TODO: Error handling
 
+    // Load images for outfits // TODO: Lazy load
+    storedOutfits.value.forEach(async (e) => {
+        console.log(e.previewImgPath)
+        outfitImages.value.push({
+            id: e.id,
+            imgBlob: await getImage(e.previewImgPath)
+        })
+    });
+
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
     let outfitsToShow = computed(() => getItemsToShow(storedOutfits.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Outfit[]);
 
 
-    // Redirect to view page (or a popup?)
-    async function viewOutfit(selectedItem: Outfit) {
+    // Gets image from server
+    async function getImage(imgPath: string) {
+        if (!imgPath) return "";
 
+        const res = await fetch("/api/get-image", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                filePath: imgPath
+            })
+        });
+
+        return await res.text();
     }
 
 </script>

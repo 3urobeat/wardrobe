@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 20:13:08
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:47:03
+ * Last Modified: 2025-12-28 21:52:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -25,6 +25,7 @@ export type Outfit = Implements<Item, {
     title: string,
     clothes: { order: number, clothingID: string }[],
     labelIDs: string[], // Label[]
+    previewImgPath: string,
     addedTimestamp: number,
     modifiedTimestamp: number
 }>

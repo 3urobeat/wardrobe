@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 15:37:49
+ * Last Modified: 2025-12-28 22:03:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -226,7 +226,7 @@
     const storedCategories: Ref<Category[]> = useState("storedCategories");
 
     // Refs
-    const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], addedTimestamp: 0, modifiedTimestamp: 0 });
+    const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
     const bodyPartLabels: Ref<Label[]>    = ref([]);
     const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
     const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]); // Edit Mode only
