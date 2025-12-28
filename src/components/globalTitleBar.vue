@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 15:33:30
+ * Last Modified: 2025-12-28 21:35:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,9 +19,12 @@
 
 <template>
 
-    <!-- Wardrobe Icon -->
+    <!-- Wardrobe Icon(s) for light/dark mode with cut for expanded search bar on mobile -->
     <NuxtLink class="absolute left-12.5 lg:left-7.5 select-none z-20 cursor-pointer transition-opacity duration-500" to="/">
-        <img src="/logo.png" class="h-7.5">
+        <div :class="globalSearchStr != null ? 'w-10 sm:w-fit' : ''">
+            <img src="/logo-dark.png" class="h-7.5 object-left object-cover sm:object-contain hidden dark:block">
+            <img src="/logo-light.png" class="h-7.5 object-left object-cover sm:object-contain block dark:hidden">
+        </div>
     </NuxtLink>
 
     <!-- Right side -->
