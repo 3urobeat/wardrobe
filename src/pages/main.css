@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 19:17:11
+ * Last Modified: 2025-12-28 12:36:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -39,6 +39,9 @@
 
     --color-text-light: #000000;
     --color-text-dark: #e8e6e3;
+
+    --color-text-secondary-dark: #bdbdbd;
+    --color-text-secondary-light: #4a5565; /* gray-600 */
 
     --color-border-primary-light: #585c63; /* TODO: Where is this used? custom-input-primary uses secondary border but custom-input-secondary uses this primary one, bit weird */
     --color-border-primary-dark: #565d5f;

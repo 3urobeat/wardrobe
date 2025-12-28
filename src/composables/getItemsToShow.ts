@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:14:23
+ * Last Modified: 2025-12-28 13:53:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -32,7 +32,7 @@ export default function(storedItems: Item[], selectedSort?: sortModes, selectedF
 
     // Apply search
     if (searchStr.value != null) {
-        storedItems = storedItems.filter((e) => e.title.toLowerCase().includes(searchStr.value.toLowerCase()));
+        storedItems = storedItems.filter((e) => e.title.toLowerCase().includes(searchStr.value!.toLowerCase())); // Hey TS, how can searchStr.value be "possibly null" at this point?
     }
 
     // Apply filter

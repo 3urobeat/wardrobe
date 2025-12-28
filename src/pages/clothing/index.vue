@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:48:21
+ * Last Modified: 2025-12-28 14:06:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
@@ -37,7 +37,7 @@
             <!-- Clothing Cards -->
             <NuxtLink
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                v-for="thisClothing in (getItemsToShow(storedClothing, titleBarFull.selectedSort, titleBarFull.selectedFilters) as Clothing[])"
+                v-for="thisClothing in clothesToShow"
                 :key="thisClothing.id"
                 :to="'/clothing/view?id=' + thisClothing.id"
             >
@@ -65,11 +65,25 @@
         </div>
 
     </div>
+
+    <div class="w-full flex justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none"> <!-- TODO: Could be a little lower -->
+        <!-- No items available text (DB empty) -->
+        <label class="custom-label-primary flex items-center w-fit" v-if="storedClothing.length == 0">
+            <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
+            It's empty here. Would you like to add a piece of clothing?
+        </label>
+
+        <!-- Nothing to show text (Filter/Search matches no items) -->
+        <label class="custom-label-primary flex items-center w-fit" v-else-if="clothesToShow.length == 0">
+            <PhMagnifyingGlass class="shrink-0 mr-2"></PhMagnifyingGlass>
+            Nothing matches your search/filter...
+        </label>
+    </div>
 </template>
 
 
 <script setup lang="ts">
-    import { PhPlus } from "@phosphor-icons/vue";
+    import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
     import type { Clothing } from "~/model/clothing";
     import type { Label } from "~/model/label";
@@ -98,6 +112,9 @@
             imgBlob: await getImage(e.imgPath)
         })
     });
+
+    // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
+    let clothesToShow = computed(() => getItemsToShow(storedClothing.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Clothing[]);
 
 
     // Gets image from server

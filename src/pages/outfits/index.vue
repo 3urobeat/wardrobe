@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 13:48:11
+ * Last Modified: 2025-12-28 14:09:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -37,7 +37,7 @@
             <!-- Outfit Cards -->
             <NuxtLink
                 class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
-                v-for="thisOutfit in getItemsToShow(storedOutfits, titleBarFull.selectedSort, titleBarFull.selectedFilters) as Outfit[]"
+                v-for="thisOutfit in outfitsToShow"
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
@@ -61,20 +61,33 @@
         </div>
 
     </div>
+
+    <div class="w-full flex justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none"> <!-- TODO: Could be a little lower -->
+        <!-- No items available text (DB empty) -->
+        <label class="custom-label-primary flex items-center w-fit" v-if="storedOutfits.length == 0">
+            <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
+            It's empty here. Would you like to create an outfit?
+        </label>
+
+        <!-- Nothing to show text (Filter/Search matches no items) -->
+        <label class="custom-label-primary flex items-center w-fit" v-else-if="outfitsToShow.length == 0">
+            <PhMagnifyingGlass class="shrink-0 mr-2"></PhMagnifyingGlass>
+            Nothing matches your search/filter...
+        </label>
+    </div>
 </template>
 
 
 <script setup lang="ts">
-    import { PhPlus } from "@phosphor-icons/vue";
+    import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
-    import type { Category, Label } from "~/model/label";
+    import type { Label } from "~/model/label";
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode, type sortModes } from "~/model/sort-modes";
 
 
     // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    //const storedCategories: Ref<Category[]> = useState("storedCategories");
+    const storedLabels: Ref<Label[]> = useState("storedLabels");
 
     // Cache
     const storedOutfits: Ref<Outfit[]> = ref([]);
@@ -86,6 +99,9 @@
     // Get all outfits and their details on load
     let res = await useFetch("/api/get-all-outfits");
     storedOutfits.value = res.data.value!; // TODO: Error handling
+
+    // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
+    let outfitsToShow = computed(() => getItemsToShow(storedOutfits.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Outfit[]);
 
 
     // Redirect to view page (or a popup?)

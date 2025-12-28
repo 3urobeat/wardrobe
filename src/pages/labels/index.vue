@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 20:05:08
+ * Last Modified: 2025-12-28 14:13:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -99,6 +99,8 @@
             <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
         </button>
     </div>
+
+    <!-- No "empty" text here because styling sucks and wardrobe comes with a few pre-configured labels -->
 </template>
 
 
