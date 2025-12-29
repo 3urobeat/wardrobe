@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:51:36
+ * Last Modified: 2025-12-28 23:43:51
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,6 +18,7 @@
 import nedb from "@seald-io/nedb";
 import crypto from "node:crypto";
 import type { Outfit } from "~/model/outfit";
+import { serverGenerateOutfitPreviewImage } from "~/composables/outfitPreviewImage";
 
 
 // Load database
@@ -43,6 +44,13 @@ export async function upsertOutfit(outfit: Outfit) {
     // Generate identifier for new outfit
     if (!outfit.id) {
         outfit.id = crypto.randomUUID();
+    }
+
+    // Re-generate preview image
+    const newPreviewImg = await serverGenerateOutfitPreviewImage(outfit);
+
+    if (newPreviewImg) {
+        outfit.previewImgPath = newPreviewImg;
     }
 
     // Update metadata

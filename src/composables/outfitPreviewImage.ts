@@ -1,0 +1,108 @@
+/*
+ * File: outfitPreviewImage.ts
+ * Project: wardrobe
+ * Created Date: 2025-12-28 21:38:23
+ * Author: 3urobeat
+ *
+ * Last Modified: 2025-12-29 14:05:47
+ * Modified By: 3urobeat
+ *
+ * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+
+import { createCanvas, loadImage } from "canvas";
+import type { Outfit } from "~/model/outfit";
+import { getClothes } from "~/composables/useClothesDb";
+import { getImage, saveImage } from "~/composables/useImagesStorage";
+
+
+/**
+ * Server Side Only: Generates an image collage
+ * @param images Array of images, sorted how they should appear in the image, top to bottom
+ * @param collageWidth Width of resulting image in pixels
+ * @param collageHeight Height of resulting image in pixels
+ * @returns Promise resolving to image collage as Buffer
+ */
+async function _serverGenerateImageCollage(images: Buffer<ArrayBufferLike>[], collageWidth: number, collageHeight: number): Promise<Buffer<ArrayBufferLike>> {
+    // Create a new 2D canvas
+    const canvas = createCanvas(collageWidth, collageHeight);
+    const ctx    = canvas.getContext("2d");
+
+    // Calculate scaled size for every image to fit canvas evenly (vertical only!), with some overlap
+    const yImgOverlap = canvas.height * 0.05;
+    const scaledHeight = (collageHeight / images.length) + yImgOverlap;
+
+    // Load every image buffer and draw it onto our canvas
+    const imagePromises = images.map(async (e, i) => {
+        const img = await loadImage(e);
+
+        // Positon each image a little scattered on the x axis, alternating left/right
+        const xOffsetRandomness = Math.max(Math.random() * (collageWidth / 4), collageWidth / 8) * (i % 2 == 1 ? -1 : 1); // Returns values between 1/8 and 1/4 of collage width, negative on uneven i
+
+        // Calculate width based on scaled height and maintain aspect ratio
+        const factor      = img.naturalHeight / scaledHeight;          // Calculate aspect ratio to scale image only by height
+        const scaledWidth = img.naturalWidth / factor;                 // Apply aspect ratio to get width based on scaled down height
+
+        // Calculate position of source image on canvas
+        const xLeftOffset = (xOffsetRandomness + (collageWidth / 2)) - (scaledWidth / 2); // Position of image from left of canvas, centered with slight horizontal scatter
+        const yTopOffset  = (i * (collageHeight / images.length));                        // Position image based on position in array offset from top of canvas
+
+        // Save the current context
+        ctx.save();
+        ctx.rotate((Math.random() - 0.5) * 0.25); // Give it a random slight rotation (in radians) // TODO: Left rotation when yOffset left from center, right when right?
+        ctx.drawImage(
+            img,
+            0, 0, img.naturalWidth, img.naturalHeight,          // Position (0, 0) and size of source image
+            xLeftOffset, yTopOffset, scaledWidth, scaledHeight  // Position of scaled source image on canvas
+        );
+
+        // Restore the original context so the next image does not inherit rotation etc.
+        ctx.restore();
+    });
+
+    await Promise.all(imagePromises);
+
+    // Return collage as a Buffer
+    return canvas.toBuffer("image/png");
+}
+
+
+/**
+ * Server Side Only: Generates a preview image for an outfit
+ * @param outfit Outfit to generate new preview image for
+ * @returns Path of image in storage
+ */
+export async function serverGenerateOutfitPreviewImage(outfit: Outfit): Promise<string> {
+
+    // Get all images of clothes in this outfit
+    const images: Buffer<ArrayBufferLike>[] = []; // TODO: Not sorted yet, probably needs to be a 2D array: First layer represents sorted body labels, second layer clothes sorted by order index
+
+    const clothes = await getClothes(outfit.clothes.flatMap((e) => e.clothingID));
+
+    await Promise.all(clothes.map(async (e) => { // Refactored from a stinky await + then mixture for @DerDeathraven's sanity
+        const img = await getImage(e.imgPath);
+
+        if (img) {
+            images.push(img);
+        }
+    }));
+
+
+    // Generate collage
+    console.log(`DEBUG: Generating new outfit preview image for '${outfit.id}' with ${images.length} images...`);
+
+    const collage = await _serverGenerateImageCollage(images, 1024, 1024);
+
+
+    // Save image & return path
+    const imgPath = await saveImage("outfit", collage);
+
+    console.log("DEBUG: Finished generating outfit preview image " + imgPath);
+    return imgPath;
+
+}
