@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 23:43:51
+ * Last Modified: 2025-12-29 16:11:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -108,4 +108,13 @@ export async function deleteOutfit(outfitID: string) {
  */
 export async function getOutfit(id: string|null): Promise<Outfit[]> {
     return await outfitsDb.findAsync(id ? { id: id } : {});
+}
+
+/**
+ * Retrieves all outfits containing a piece of clothing
+ * @param clothingID ID of clothing to search for
+ * @returns Returns an array of outfits
+ */
+export async function getOutfitsContainingClothing(clothingID: string): Promise<Outfit[]> {
+    return await outfitsDb.findAsync({ clothes: { $elemMatch: { clothingID: clothingID } } });
 }

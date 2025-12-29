@@ -4,7 +4,7 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-29 14:05:47
+ * Last Modified: 2025-12-29 16:11:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,6 +18,7 @@
 import { createCanvas, loadImage } from "canvas";
 import type { Outfit } from "~/model/outfit";
 import { getClothes } from "~/composables/useClothesDb";
+import { upsertOutfit, getOutfitsContainingClothing } from "~/composables/useOutfitsDb";
 import { getImage, saveImage } from "~/composables/useImagesStorage";
 
 
@@ -104,5 +105,22 @@ export async function serverGenerateOutfitPreviewImage(outfit: Outfit): Promise<
 
     console.log("DEBUG: Finished generating outfit preview image " + imgPath);
     return imgPath;
+
+}
+
+
+/**
+ * Server Side Only: Asynchronously re-generates preview images of outfits containing a piece of clothing
+ * @param clothingID
+ */
+export function serverUpdateImagesOfAffectedOutfits(clothingID: string) {
+
+    // Get all outfits containing this piece of clothing
+    getOutfitsContainingClothing(clothingID)
+        .then((outfits) => {
+            console.log(`DEBUG: Re-generating ${outfits.length} preview images which contain clothing '${clothingID}'...`);
+
+            outfits.forEach(async (e) => upsertOutfit(e)); // UpsertOutfit handles preview generation
+        });
 
 }

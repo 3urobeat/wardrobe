@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 22:32:31
+ * Last Modified: 2025-12-29 16:17:48
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -18,6 +18,7 @@
 import nedb from "@seald-io/nedb";
 import crypto from "node:crypto";
 import type { Clothing } from "~/model/clothing";
+import { serverUpdateImagesOfAffectedOutfits } from "~/composables/outfitPreviewImage";
 
 
 // Load database
@@ -54,6 +55,11 @@ export async function upsertClothing(clothing: Clothing) {
 
     return clothesDb.updateAsync({ id: clothing.id }, { $set: clothing }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
+            // Tell outfit image handler to figure out re-generating images of outfits containing this clothing // TODO: ...only when image has changed (requires a DB query beforehand to get old value...)
+            if (res.affectedDocuments) {
+                serverUpdateImagesOfAffectedOutfits(res.affectedDocuments.id);
+            }
+
             return {
                 success: true,
                 message: "",
