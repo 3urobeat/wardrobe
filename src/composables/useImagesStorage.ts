@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 21:51:17
+ * Last Modified: 2025-12-30 22:12:36
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,6 +19,15 @@ import crypto from "node:crypto";
 
 // Use images storage - storage bucket is defined in nuxt.config.ts
 const imagesStorage = useStorage("images");
+
+
+/**
+ * Gets paths of all images currently in storage
+ * @returns List of all file paths
+ */
+export async function getAllImagePaths(): Promise<string[]> {
+    return imagesStorage.keys();
+}
 
 
 /**
@@ -68,4 +77,13 @@ export async function saveImage(type: string, fileBuffer: Buffer<ArrayBufferLike
         throw("Failed to upload file!");
     }
 
+}
+
+
+/**
+ * Deletes an image from the image storage
+ * @param filePath File path of image to delete
+ */
+export function deleteImage(filePath: string) {
+    imagesStorage.del(filePath); // TOOD: Handle errors? Ignore them?
 }
