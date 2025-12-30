@@ -4,7 +4,7 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-29 16:11:29
+ * Last Modified: 2025-12-31 00:23:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,7 +19,7 @@ import { createCanvas, loadImage } from "canvas";
 import type { Outfit } from "~/model/outfit";
 import { getClothes } from "~/composables/useClothesDb";
 import { upsertOutfit, getOutfitsContainingClothing } from "~/composables/useOutfitsDb";
-import { getImage, saveImage } from "~/composables/useImagesStorage";
+import { getImage, imgCategory, saveImage } from "~/composables/useImagesStorage";
 
 
 /**
@@ -101,7 +101,7 @@ export async function serverGenerateOutfitPreviewImage(outfit: Outfit): Promise<
 
 
     // Save image & return path
-    const imgPath = await saveImage("outfit", collage);
+    const imgPath = await saveImage(imgCategory.outfit, collage);
 
     console.log("DEBUG: Finished generating outfit preview image " + imgPath);
     return imgPath;

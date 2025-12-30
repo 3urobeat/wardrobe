@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:23:26
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-27 21:53:20
+ * Last Modified: 2025-12-31 00:23:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 
-import { saveImage } from "~/composables/useImagesStorage";
+import { saveImage, imgCategory } from "~/composables/useImagesStorage";
 
 
 /**
@@ -66,7 +66,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Save image
-    const filePath = await saveImage("clothing", file.data) // Type "clothing" is hard coded since this route is (currently) exclusively meant for clothes
+    const filePath = await saveImage(imgCategory.clothing, file.data) // Type clothing is hard coded since this route is (currently) exclusively meant for clothes
         .catch(() => {
             throw createError({
                 statusCode: 500,

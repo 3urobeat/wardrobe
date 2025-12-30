@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-30 22:12:36
+ * Last Modified: 2025-12-31 00:30:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -19,6 +19,13 @@ import crypto from "node:crypto";
 
 // Use images storage - storage bucket is defined in nuxt.config.ts
 const imagesStorage = useStorage("images");
+
+
+// Image categories used to separate images in storage
+export enum imgCategory {
+    clothing = "clothing",
+    outfit = "outfit"
+}
 
 
 /**
@@ -52,11 +59,11 @@ export async function getImage(filePath: string): Promise<Buffer<ArrayBufferLike
 
 /**
  * Saves an image to the image storage
- * @param type Type of image, used as directory name in storage
+ * @param category Type of image, used as directory name in storage
  * @param fileBuffer File buffer to save
  * @returns Path of image in storage
  */
-export async function saveImage(type: string, fileBuffer: Buffer<ArrayBufferLike>): Promise<string> {
+export async function saveImage(category: imgCategory, fileBuffer: Buffer<ArrayBufferLike>): Promise<string> {
     if (!fileBuffer) throw("File parameter is required");
 
     try {
@@ -67,7 +74,7 @@ export async function saveImage(type: string, fileBuffer: Buffer<ArrayBufferLike
 
         // Save file with hash as name
         const fileName = hash.digest("hex");
-        const path = `${type}/${fileName}`;
+        const path = `${category}/${fileName}`;
         await imagesStorage.setItemRaw(path, fileBuffer); // TODO: Image type is hardcoded
 
         return path;
