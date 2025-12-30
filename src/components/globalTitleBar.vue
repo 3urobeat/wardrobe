@@ -91,11 +91,6 @@
     }
 
     // Define Props to be accepted by this component
-    defineProps({
-        backRedirectTo: { // Leave empty to disable back button
-            type: String,
-            required: false
-        }
-    });
+    defineProps({ });
 
 </script>

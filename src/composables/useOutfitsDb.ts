@@ -46,7 +46,7 @@ export async function upsertOutfit(outfit: Outfit) {
         outfit.id = crypto.randomUUID();
     }
 
-    // Re-generate preview image
+    // Re-generate preview image // TODO: ...when previewImgPath == null or imgPath of referenced clothing has changed
     const newPreviewImg = await serverGenerateOutfitPreviewImage(outfit);
 
     if (newPreviewImg) {
