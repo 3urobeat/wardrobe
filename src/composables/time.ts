@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:48:21
  * Author: 3urobeat
  *
- * Last Modified: 2025-09-19 17:46:30
+ * Last Modified: 2025-12-31 14:35:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -16,12 +16,38 @@
 
 
 /**
+ * Formats ms value to human readable value
+ * @param time Number in milliseconds to convert
+ * @returns Formatted time as e.g. "x hours"
+ */
+export function formatTime(time: number) {
+    let until = time / 1000;
+    let untilUnit = "seconds";
+
+    if (until > 60) {
+        until = until / 60; untilUnit = "minutes";
+
+        if (until > 60) {
+            until = until / 60; untilUnit = "hours";
+
+            if (until > 24) {
+                until = until / 24; untilUnit = "days";
+            }
+        }
+    }
+
+    return `${Math.round(until)} ${untilUnit}`;
+}
+
+
+
+/**
  * Formats time to x hours ago if <24 hours, otherwise formats to ISO8601
  * @param timestamp The timestamp to convert
  * @param alwaysShowTimestamp Controls whether to always show the ISO8601 timestamp, even if <24h ago
  * @returns Formatted time, either in "x hours ago" or ISO8601 format
  */
-export function formatTime(timestamp: number, alwaysShowTimestamp?: boolean) {
+export function formatTimestamp(timestamp: number, alwaysShowTimestamp?: boolean) {
     let until = Math.abs((Date.now() - timestamp) / 1000);
     let untilUnit = "seconds";
 
@@ -34,7 +60,7 @@ export function formatTime(timestamp: number, alwaysShowTimestamp?: boolean) {
             }
         }
 
-        return `${Math.round(until)} ${untilUnit} ago`;
+        return `${Math.round(until)} ${untilUnit} ago`; // TODO: Support future "in" instead of only "ago"? lol
     } else {
         const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 
