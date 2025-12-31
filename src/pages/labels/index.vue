@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 15:52:53
+ * Last Modified: 2025-12-31 16:07:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -28,18 +28,25 @@
     <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
 
         <div
-            class="flex w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"
+            class="flex flex-col w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"
             v-for="thisCategory in storedCategories"
             :key="thisCategory.id"
         >
-            <div>
-                <!-- Category Title/Name -->
+            <!-- Category Title/Name & Delete button -->
+            <div class="flex items-center justify-between m-2">
                 <input
-                    class="custom-input-primary py-0.5! h-fit! m-2"
+                    class="custom-input-primary py-0.5! h-fit!"
                     placeholder="Category Name"
                     v-model.trim="thisCategory.name"
                 />
 
+                <button class="custom-button-icon-only" @click="deleteCategory(thisCategory)" title="Delete Label">
+                    <PhX class="size-5 text-red-500"></PhX>
+                </button>
+            </div>
+
+            <!-- Category content -->
+            <div class="flex">
                 <!-- Labels of this category -->
                 <div
                     class="flex h-44 mx-2 overflow-x-scroll"
@@ -49,7 +56,7 @@
                         class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                         v-for="thisLabel in labelsPerCategory[thisCategory.id]"
                         :key="thisLabel.id"
-                    >                               <!-- TODO: Doing this by ID could fix disappearing on rename bug -->
+                    >
                         <!-- Label title bar -->
                         <div class="flex w-full mt-2 mb-1">
                             <div class="flex justify-start ml-1">
@@ -74,14 +81,15 @@
                         <DraggableHandle id="drag-handle"></DraggableHandle>
                     </div>
                 </div>
+
+                <!-- Add label button -->
+                <div class="flex m-2 items-center"> <!-- TODO: Auto scroll label container to the end? -->
+                    <button class="custom-button-icon-only" @click="addLabel(thisCategory)" title="Add Label">
+                        <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
+                    </button>
+                </div>
             </div>
 
-            <!-- Add label button -->
-            <div class="flex m-2 items-center"> <!-- TODO: Auto scroll label container to the end? -->
-                <button class="custom-button-icon-only" @click="addLabel(thisCategory)" title="Add Label">
-                    <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
-                </button>
-            </div>
         </div>
 
         <!-- Add label category button. "p-2!" overwrites custom-button-icon-only's p-1 to make button bigger -->
@@ -118,7 +126,7 @@
 
     // Cache labels & categories that should be deleted
     let labelIDsToDelete:    string[] = [];
-    //let categoryIDsToDelete: string[] = []; // TODO
+    let categoryIDsToDelete: string[] = [];
 
     // Track if user made changes
     const changesMade = ref(false);
@@ -152,12 +160,16 @@
 
     // Delete a label
     function deleteLabel(selectedLabel: Label) {
-        labelIDsToDelete.push(selectedLabel.id);
-        storedLabels.value = storedLabels.value.filter((e) => e != selectedLabel);
-        labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
+        const confirmed = confirm(`Are you sure you want to mark '${selectedLabel.name}' for deletion?\nThis action cannot be undone once you press save!`);
 
-        // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
-        changesMade.value = true;
+        if (confirmed) {
+            labelIDsToDelete.push(selectedLabel.id);
+            storedLabels.value = storedLabels.value.filter((e) => e.id != selectedLabel.id);
+            labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
+
+            // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
+            changesMade.value = true;
+        }
     }
 
     // Called when label is moved using useSortable() and synchronizes labelsPerCategory with storedLabels
@@ -205,6 +217,29 @@
         changesMade.value = true;
     }
 
+    // Delete a category
+    function deleteCategory(selectedCategory: Category) {
+        const confirmed = confirm(`Are you sure you want to mark '${selectedCategory.name}' and ALL OF ITS LABELS(!) for deletion?\nThis action cannot be undone once you press save!`);
+
+        if (confirmed) {
+            categoryIDsToDelete.push(selectedCategory.id);
+            storedCategories.value = storedCategories.value.filter((e) => e.id != selectedCategory.id);
+            delete labelsPerCategory[selectedCategory.id];
+
+            // Delete all labels of this category
+            storedLabels.value = storedLabels.value.filter((e) => {
+                if (e.categoryID === selectedCategory.id) {
+                    labelIDsToDelete.push(e.id);
+                    return false;
+                }
+                return true;
+            });
+
+            // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
+            changesMade.value = true;
+        }
+    }
+
 
     // Sends changes to the database
     async function saveChanges() {
@@ -219,7 +254,7 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    //categoryIDs: categoryIDsToDelete, // TODO
+                    categoryIDs: categoryIDsToDelete,
                     labelIDs: labelIDsToDelete
                 })
             });
@@ -234,9 +269,7 @@
             },
             body: JSON.stringify({
                 categories: storedCategories.value,
-                labels: storedLabels.value,
-                labelIDsToDelete: labelIDsToDelete,
-                //categoryIDsToDelete: categoryIDsToDelete // TODO
+                labels: storedLabels.value
             })
         });
 
@@ -255,7 +288,7 @@
         // Update local refs // TODO: Only on success
         changesMade.value = false;
         labelIDsToDelete = [];
-        //categoryIDsToDelete = [];
+        categoryIDsToDelete = [];
 
 
         // TODO: Use response and update ref?
