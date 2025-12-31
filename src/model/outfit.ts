@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 20:13:08
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 21:52:13
+ * Last Modified: 2025-12-31 00:10:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -23,8 +23,8 @@ import type { Item } from "./item";
 export type Outfit = Implements<Item, {
     id: string,
     title: string,
-    clothes: { order: number, clothingID: string }[],
-    labelIDs: string[], // Label[]
+    clothes: { order: number, clothingID: string }[], // IMPORTANT: May reference non-existent clothes if dataCleanUp job did not run yet!
+    labelIDs: string[],                               // IMPORTANT: May reference non-existent labels if dataCleanUp job did not run yet!
     previewImgPath: string,
     addedTimestamp: number,
     modifiedTimestamp: number

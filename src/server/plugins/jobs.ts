@@ -4,7 +4,7 @@
  * Created Date: 2025-12-29 14:47:41
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-30 22:50:17
+ * Last Modified: 2025-12-31 12:59:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,7 @@
 
 
 // Import core jobs
-
+import dataCleanupJob from "../utils/jobs/dataCleanup";
 
 
 let _jobInterval; // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -31,7 +31,7 @@ export type Job = {
         _lastExecTimestamp?: number,  // Internal
         _registeredAt?: number        // Internal
     },
-    run: () => void
+    run: () => object // May return whatever I guess
 }
 
 
@@ -123,7 +123,7 @@ export default defineNitroPlugin(() => {
     console.log("DEBUG - Jobs Plugin: Registering core jobs in 30 seconds...");
 
     setTimeout(() => {
-
+        registerJob(dataCleanupJob);
     }, 30000);
 
 });

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-26 20:52:24
+ * Last Modified: 2025-12-31 00:10:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -24,7 +24,7 @@ export type Label = {
     id: string,
     name: string,
     orderIndex: number, // Floating point number
-    categoryID: string
+    categoryID: string  // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
 }
 
 /**

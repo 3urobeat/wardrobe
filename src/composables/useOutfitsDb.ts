@@ -50,7 +50,7 @@ export async function upsertOutfit(outfit: Outfit) {
     const newPreviewImg = await serverGenerateOutfitPreviewImage(outfit);
 
     if (newPreviewImg) {
-        outfit.previewImgPath = newPreviewImg;
+        outfit.previewImgPath = newPreviewImg; // Unused image will be deleted by periodic database cleanup job
     }
 
     // Update metadata
@@ -84,6 +84,8 @@ export async function upsertOutfit(outfit: Outfit) {
  * @returns
  */
 export async function deleteOutfit(outfitID: string) {
+
+    // Unused image will be deleted by periodic database cleanup job
 
     return outfitsDb.removeAsync({ id: outfitID }, { })
         .then(() => {

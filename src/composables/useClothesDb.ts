@@ -55,6 +55,8 @@ export async function upsertClothing(clothing: Clothing) {
 
     return clothesDb.updateAsync({ id: clothing.id }, { $set: clothing }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
+            // Unused image will be deleted by periodic database cleanup job
+
             // Tell outfit image handler to figure out re-generating images of outfits containing this clothing // TODO: ...only when image has changed (requires a DB query beforehand to get old value...)
             if (res.affectedDocuments) {
                 serverUpdateImagesOfAffectedOutfits(res.affectedDocuments.id);
@@ -82,6 +84,8 @@ export async function upsertClothing(clothing: Clothing) {
  * @returns
  */
 export async function deleteClothing(clothingID: string) {
+
+    // Unused image will be deleted by periodic database cleanup job
 
     return clothesDb.removeAsync({ id: clothingID }, { })
         .then(() => {
