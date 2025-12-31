@@ -4,7 +4,7 @@
  * Created Date: 2025-12-29 14:47:41
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 12:59:21
+ * Last Modified: 2025-12-31 14:03:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -15,24 +15,14 @@
  */
 
 
+import { Job } from "~/model/job";
+
 // Import core jobs
 import dataCleanupJob from "../utils/jobs/dataCleanup";
 
 
 let _jobInterval; // eslint-disable-line @typescript-eslint/no-unused-vars
 const _registeredJobs: Job[] = [];
-
-
-export type Job = {
-    info: {
-        name: string,
-        interval: number,             // Time in ms
-        runOnRegistration: boolean,
-        _lastExecTimestamp?: number,  // Internal
-        _registeredAt?: number        // Internal
-    },
-    run: () => object // May return whatever I guess
-}
 
 
 /**
