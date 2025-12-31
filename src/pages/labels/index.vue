@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 19:25:24
+ * Last Modified: 2025-12-31 15:52:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -193,10 +193,13 @@
 
     // Add a new category
     function addCategory() {
-        storedCategories.value.push({
+        const e = {
             id: crypto.randomUUID(), // TODO: This should be server sided
             name: ""
-        });
+        };
+
+        storedCategories.value.push(e);
+        labelsPerCategory[e.id] = [];
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
         changesMade.value = true;
