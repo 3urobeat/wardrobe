@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 00:30:43
+ * Last Modified: 2025-12-31 12:00:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
@@ -33,7 +33,7 @@ export enum imgCategory {
  * @returns List of all file paths
  */
 export async function getAllImagePaths(): Promise<string[]> {
-    return imagesStorage.keys();
+    return (await imagesStorage.getKeys()).map((e) => e.replace(":", "/"));
 }
 
 
