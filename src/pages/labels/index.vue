@@ -5,10 +5,10 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 16:07:02
+ * Last Modified: 2026-01-01 13:57:10
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -105,7 +105,8 @@
 <script setup lang="ts">
     import { PhCheck, PhPlus, PhTag, PhX } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import { getLabelOrderIndexBetween, getLabelsOfCategory, getNewLastLabelOrderIndex, sortLabelsList, type Category, type Label } from "~/model/label";
+    import { getLabelOrderIndexBetween, getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
+    import { getLabelsOfCategory, type Category } from "~/model/label-category";
     import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
 
@@ -205,7 +206,7 @@
 
     // Add a new category
     function addCategory() {
-        const e = {
+        const e: Category = {
             id: crypto.randomUUID(), // TODO: This should be server sided
             name: ""
         };

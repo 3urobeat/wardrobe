@@ -5,10 +5,10 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 22:03:32
+ * Last Modified: 2026-01-01 14:01:17
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -214,7 +214,8 @@
     import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown, PhTrash } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import PickerDialog from "~/components/pickerDialog.vue";
-    import { getLabelsOfCategory, sortLabelsList, type Category, type Label } from "~/model/label";
+    import { sortLabelsList, type Label } from "~/model/label";
+    import { getLabelsOfCategory, type Category } from "~/model/label-category";
     import type { Clothing } from "~/model/clothing";
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode } from "~/model/sort-modes";

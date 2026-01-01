@@ -4,10 +4,10 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 00:10:28
+ * Last Modified: 2026-01-01 14:04:49
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -23,8 +23,8 @@
 export type Label = {
     id: string,
     name: string,
-    orderIndex: number, // Floating point number
-    categoryID: string  // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
+    orderIndex: number,         // Floating point number
+    categoryID: string          // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
 }
 
 /**
@@ -71,20 +71,4 @@ export function getLabelOrderIndexBetween(el1?: Label, el2?: Label) {
  */
 export function sortLabelsList(list: Label[]) {
     return list.sort((a, b) => a.orderIndex - b.orderIndex);
-}
-
-
-export type Category = {
-    id: string,
-    name: string
-}
-
-/**
- * Helper: Gets all labels belonging to a specified category
- * @param list List of labels to analyze
- * @param categoryID ID of Category to filter for
- * @returns {Label[]} Array of labels from `list` belonging to `categoryID`
- */
-export function getLabelsOfCategory(list: Label[], categoryID: string) {
-    return list.filter((e) => e.categoryID == categoryID);
 }
