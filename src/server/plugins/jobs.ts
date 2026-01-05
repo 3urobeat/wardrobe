@@ -4,10 +4,10 @@
  * Created Date: 2025-12-29 14:47:41
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 14:03:25
+ * Last Modified: 2026-01-05 18:59:59
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -15,7 +15,8 @@
  */
 
 
-import { Job } from "~/model/job";
+import { CoreJobPendingDummy, Job } from "~/model/job";
+import { formatTime } from "~/composables/time";
 
 // Import core jobs
 import dataCleanupJob from "../utils/jobs/dataCleanup";
@@ -37,7 +38,7 @@ export function registerJob(job: Job) {
         throw("A Job with that is already registered");
     }
 
-    console.log(`DEBUG Jobs Plugin: Registering job '${job.info.name}' which executes ${job.info.runOnRegistration ? "now and then " : ""}every ${job.info.interval}ms`);
+    console.log(`DEBUG Jobs Plugin: Registering job '${job.info.name}' which executes ${job.info.runOnRegistration ? "now and then " : ""}${job.info.interval > 0 ? "every " + formatTime(job.info.interval) : "only manually"}`);
 
     // Check if job shall run on registration
     if (job.info.runOnRegistration) {
@@ -69,8 +70,35 @@ export function unregisterJob(jobName: string) {
     }
 
     // Remove job
+    console.log(`DEBUG Jobs Plugin: Unregistering job '${jobName}'...`);
     _registeredJobs.splice(index, 1);
 
+}
+
+
+/**
+ * Internal: Registers core jobs which are shipped by default after 30 seconds
+ */
+function _registerCoreJobs() {
+    console.log("DEBUG - Jobs Plugin: Registering core jobs in 30 seconds...");
+
+    // Register dummy job to explain pending registration
+    registerJob({
+        info: {
+            name: CoreJobPendingDummy,
+            interval: 0,
+            runOnRegistration: false
+        },
+        run: () => { return {}; }
+    });
+
+    // Register core jobs after 30 seconds
+    setTimeout(() => {
+        // Remove dummy
+        unregisterJob(CoreJobPendingDummy);
+
+        registerJob(dataCleanupJob);
+    }, 30000);
 }
 
 
@@ -80,7 +108,9 @@ export function unregisterJob(jobName: string) {
 function _runDueJobs() {
 
     _registeredJobs.forEach((job) => {
-        if (job.info._lastExecTimestamp! + job.info.interval < Date.now()) {
+        if (job.info.interval !== 0
+            && job.info._lastExecTimestamp! + job.info.interval < Date.now()
+        ) {
             console.log(`DEBUG - JobManager: Running due job '${job.info.name}'...`);
 
             job.run();
@@ -110,10 +140,6 @@ export default defineNitroPlugin(() => {
     }, 1000);
 
     // Call register for internal jobs after 30 seconds
-    console.log("DEBUG - Jobs Plugin: Registering core jobs in 30 seconds...");
-
-    setTimeout(() => {
-        registerJob(dataCleanupJob);
-    }, 30000);
+    _registerCoreJobs();
 
 });

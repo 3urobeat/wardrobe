@@ -5,10 +5,10 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 15:32:47
+ * Last Modified: 2026-01-05 18:59:46
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -40,20 +40,33 @@
                     v-for="thisJobInfo in jobs"
                     :key="thisJobInfo.name"
                 >
-                    <!-- Job name -->
-                    <div class="flex mt-2 mb-3">
-                        <div class="flex gap-x-2 ml-2 h-6">
-                            <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
-                                <PhArrowClockwise class="text-text-light dark:text-text-dark"></PhArrowClockwise>
-                            </div>
-                            <label class="custom-label-primary py-0! px-2!">{{ thisJobInfo.name }}</label>
+                    <!-- Check if server is waiting to register core jobs -->
+                    <div class="flex-col m-2" v-if="thisJobInfo.name == CoreJobPendingDummy">
+                        <div class="custom-label-icon-only w-6 mb-3"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                            <PhHourglassMedium class="text-text-light dark:text-text-dark"></PhHourglassMedium>
                         </div>
+                        <p class="custom-label-secondary py-0! px-2! break-normal">
+                            Server was just started and the<br>
+                            registration of core jobs is pending.<br>
+                            Please wait a moment.
+                        </p>
                     </div>
+                    <div v-else>
+                        <!-- Job name -->
+                        <div class="flex mt-2 mb-3">
+                            <div class="flex gap-x-2 ml-2 h-6">
+                                <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                                    <PhArrowClockwise class="text-text-light dark:text-text-dark"></PhArrowClockwise>
+                                </div>
+                                <label class="custom-label-primary py-0! px-2!">{{ thisJobInfo.name }}</label>
+                            </div>
+                        </div>
 
-                    <!-- Job info -->
-                    <div class="grid grid-cols-2 gap-x-2 ml-1" v-for="key in Object.keys(thisJobInfo).filter((e) => e != 'name')">
-                        <label class="custom-label-secondary py-0! px-2! w-fit">{{ key }}:</label>
-                        <label>{{ jobInfoToHuman(key, thisJobInfo[key]) }}</label>
+                        <!-- Job info -->
+                        <div class="grid grid-cols-2 gap-x-2 ml-1" v-for="key in Object.keys(thisJobInfo).filter((e) => e != 'name')">
+                            <label class="custom-label-secondary py-0! px-2! w-fit">{{ key }}:</label>
+                            <label>{{ jobInfoToHuman(key, thisJobInfo[key]) }}</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,11 +87,11 @@
 
 
 <script setup lang="ts">
-    import { PhArrowClockwise, PhCheck } from "@phosphor-icons/vue";
+    import { PhArrowClockwise, PhCheck, PhHourglassMedium } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import type { Settings } from "~/model/settings";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
-    import type { JobInfo } from "~/model/job";
+    import { CoreJobPendingDummy, type JobInfo } from "~/model/job";
 
 
     // Refs
