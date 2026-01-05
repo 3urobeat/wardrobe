@@ -5,10 +5,10 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:42:15
+ * Last Modified: 2026-01-05 17:39:36
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -20,7 +20,7 @@
 <template>
 
     <!-- TODO: Blur only size of components -->
-    <div id="fixed-title" class="fixed flex flex-col right-0 top-20.5 w-full text-nowrap select-none p-1.5 px-3 md:px-7 gap-y-3 rounded-2xl backdrop-blur-lg">
+    <div id="fixed-title" class="fixed flex flex-col right-0 top-20.5 w-full text-nowrap select-none p-1.5 px-3 md:px-7 rounded-2xl backdrop-blur-lg">
 
         <!-- Title Bar which is always displayed -->
         <div class="flex w-full justify-between md:justify-end gap-x-4">
@@ -66,7 +66,7 @@
             <!-- Filters selection for Mobile --> <!-- TODO: Does not want to scroll -->
             <div
                 class="justify-center rounded-xl overflow-x-scroll shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
-                :class="selectedFilters.length > 0 ? 'flex md:hidden w-full md:w-0 lg:w-1/3 p-1' : 'w-0 p-0'"
+                :class="selectedFilters.length > 0 ? 'flex md:hidden w-full md:w-0 lg:w-1/3 p-1 mt-3' : 'w-0 p-0'"
             >
                 <button
                     class="custom-wardrobe-label-clickable"
