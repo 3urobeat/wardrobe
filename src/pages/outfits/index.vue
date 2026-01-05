@@ -5,10 +5,10 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 23:58:25
+ * Last Modified: 2026-01-05 17:25:21
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -52,7 +52,7 @@
                 <div class="mt-4">
                     <button
                         class="custom-wardrobe-label-clickable m-0.5"
-                        :class="titleBarFull.selectedFilters.includes(thisLabel.name) ? 'custom-wardrobe-label-selected-outline' : ''"
+                        :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                         v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
                         :key="thisLabel.id"
                         @click.prevent="titleBarFull.toggleFilter(thisLabel.id)"
