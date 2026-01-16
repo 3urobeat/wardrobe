@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-01 13:57:10
+ * Last Modified: 2026-01-16 22:41:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -77,8 +77,10 @@
                             v-model.trim="thisLabel.name"
                         />
 
-                        <!-- Icon acting as handle for drag interaction and indicating that item is draggable -->
-                        <DraggableHandle id="drag-handle"></DraggableHandle>
+                        <div class="flex justify-between mt-9 m-1 gap-2">
+                            <!-- Icon acting as handle for drag interaction and indicating that item is draggable -->
+                            <DraggableHandle id="drag-handle"></DraggableHandle>
+                        </div>
                     </div>
                 </div>
 
