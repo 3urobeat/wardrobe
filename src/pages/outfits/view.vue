@@ -59,7 +59,7 @@
             </div>
 
             <!-- Label selector bar with expanding popup -->
-            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none p-1 gap-1.5 bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
+            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none p-1 gap-x-1.5 bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
                 <!-- Selected labels list -->
                 <p
                     class="custom-wardrobe-label"
@@ -90,9 +90,10 @@
                         <PhCaretDown class="self-center mx-2 size-5"></PhCaretDown>
                     </template>
 
+                    <!-- TODO: Overflows screen width due to being centered to right aligned CaretDown -->
                     <template v-slot:items>
                         <!-- Separate labels by category -->
-                        <div class="flex my-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                        <div class="flex w-180 max-h-140 my-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
                             <div class="custom-label-primary py-0! px-2!">
                                 {{ thisCategory.name }}:
                             </div>
@@ -162,7 +163,7 @@
                     </div>
 
                     <!-- Add clothing to label button when in edit mode -->
-                    <div class="relative flex flex-col justify-center items-center" v-if="editModeEnabled">  <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
+                    <div class="self-center mt-8" v-if="editModeEnabled">  <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
                         <PickerDialog
                             toggleText="Add Item"
                         >
@@ -175,7 +176,7 @@
 
                             <!-- Items area -->
                             <template v-slot:items="slotProps">
-                                <div class="grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                <div class="w-180 max-h-140 grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
                                     <button
                                         class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
                                         v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
