@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 19:42:16
+ * Last Modified: 2026-01-19 19:51:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -178,7 +178,7 @@
                             <template v-slot:items="slotProps">
                                 <div class="w-180 max-h-140 grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
                                     <button
-                                        class="flex flex-col h-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
+                                        class="flex flex-col h-55 w-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
                                         v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
                                         :key="thisClothing.id"
                                         @click="addClothing(thisClothing.id)"
@@ -187,7 +187,7 @@
                                         <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
 
                                         <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
-                                        <div class="flex mt-1 ml-1">
+                                        <div class="flex mt-1 ml-1 overflow-x-scroll">
                                             <div
                                                 class="custom-wardrobe-label"
                                                 v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
