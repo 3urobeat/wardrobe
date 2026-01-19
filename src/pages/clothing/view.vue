@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-18 00:14:32
+ * Last Modified: 2026-01-19 13:57:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -272,7 +272,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                filePath: imgPath
+                filePath: imgPath,
+                width: 512
             })
         });
 

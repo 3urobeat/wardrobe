@@ -40,6 +40,7 @@
     "@vueuse/nuxt": "^14.1.0",
     "canvas": "^3.2.0",
     "nuxt": "^4.2.1",
+    "sharp": "^0.34.5",
     "sortablejs": "^1.15.6",
     "tailwindcss": "^4.1.17",
     "vue": "^3.5.26"

@@ -5,10 +5,10 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 14:06:25
+ * Last Modified: 2026-01-19 13:35:16
  * Modified By: 3urobeat
  *
- * Copyright (c) 2024 - 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -127,7 +127,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                filePath: imgPath
+                filePath: imgPath,
+                width: 384
             })
         });
 
