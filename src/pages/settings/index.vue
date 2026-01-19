@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-05 18:59:46
+ * Last Modified: 2026-01-19 18:39:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -63,9 +63,12 @@
                         </div>
 
                         <!-- Job info -->
-                        <div class="grid grid-cols-2 gap-x-2 ml-1" v-for="key in Object.keys(thisJobInfo).filter((e) => e != 'name')">
-                            <label class="custom-label-secondary py-0! px-2! w-fit">{{ key }}:</label>
-                            <label>{{ jobInfoToHuman(key, thisJobInfo[key]) }}</label>
+                        <div class="grid grid-cols-2 gap-x-2 ml-1" v-for="[key, value] of Object.entries(thisJobInfo)">
+                            <label v-if="key != 'name'" class="custom-label-secondary py-0! px-2! w-fit">{{ key }}:</label>
+
+                            <label v-if=     "key == 'interval'">{{ formatTime(value as number) }}</label>
+                            <input v-else-if="key == 'runOnRegistration'" type="checkbox" class="size-4 self-center" :checked="value as boolean" disabled>
+                            <label v-else-if="key == '_lastExecTimestamp' || key == '_registeredAt'">{{ formatTimestamp(value as number) }}</label>
                         </div>
                     </div>
                 </div>
@@ -121,20 +124,6 @@
 
         next();
     });
-
-
-    // Makes job info human readable, very basic
-    function jobInfoToHuman(key: string, value: any) {
-        switch (key) {
-            case "interval":
-                return formatTime(value);
-            case "_lastExecTimestamp":
-            case "_registeredAt":
-                return formatTimestamp(value);
-            default:
-                return value; // Return as is
-        }
-    }
 
 
     // Sends changes to the database
