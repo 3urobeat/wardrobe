@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-01 13:56:28
+ * Last Modified: 2026-01-18 00:14:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -154,11 +154,12 @@
     import type { Clothing } from "~/model/clothing";
     import { getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
+    import { CategorySpecialityMap } from "~/model/label-category-speciality";
 
 
     // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    const storedCategories: Ref<Category[]> = useState("storedCategories");
+    const storedLabels:     Ref<Label[]> = useState("storedLabels");
+    const storedCategories: Ref<Category[]>     = useState("storedCategories");
 
     // Refs
     const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0, modifiedTimestamp: 0 });
@@ -235,7 +236,8 @@
                 id: crypto.randomUUID(), // TODO: This should be server sided
                 name: name,
                 orderIndex: getNewLastLabelOrderIndex(getLabelsOfCategory(storedLabels.value, thisCategory.id)),
-                categoryID: thisCategory.id
+                categoryID: thisCategory.id,
+                specialityValue: CategorySpecialityMap[thisCategory.specialityID].value // Init val
             };
 
             // Send new label to server

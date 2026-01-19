@@ -4,7 +4,7 @@
  * Created Date: 2025-12-31 17:00:33
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-01 14:03:45
+ * Last Modified: 2026-01-17 18:06:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -16,12 +16,15 @@
 
 
 import type { Label } from "./label";
+import type { CategorySpecialityID } from "./label-category-speciality";
 
 
 export type Category = {
     id: string,
-    name: string
+    name: string,
+    specialityID: CategorySpecialityID
 }
+
 
 /**
  * Helper: Gets all labels belonging to a specified category

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-16 22:41:42
+ * Last Modified: 2026-01-19 12:11:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -32,13 +32,21 @@
             v-for="thisCategory in storedCategories"
             :key="thisCategory.id"
         >
-            <!-- Category Title/Name & Delete button -->
+            <!-- Category Title/Name, Speciality Selector & Delete button -->
             <div class="flex items-center justify-between m-2">
-                <input
-                    class="custom-input-primary py-0.5! h-fit!"
-                    placeholder="Category Name"
-                    v-model.trim="thisCategory.name"
-                />
+                <div class="flex gap-6">
+                    <input
+                        class="custom-input-primary py-0.5! h-fit!"
+                        placeholder="Category Name"
+                        v-model.trim="thisCategory.name"
+                    />
+
+                    <div class="flex custom-input-primary h-fit! py-0.75! px-1!" @change="updateCategorySpeciality(thisCategory)">
+                        <select class="px-1" v-model="thisCategory.specialityID">
+                            <option v-for="thisSpeciality in CategorySpecialities" :value="thisSpeciality.id">{{ thisSpeciality.name }}</option>
+                        </select>
+                    </div>
+                </div>
 
                 <button class="custom-button-icon-only" @click="deleteCategory(thisCategory)" title="Delete Label">
                     <PhX class="size-5 text-red-500"></PhX>
@@ -53,7 +61,7 @@
                     :id="'labels-' + thisCategory.id"
                 >                                               <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                     <div
-                        class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
+                        class="w-60 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                         v-for="thisLabel in labelsPerCategory[thisCategory.id]"
                         :key="thisLabel.id"
                     >
@@ -64,7 +72,7 @@
                             </div>
 
                             <div class="flex w-full justify-end">
-                                <button class="custom-button-icon-only" @click="deleteLabel(thisLabel)" title="Delete Label">
+                                <button class="custom-button-icon-only p-0.75!" @click="deleteLabel(thisLabel)" title="Delete Label">
                                     <PhX class="size-5 text-red-500"></PhX>
                                 </button>
                             </div>
@@ -77,9 +85,46 @@
                             v-model.trim="thisLabel.name"
                         />
 
-                        <div class="flex justify-between mt-9 m-1 gap-2">
+                        <div class="flex justify-between mt-9 m-1">
                             <!-- Icon acting as handle for drag interaction and indicating that item is draggable -->
                             <DraggableHandle id="drag-handle"></DraggableHandle>
+
+                            <!-- Category Speciality Value Input --> <!-- TODO: I *also* dislike this entire block. Moving to a component would be better but complicate value passing & updating -->
+                            <div
+                                v-if="thisCategory.specialityID && CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.value != undefined"
+                                title="Configure Label Speciality"
+                            >
+                                <select v-if="thisCategory.specialityID == CategorySpecialityID.Body_Part" class="custom-input-primary w-32 h-fit! px-1.5!" v-model="thisLabel.specialityValue">
+                                    <option value=undefined disabled selected hidden>{{ CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description }}</option>
+                                    <option v-for="thisBodyPart in CategorySpecialityBodyPartValue" :value="thisBodyPart">{{ thisBodyPart }}</option>
+                                </select>
+                                <input v-else-if="thisCategory.specialityID == CategorySpecialityID.Color" class="w-7 h-7 rounded-4xl" type="color" :placeholder="CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description" v-model="thisLabel.specialityValue">
+                                <div v-else-if="thisCategory.specialityID == CategorySpecialityID.Season" class="">
+                                    <PickerDialog toggleText="Configure Label Speciality" hide-search>
+                                        <!-- This is the element that will be displayed in the open/close button -->
+                                        <template v-slot:toggle>
+                                            <button class="custom-button-icon-only-secondary">
+                                                <PhSlidersHorizontal class="size-5 fill-text-light dark:fill-text-dark"></PhSlidersHorizontal>
+                                            </button>
+                                        </template>
+
+                                        <!-- Items area -->
+                                        <template v-slot:items>
+                                            <div class="w-80">
+                                                <label for="specialSeasonFromTemp" class="mr-2">From Temperature:</label>
+                                                <input id="specialSeasonFromTemp" type="number" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp"> <br>
+                                                <label for="specialSeasonToTemp" class="mr-2">To Temperature:</label>
+                                                <input id="specialSeasonToTemp"   type="number" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp"> <br>
+                                                <label for="specialSeasonFromTime" class="mr-2">From Date:</label>
+                                                <input id="specialSeasonFromTime" type="date"   class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp"> <br>
+                                                <label for="specialSeasonToTime" class="mr-2">To Date:</label>
+                                                <input id="specialSeasonToTime"   type="date"   class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp"> <br>
+                                            </div>
+                                        </template>
+                                    </PickerDialog>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -105,10 +150,11 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPlus, PhTag, PhX } from "@phosphor-icons/vue";
+    import { PhCheck, PhPlus, PhSlidersHorizontal, PhTag, PhX } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import { getLabelOrderIndexBetween, getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
+    import { getLabelInitialized, getLabelOrderIndexBetween, getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
+    import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category-speciality";
     import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
 
@@ -151,7 +197,8 @@
             id: crypto.randomUUID(), // TODO: This should be server sided
             name: "",
             orderIndex: getNewLastLabelOrderIndex(labelsPerCategory[category.id]!),
-            categoryID: category.id
+            categoryID: category.id,
+            specialityValue: CategorySpecialityMap[category.specialityID].value // Init val
         };
 
         storedLabels.value.push(newLabel);
@@ -210,7 +257,8 @@
     function addCategory() {
         const e: Category = {
             id: crypto.randomUUID(), // TODO: This should be server sided
-            name: ""
+            name: "",
+            specialityID: CategorySpecialityID.No_Speciality
         };
 
         storedCategories.value.push(e);
@@ -241,6 +289,19 @@
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
             changesMade.value = true;
         }
+    }
+
+    // Update value of all labels of a category with default value when speciality changes
+    function updateCategorySpeciality(thisCategory: Category) {
+        labelsPerCategory[thisCategory.id]?.forEach((e) => {
+            e.specialityValue = CategorySpecialityMap[thisCategory.specialityID].value;
+        });
+
+        storedLabels.value.forEach((e) => {
+            if (e.categoryID == thisCategory.id) {
+                e.specialityValue = CategorySpecialityMap[thisCategory.specialityID].value;
+            }
+        })
     }
 
 

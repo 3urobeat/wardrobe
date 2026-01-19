@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-01 14:04:49
+ * Last Modified: 2026-01-19 12:06:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -14,9 +14,12 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { Category } from "./label-category";
+import { CategorySpecialityMap } from "./label-category-speciality";
+
 
 /**
- * Implements type definitions and operations on labels & categories
+ * Implements type definitions and operations on labels
  */
 
 
@@ -24,8 +27,32 @@ export type Label = {
     id: string,
     name: string,
     orderIndex: number,         // Floating point number
-    categoryID: string          // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
+    categoryID: string,         // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    specialityValue: any        // Arbitrary data submitted for label if selected category speciality calls for it
 }
+
+// Extend type using intersection
+/* export type LabelWithSpeciality<T extends CategorySpecialityID> = Label & {
+    specialityValue: CategorySpecialityLabelValueMap<T> // Arbitrary data submitted for label if selected category speciality calls for it
+} */
+
+
+/**
+ * Returns label with correctly initialized specialityValue
+ * @param label Label to process
+ * @param category Category of this label
+ * @returns Returns label with initialized specialityValue
+ */
+export function getLabelInitialized(label: Label, category: Category): Label {
+    if (label.specialityValue === undefined
+        || typeof label.specialityValue !== typeof CategorySpecialityMap[category.specialityID].value) {
+        label.specialityValue = CategorySpecialityMap[category.specialityID].value;
+    }
+
+    return label;
+}
+
 
 /**
  * Helper: Gets a new last orderIndex for (unsorted) list of labels

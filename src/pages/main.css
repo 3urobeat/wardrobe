@@ -4,10 +4,10 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 15:12:48
+ * Last Modified: 2026-01-18 14:49:28
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -75,6 +75,10 @@
 /* Small square button without text, used on <button> container. Put Icon inside. */
 .custom-button-icon-only {
     @apply p-1 rounded-md shadow-md bg-bg-input-light dark:bg-bg-input-dark outline-border-primary-light dark:outline-border-primary-dark outline-2 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all;
+}
+
+.custom-button-icon-only-secondary {
+    @apply p-1 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all;
 }
 
 /* Primary input, used in various places on <input> or even secondary <button> container */
