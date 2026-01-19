@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-01 14:01:17
+ * Last Modified: 2026-01-18 16:48:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -126,7 +126,7 @@
 
         <div class="flex gap-4 md:gap-8 select-none">
             <!-- Preview container --> <!-- TODO: Highlight item here when hovering it in the label container? -->
-            <div class="w-1/3 rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
+            <div class="w-1/3 min-h-90 rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
             </div>
 
             <!-- Clothes per label container -->
@@ -204,6 +204,14 @@
                         </PickerDialog>
                     </div>
                 </div>
+
+                <div class="flex h-full justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none"> <!-- TODO: Could be a little lower -->
+                    <!-- No items available text (DB empty) -->
+                    <label class="custom-label-primary flex items-center w-fit" v-if="!bodyPartsCategory">
+                        <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
+                        It looks like there is no label category marked with speciality 'Body Part' yet!
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -212,11 +220,12 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown, PhTrash } from "@phosphor-icons/vue";
+    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown, PhTrash, PhBinoculars } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import PickerDialog from "~/components/pickerDialog.vue";
     import { sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
+    import { CategorySpecialityID } from "~/model/label-category-speciality";
     import type { Clothing } from "~/model/clothing";
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode } from "~/model/sort-modes";
@@ -224,13 +233,13 @@
 
 
     // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    const storedCategories: Ref<Category[]> = useState("storedCategories");
+    const storedLabels:     Ref<Label[]> = useState("storedLabels");
+    const storedCategories: Ref<Category[]>     = useState("storedCategories");
 
     // Refs
-    const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
-    const bodyPartLabels: Ref<Label[]>    = ref([]);
-    const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
+    const thisOutfit:     Ref<Outfit>         = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
+    const bodyPartLabels: Ref<Label[]> = ref([]);
+    const storedClothes:  Ref<Clothing[]>     = ref([]); // Edit Mode only
     const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]); // Edit Mode only
 
 
@@ -244,8 +253,11 @@
     if (!editModeEnabled && outfitId == "new") useRouter().push("/outfits/edit?id=new");
 
     // Get all labels on page load
-    let labelsRes = await useFetch<Label[]>("/api/get-all-labels");
-    bodyPartLabels.value = sortLabelsList(getLabelsOfCategory(labelsRes.data.value!, "015534ff-94b6-4465-b3b2-8a2a3d8fb971")); // TODO: Filter for special label, temp hardcoded id
+    const bodyPartsCategory = storedCategories.value.find((e) => e.specialityID == CategorySpecialityID.Body_Part);
+
+    if (bodyPartsCategory) {
+        bodyPartLabels.value = sortLabelsList(getLabelsOfCategory(storedLabels.value!, bodyPartsCategory?.id));
+    }
 
 
     // Get outfits and their data
