@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 13:53:47
+ * Last Modified: 2026-01-19 18:05:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -66,21 +66,10 @@ export async function getImage(filePath: string): Promise<Buffer<ArrayBufferLike
  * @returns Returns scaled image buffer
  */
 export async function scaleImage(img: Buffer<ArrayBufferLike>, width: number, onlyDownscale?: boolean): Promise<Buffer<ArrayBufferLike>> {
-    const s = sharp(img);
-
-    // Get current width and skip scaling if image is already smaller than width
-    if (onlyDownscale) {
-        const widthPre = (await s.metadata()).width;
-
-        console.log(`DEBUG - scaleImage: widthPre: ${widthPre} vs. width: ${width}`);
-
-        if (widthPre < width) {
-            return img;
-        }
-    }
-
     // Scales and keeps aspect ratio
-    return (await s.resize(width).toBuffer());
+    return (await sharp(img)
+        .resize(width, null, { withoutEnlargement: onlyDownscale })
+        .toBuffer());
 }
 
 
