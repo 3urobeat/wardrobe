@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 13:36:48
+ * Last Modified: 2026-01-19 19:35:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -205,9 +205,9 @@
                     </div>
                 </div>
 
-                <div class="flex h-full justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none"> <!-- TODO: Could be a little lower -->
+                <div v-if="!bodyPartsCategory" class="flex h-full justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none">
                     <!-- No items available text (DB empty) -->
-                    <label class="custom-label-primary flex items-center w-fit" v-if="!bodyPartsCategory">
+                    <label class="custom-label-primary flex items-center w-fit">
                         <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
                         It looks like there is no label category marked with speciality 'Body Part' yet!
                     </label>
