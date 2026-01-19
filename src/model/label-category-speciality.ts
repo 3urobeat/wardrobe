@@ -4,7 +4,7 @@
  * Created Date: 2026-01-17 17:38:27
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 12:04:29
+ * Last Modified: 2026-01-19 12:23:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,12 @@ export enum CategorySpecialityID {
 
 // I dislike that this is a separately defined enum but I needed to iterate over it in labels page
 export enum CategorySpecialityBodyPartValue {
-    "Head", "Arms", "Hands", "Torso", "Legs", "Feet"
+    Head = "Head",
+    Arms = "Arms",
+    Hands = "Hands",
+    Torso = "Torso",
+    Legs = "Legs",
+    Feet = "Feet"
 }
 
 

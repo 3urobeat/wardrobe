@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 12:11:01
+ * Last Modified: 2026-01-19 12:24:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -95,8 +95,8 @@
                                 title="Configure Label Speciality"
                             >
                                 <select v-if="thisCategory.specialityID == CategorySpecialityID.Body_Part" class="custom-input-primary w-32 h-fit! px-1.5!" v-model="thisLabel.specialityValue">
-                                    <option value=undefined disabled selected hidden>{{ CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description }}</option>
-                                    <option v-for="thisBodyPart in CategorySpecialityBodyPartValue" :value="thisBodyPart">{{ thisBodyPart }}</option>
+                                    <!-- <option value=undefined disabled selected hidden>{{ CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description }}</option> -->
+                                    <option v-for="[key, value] of Object.entries(CategorySpecialityBodyPartValue)" :value="key">{{ value }}</option>
                                 </select>
                                 <input v-else-if="thisCategory.specialityID == CategorySpecialityID.Color" class="w-7 h-7 rounded-4xl" type="color" :placeholder="CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description" v-model="thisLabel.specialityValue">
                                 <div v-else-if="thisCategory.specialityID == CategorySpecialityID.Season" class="">
