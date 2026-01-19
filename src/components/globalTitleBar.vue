@@ -5,10 +5,10 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 21:35:30
+ * Last Modified: 2026-01-19 18:49:02
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -64,7 +64,7 @@
     const globalSearchStr:  Ref<string|null> = useState("globalSearchStr", () => null); // null on page load, set to "" on click to expand input
 
     // Global mouse event listener to collapse search input when clicking anywhere while search bar is empty
-    callOnce(() => {
+    onMounted(() => {
         console.log("DEBUG - globalTitleBar: Attaching mouse event listener")
 
         document.addEventListener("mouseup", () => {

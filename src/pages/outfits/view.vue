@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 19:35:07
+ * Last Modified: 2026-01-19 19:42:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -280,11 +280,13 @@
     }
 
     // Load images for clothes // TODO: Lazy load
-    storedClothes.value.forEach(async (e) => {
-        clothingImages.value.push({
-            id: e.id,
-            imgBlob: await getImage(e.imgPath)
-        })
+    onMounted(() => {
+        storedClothes.value.forEach(async (e) => {
+            clothingImages.value.push({
+                id: e.id,
+                imgBlob: await getImage(e.imgPath)
+            })
+        });
     });
 
 

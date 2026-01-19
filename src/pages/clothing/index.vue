@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 13:35:16
+ * Last Modified: 2026-01-19 19:41:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -106,11 +106,13 @@
     storedClothing.value = res.data.value!; // TODO: Error handling
 
     // Load images for clothes // TODO: Lazy load
-    storedClothing.value.forEach(async (e) => {
-        clothingImages.value.push({
-            id: e.id,
-            imgBlob: await getImage(e.imgPath)
-        })
+    onMounted(() => {
+        storedClothing.value.forEach(async (e) => {
+            clothingImages.value.push({
+                id: e.id,
+                imgBlob: await getImage(e.imgPath)
+            })
+        });
     });
 
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
