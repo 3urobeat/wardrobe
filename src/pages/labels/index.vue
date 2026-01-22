@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 12:24:00
+ * Last Modified: 2026-01-22 22:09:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -36,7 +36,7 @@
             <div class="flex items-center justify-between m-2">
                 <div class="flex gap-6">
                     <input
-                        class="custom-input-primary py-0.5! h-fit!"
+                        class="custom-input-primary py-0.5! h-fit! w-1/3 sm:w-full transition-all"
                         placeholder="Category Name"
                         v-model.trim="thisCategory.name"
                     />
