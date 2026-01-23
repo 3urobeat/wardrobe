@@ -4,10 +4,10 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-31 00:23:18
+ * Last Modified: 2026-01-23 22:44:18
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -17,19 +17,19 @@
 
 import { createCanvas, loadImage } from "canvas";
 import type { Outfit } from "~/model/outfit";
-import { getClothes } from "~/composables/useClothesDb";
-import { upsertOutfit, getOutfitsContainingClothing } from "~/composables/useOutfitsDb";
-import { getImage, imgCategory, saveImage } from "~/composables/useImagesStorage";
+import { getClothes } from "~/server/utils/useClothesDb";
+import { upsertOutfit, getOutfitsContainingClothing } from "~/server/utils/useOutfitsDb";
+import { getImage, imgCategory, saveImage } from "~/server/utils/useImagesStorage";
 
 
 /**
- * Server Side Only: Generates an image collage
+ * Generates an image collage
  * @param images Array of images, sorted how they should appear in the image, top to bottom
  * @param collageWidth Width of resulting image in pixels
  * @param collageHeight Height of resulting image in pixels
  * @returns Promise resolving to image collage as Buffer
  */
-async function _serverGenerateImageCollage(images: Buffer<ArrayBufferLike>[], collageWidth: number, collageHeight: number): Promise<Buffer<ArrayBufferLike>> {
+async function generateImageCollage(images: Buffer<ArrayBufferLike>[], collageWidth: number, collageHeight: number): Promise<Buffer<ArrayBufferLike>> {
     // Create a new 2D canvas
     const canvas = createCanvas(collageWidth, collageHeight);
     const ctx    = canvas.getContext("2d");
@@ -74,11 +74,11 @@ async function _serverGenerateImageCollage(images: Buffer<ArrayBufferLike>[], co
 
 
 /**
- * Server Side Only: Generates a preview image for an outfit
+ * Generates a preview image for an outfit
  * @param outfit Outfit to generate new preview image for
  * @returns Path of image in storage
  */
-export async function serverGenerateOutfitPreviewImage(outfit: Outfit): Promise<string> {
+export async function generateOutfitPreviewImage(outfit: Outfit): Promise<string> {
 
     // Get all images of clothes in this outfit
     const images: Buffer<ArrayBufferLike>[] = []; // TODO: Not sorted yet, probably needs to be a 2D array: First layer represents sorted body labels, second layer clothes sorted by order index
@@ -97,7 +97,7 @@ export async function serverGenerateOutfitPreviewImage(outfit: Outfit): Promise<
     // Generate collage
     console.log(`DEBUG: Generating new outfit preview image for '${outfit.id}' with ${images.length} images...`);
 
-    const collage = await _serverGenerateImageCollage(images, 1024, 1024);
+    const collage = await generateImageCollage(images, 1024, 1024);
 
 
     // Save image & return path
@@ -110,10 +110,10 @@ export async function serverGenerateOutfitPreviewImage(outfit: Outfit): Promise<
 
 
 /**
- * Server Side Only: Asynchronously re-generates preview images of outfits containing a piece of clothing
+ * Asynchronously re-generates preview images of outfits containing a piece of clothing
  * @param clothingID
  */
-export function serverUpdateImagesOfAffectedOutfits(clothingID: string) {
+export function updateImagesOfAffectedOutfits(clothingID: string) {
 
     // Get all outfits containing this piece of clothing
     getOutfitsContainingClothing(clothingID)

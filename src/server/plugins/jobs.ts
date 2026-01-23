@@ -4,7 +4,7 @@
  * Created Date: 2025-12-29 14:47:41
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-05 18:59:59
+ * Last Modified: 2026-01-23 22:40:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,7 @@
 
 
 import { CoreJobPendingDummy, Job } from "~/model/job";
-import { formatTime } from "~/composables/time";
+import { formatTime } from "~/utils/time";
 
 // Import core jobs
 import dataCleanupJob from "../utils/jobs/dataCleanup";

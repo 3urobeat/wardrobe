@@ -4,10 +4,10 @@
  * Created Date: 2025-12-08 17:43:05
  * Author: 3urobeat
  *
- * Last Modified: 2025-12-28 11:39:10
+ * Last Modified: 2026-01-23 22:39:50
  * Modified By: 3urobeat
  *
- * Copyright (c) 2025 3urobeat <https://github.com/3urobeat>
+ * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -15,7 +15,7 @@
  */
 
 
-import { upsertLabelCategories, upsertLabels } from "~/composables/useLabelsDb";
+import { upsertLabelCategories, upsertLabels } from "~/server/utils/useLabelsDb";
 
 
 /**
