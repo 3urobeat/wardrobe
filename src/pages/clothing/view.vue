@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 13:57:12
+ * Last Modified: 2026-01-23 22:15:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -233,7 +233,7 @@
         // If prompt was submitted with content
         if (name) {
             const newLabel: Label = {
-                id: crypto.randomUUID(), // TODO: This should be server sided
+                id: await getUUIDFromServer(),
                 name: name,
                 orderIndex: getNewLastLabelOrderIndex(getLabelsOfCategory(storedLabels.value, thisCategory.id)),
                 categoryID: thisCategory.id,

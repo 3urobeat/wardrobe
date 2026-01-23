@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-22 22:09:13
+ * Last Modified: 2026-01-23 22:16:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -192,9 +192,9 @@
 
 
     // Add a new label to a category
-    function addLabel(category: Category) {
+    async function addLabel(category: Category) {
         const newLabel: Label = {
-            id: crypto.randomUUID(), // TODO: This should be server sided
+            id: await getUUIDFromServer(),
             name: "",
             orderIndex: getNewLastLabelOrderIndex(labelsPerCategory[category.id]!),
             categoryID: category.id,
@@ -254,9 +254,9 @@
     }
 
     // Add a new category
-    function addCategory() {
+    async function addCategory() {
         const e: Category = {
-            id: crypto.randomUUID(), // TODO: This should be server sided
+            id: await getUUIDFromServer(),
             name: "",
             specialityID: CategorySpecialityID.No_Speciality
         };
