@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 19:51:24
+ * Last Modified: 2026-01-23 22:18:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -284,7 +284,7 @@
         storedClothes.value.forEach(async (e) => {
             clothingImages.value.push({
                 id: e.id,
-                imgBlob: await getImage(e.imgPath)
+                imgBlob: await getImageFromServer(e.imgPath, 256)
             })
         });
     });
@@ -302,25 +302,6 @@
 
         next();
     });
-
-
-    // Gets image from server
-    async function getImage(imgPath: string) {
-        if (!imgPath) return "";
-
-        const res = await fetch("/api/get-image", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                filePath: imgPath,
-                width: 256
-            })
-        });
-
-        return await res.text();
-    }
 
 
     // Add clothing to a label of this outfit

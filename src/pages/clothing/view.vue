@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:15:54
+ * Last Modified: 2026-01-23 22:19:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -189,7 +189,7 @@
 
         thisClothing.value = res.data.value!; // TODO: Error handling
 
-        thisClothingImgBlob.value = await getImage(thisClothing.value.imgPath) || "";
+        thisClothingImgBlob.value = await getImageFromServer(thisClothing.value.imgPath, 512) || "";
     }
 
     // Track if user made changes
@@ -262,25 +262,6 @@
     }
 
 
-    // Gets image from server
-    async function getImage(imgPath: string) {
-        if (!imgPath) return "";
-
-        const res = await useFetch("/api/get-image", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                filePath: imgPath,
-                width: 512
-            })
-        });
-
-        return res.data.value;
-    }
-
-
     // Triggered when new image was uploaded
     async function updateImage(fileName: string) {
         if (!fileName) throw("Error: Image was uploaded without file name?");
@@ -288,7 +269,7 @@
         thisClothing.value.imgPath = fileName;
         console.log("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
 
-        thisClothingImgBlob.value = await getImage(fileName) || "";
+        thisClothingImgBlob.value = await getImageFromServer(fileName, 512) || "";
     }
 
 
@@ -355,7 +336,7 @@
         // Update local refs
         thisClothing.value = resBody.document;
         changesMade.value = false;
-        thisClothingImgBlob.value = await getImage(resBody.document.imgPath) || "";
+        thisClothingImgBlob.value = await getImageFromServer(resBody.document.imgPath, 512) || "";
 
         // Redirect back on success
         useRouter().push("/clothing/view?id=" + thisClothing.value.id);

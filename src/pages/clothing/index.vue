@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 19:41:28
+ * Last Modified: 2026-01-23 22:17:55
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -110,31 +110,12 @@
         storedClothing.value.forEach(async (e) => {
             clothingImages.value.push({
                 id: e.id,
-                imgBlob: await getImage(e.imgPath)
+                imgBlob: await getImageFromServer(e.imgPath, 384)
             })
         });
     });
 
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
     let clothesToShow = computed(() => getItemsToShow(storedClothing.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Clothing[]);
-
-
-    // Gets image from server
-    async function getImage(imgPath: string) {
-        if (!imgPath) return "";
-
-        const res = await fetch("/api/get-image", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                filePath: imgPath,
-                width: 384
-            })
-        });
-
-        return await res.text();
-    }
 
 </script>

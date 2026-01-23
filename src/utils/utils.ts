@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:10:58
+ * Last Modified: 2026-01-23 22:17:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -21,4 +21,28 @@
  */
 export async function getUUIDFromServer(): Promise<string> {
     return (await useFetch("/api/generate-uuid")).data.value!; // TODO: Do I want to catch any exception here? If ID couldn't be generated, requesting element should not get created anyway
+}
+
+
+/**
+ * Helper function to query get-image API route
+ * @param imgPath File path to request
+ * @param width Optional: Request scaled down image
+ * @returns
+ */
+export async function getImageFromServer(imgPath: string, width: number|undefined) {
+    if (!imgPath) return "";
+
+    const res = await fetch("/api/get-image", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            filePath: imgPath,
+            width: width
+        })
+    });
+
+    return await res.text();
 }
