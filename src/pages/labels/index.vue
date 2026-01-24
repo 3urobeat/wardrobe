@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:16:21
+ * Last Modified: 2026-01-24 16:45:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -311,7 +311,7 @@
         // Send labels & categories data to API
         let rmResBody;
 
-        if (labelIDsToDelete.length > 0) { // || categoryIDsToDelete.length > 0)
+        if (labelIDsToDelete.length > 0 || categoryIDsToDelete.length > 0) {
             const rmRes = await fetch("/api/rm-labels", {
                 method: "POST",
                 headers: {
