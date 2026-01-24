@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 18:49:02
+ * Last Modified: 2026-01-24 13:34:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -19,39 +19,43 @@
 
 <template>
 
-    <!-- Wardrobe Icon(s) for light/dark mode with cut for expanded search bar on mobile -->
-    <NuxtLink class="absolute left-12.5 lg:left-7.5 select-none z-20 cursor-pointer transition-opacity duration-500" to="/">
-        <div :class="globalSearchStr != null ? 'w-10 sm:w-fit' : ''">
-            <img src="/logo-dark.png" class="h-7.5 object-left object-cover sm:object-contain hidden dark:block">
-            <img src="/logo-light.png" class="h-7.5 object-left object-cover sm:object-contain block dark:hidden">
-        </div>
-    </NuxtLink>
+    <div class="fixed flex items-center shrink-0 h-15 min-w-screen dark:text-text-dark border-y border-y-border-primary-light dark:border-y-border-primary-dark border-t-0">
 
-    <!-- Right side -->
-    <div class="absolute flex w-full justify-end pr-3 gap-4 select-none">
-        <!-- Search input. Use click.prevent to prevent click from passing through and thus preventing search bar from expanding -->
-        <div
-            class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark transition-all"
-            type="search"
-            @click.stop="showGlobalSearchBar()"
-        >                                                                                       <!-- bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light dark:hover:bg-bg-input-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 -->
-            <PhMagnifyingGlass class="self-center mx-2 size-5"></PhMagnifyingGlass>
-            <input
-                ref="globalSearchInput"
-                class="w-0 py-1 outline-0 transition-all"
-                :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50' : 'invisible w-0'"
-                placeholder="Search"
+        <!-- Wardrobe Icon(s) for light/dark mode with cut for expanded search bar on mobile -->
+        <NuxtLink class="fixed left-12.5 lg:left-7.5 select-none z-20 cursor-pointer transition-opacity duration-500" to="/">
+            <div :class="globalSearchStr != null ? 'w-10 sm:w-fit' : ''">
+                <img src="/logo-dark.png" class="h-7.5 object-left object-cover sm:object-contain hidden dark:block">
+                <img src="/logo-light.png" class="h-7.5 object-left object-cover sm:object-contain block dark:hidden">
+            </div>
+        </NuxtLink>
+
+        <!-- Right side -->
+        <div class="fixed right-0 flex pr-3 gap-4 select-none">
+            <!-- Search input. Use click.prevent to prevent click from passing through and thus preventing search bar from expanding -->
+            <div
+                class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark transition-all"
                 type="search"
-                v-model.trim="globalSearchStr"
-            />
+                @click.stop="showGlobalSearchBar()"
+            >                                                                                       <!-- bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light dark:hover:bg-bg-input-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 -->
+                <PhMagnifyingGlass class="self-center mx-2 size-5"></PhMagnifyingGlass>
+                <input
+                    ref="globalSearchInput"
+                    class="w-0 py-1 outline-0 transition-all"
+                    :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50' : 'invisible w-0'"
+                    placeholder="Search"
+                    type="search"
+                    v-model.trim="globalSearchStr"
+                />
+            </div>
+
+            <!-- Light/Dark Mode toggle. "p-0.5!" overwrites custom-button-icon-only's p-1 to make button smaller -->
+            <button class="custom-button-icon-only p-0.5!" @click="toggleDarkMode()">
+                <!-- This must tailwind tags instead of nuxt refs in order to work on page load (see global.js) -->
+                <PhMoon class="hidden dark:block size-7 p-0.5 transition-opacity"></PhMoon>
+                <PhSun class="block dark:hidden size-7 p-0.5 transition-opacity"></PhSun>
+            </button>
         </div>
 
-        <!-- Light/Dark Mode toggle. "p-0.5!" overwrites custom-button-icon-only's p-1 to make button smaller -->
-        <button class="custom-button-icon-only p-0.5!" @click="toggleDarkMode()">
-            <!-- This must tailwind tags instead of nuxt refs in order to work on page load (see global.js) -->
-            <PhMoon class="hidden dark:block size-7 p-0.5 transition-opacity"></PhMoon>
-            <PhSun class="block dark:hidden size-7 p-0.5 transition-opacity"></PhSun>
-        </button>
     </div>
 
 </template>
