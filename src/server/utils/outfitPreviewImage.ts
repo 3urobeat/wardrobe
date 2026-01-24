@@ -4,7 +4,7 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:44:18
+ * Last Modified: 2026-01-24 16:56:46
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -86,10 +86,12 @@ export async function generateOutfitPreviewImage(outfit: Outfit): Promise<string
     const clothes = await getClothes(outfit.clothes.flatMap((e) => e.clothingID));
 
     await Promise.all(clothes.map(async (e) => { // Refactored from a stinky await + then mixture for @DerDeathraven's sanity
-        const img = await getImage(e.imgPath);
+        if (e.imgPath) {
+            const img = await getImage(e.imgPath);
 
-        if (img) {
-            images.push(img);
+            if (img) {
+                images.push(img);
+            }
         }
     }));
 
