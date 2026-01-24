@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:19:06
+ * Last Modified: 2026-01-24 22:10:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -290,15 +290,17 @@
                 })
             });
 
+            const resBody = await res.json();
+
             // Indicate success/failure
-            /* if (success.data.value) {
+            if (resBody.success) {
                 responseIndicatorSuccess();
 
                 changesMade.value = false;
             } else {
                 responseIndicatorFailure();
                 return;
-            } */
+            }
 
             // Redirect back to Browse page on success
             useRouter().push("/");
@@ -321,22 +323,18 @@
             })
         });
 
-        // Indicate success/failure
-        /* if (success.data.value) {
+        const resBody = await res.json();
+
+        // Update local refs depending on success/failure and indicate result
+        if (resBody.success) {
             responseIndicatorSuccess();
 
             changesMade.value = false;
+            thisClothing.value = resBody.document;
+            thisClothingImgBlob.value = await getImageFromServer(resBody.document.imgPath, 512) || "";
         } else {
             responseIndicatorFailure();
-            return;
-        } */
-
-        const resBody = await res.json();
-
-        // Update local refs
-        thisClothing.value = resBody.document;
-        changesMade.value = false;
-        thisClothingImgBlob.value = await getImageFromServer(resBody.document.imgPath, 512) || "";
+        }
 
         // Redirect back on success
         useRouter().push("/clothing/view?id=" + thisClothing.value.id);

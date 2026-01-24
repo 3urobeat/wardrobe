@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-24 21:59:23
+ * Last Modified: 2026-01-24 22:11:17
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -380,15 +380,17 @@
                 })
             });
 
+            const resBody = await res.json();
+
             // Indicate success/failure
-            /* if (success.data.value) {
+            if (resBody.success) {
                 responseIndicatorSuccess();
 
                 changesMade.value = false;
             } else {
                 responseIndicatorFailure();
                 return;
-            } */
+            }
 
             // Redirect back to outfits page on success
             useRouter().push("/outfits");
@@ -411,22 +413,17 @@
             })
         });
 
-        // Indicate success/failure
-        /* if (success.data.value) {
+        const resBody = await res.json();
+
+        // Update local refs depending on success/failure and indicate result
+        if (resBody.success) {
             responseIndicatorSuccess();
 
             changesMade.value = false;
+            thisOutfit.value = resBody.document;
         } else {
             responseIndicatorFailure();
-        } */
-
-        const resBody = await res.json();
-
-        console.log(resBody)
-
-        // Update local refs
-        thisOutfit.value = resBody.document;
-        changesMade.value = false;
+        }
 
         // Redirect back on success
         useRouter().push("/outfits/view?id=" + thisOutfit.value.id);

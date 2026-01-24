@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-24 16:45:13
+ * Last Modified: 2026-01-24 22:13:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -337,23 +337,18 @@
             })
         });
 
-        // Indicate success/failure
-        /* if (success.data.value) {
+        const setResBody = await setRes.json(); // TODO: Write into storedLabels & labelsPerCategory to visualize change
+
+        // Update local refs depending on success/failure and indicate result
+        if (setResBody.success) {
             responseIndicatorSuccess();
 
             changesMade.value = false;
+            labelIDsToDelete = [];
+            categoryIDsToDelete = [];
         } else {
             responseIndicatorFailure();
-        } */
-
-
-        const setResBody = await setRes.json(); // TODO: Write into storedLabels & labelsPerCategory to visualize change
-
-        // Update local refs // TODO: Only on success
-        changesMade.value = false;
-        labelIDsToDelete = [];
-        categoryIDsToDelete = [];
-
+        }
 
         // TODO: Use response and update ref?
         console.log(rmResBody)
