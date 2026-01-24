@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:18:20
+ * Last Modified: 2026-01-24 21:59:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -51,35 +51,37 @@
 
     <!-- Page content -->
     <div class="py-20" @change="changesMade = true">
-        <div class="flex mb-4 md:mb-8 justify-between">
+        <div class="flex gap-4 mb-4 md:mb-8 justify-between">
             <!-- Outfit title -->
-            <div class="w-1/3 ml-0.5">
+            <div class="w-1/3">
                 <p     v-if="!editModeEnabled" class="custom-label-primary w-full">{{ thisOutfit.title }}</p>
                 <input v-if="editModeEnabled"  class="custom-input-secondary w-full" placeholder="Name" v-model.trim="thisOutfit.title" />
             </div>
 
             <!-- Label selector bar with expanding popup -->
-            <div class="flex justify-end rounded-md overflow-x-scroll shadow-md select-none p-1 gap-x-1.5 bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
+            <div class="flex items-center justify-end rounded-md shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
                 <!-- Selected labels list -->
-                <p
-                    class="custom-wardrobe-label"
-                    v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id))"
-                    :key="thisLabel.id"
-                    v-if="!editModeEnabled"
-                >
-                    {{ thisLabel.name }}
-                </p>
+                <div class="flex gap-x-1.5 overflow-x-scroll p-1">
+                    <p
+                        class="custom-wardrobe-label"
+                        v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id))"
+                        :key="thisLabel.id"
+                        v-if="!editModeEnabled"
+                    >
+                        {{ thisLabel.name }}
+                    </p>
 
-                <button
-                    class="custom-wardrobe-label-clickable"
-                    :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
-                    v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
-                    :key="thisLabel.id"
-                    @click="toggleLabel(thisLabel)"
-                    v-if="editModeEnabled"
-                >
-                    {{ thisLabel.name }}
-                </button>
+                    <button
+                        class="custom-wardrobe-label-clickable"
+                        :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
+                        v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
+                        :key="thisLabel.id"
+                        @click="toggleLabel(thisLabel)"
+                        v-if="editModeEnabled"
+                    >
+                        {{ thisLabel.name }}
+                    </button>
+                </div>
 
                 <!-- Labels selector popout -->
                 <PickerDialog
@@ -131,22 +133,26 @@
 
             <!-- Clothes per label container -->
             <div class="flex flex-col gap-4 md:gap-8 w-2/3">
-                <div class="flex w-full h-65 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all" v-for="thisLabel in bodyPartLabels" :key="thisLabel.id">
-                    <div>
-                        <!-- Title -->
-                        <div class="custom-label-primary w-fit py-0! px-2! m-2">
-                            {{ thisLabel.name }}
-                        </div>
+                <div
+                    class="flex flex-col w-full h-65 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"
+                    v-for="thisLabel in bodyPartLabels" :key="thisLabel.id"
+                >
+                    <!-- Category Title/Name -->
+                    <div class="custom-label-primary w-fit py-0! px-2! m-2">
+                        {{ thisLabel.name }}
+                    </div>
 
+                    <!-- Category content -->
+                    <div class="flex">
                         <!-- Clothes of this label -->
-                        <div class="flex h-50 mx-2 overflow-x-scroll"> <!-- TODO: Make clothes clickable in view mode to view them -->
+                        <div class="flex h-50 mx-2 overflow-x-scroll"> <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                             <div
                                 class="flex flex-col w-55 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                                 v-for="thisClothing in storedClothes.filter((e) => thisOutfit.clothes.some((f) => f.clothingID == e.id) && e.labelIDs.includes(thisLabel.id))"
                                 :key="thisClothing.id"
                             >
-                                <!-- Label title bar when in edit mode, let it clip over the image -->
-                                <div class="flex w-full mt-2 -mb-2 justify-end" v-if="editModeEnabled">
+                                <!-- Title bar when in edit mode, let it clip over the image -->
+                                <div class="flex relative w-full mt-2 -mb-2 justify-end" v-if="editModeEnabled">
                                     <button
                                         class="absolute z-20 custom-button-icon-only"
                                         @click="removeClothing(thisClothing.id)"
@@ -160,49 +166,50 @@
                                 <label class="self-start font-semibold mx-1">{{ thisClothing.title }}</label>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Add clothing to label button when in edit mode -->
-                    <div class="self-center mt-8" v-if="editModeEnabled">  <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
-                        <PickerDialog
-                            toggleText="Add Item"
-                        >
-                            <!-- This is the element that will be displayed in the open/close button -->
-                            <template v-slot:toggle>
-                                <div class="custom-button-icon-only">
-                                    <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
-                                </div>
-                            </template>
+                        <!-- Add clothing to label button when in edit mode -->
+                        <div class="self-center m-2" v-if="editModeEnabled"> <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
+                            <PickerDialog
+                                toggleText="Add Item"
+                            >
+                                <!-- This is the element that will be displayed in the open/close button -->
+                                <template v-slot:toggle>
+                                    <div class="custom-button-icon-only">
+                                        <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
+                                    </div>
+                                </template>
 
-                            <!-- Items area -->
-                            <template v-slot:items="slotProps">
-                                <div class="w-180 max-h-140 grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
-                                    <button
-                                        class="flex flex-col h-55 w-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
-                                        v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
-                                        :key="thisClothing.id"
-                                        @click="addClothing(thisClothing.id)"
-                                    >
-                                        <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
-                                        <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
+                                <!-- Items area -->
+                                <template v-slot:items="slotProps">
+                                    <div class="w-180 max-h-140 grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                        <button
+                                            class="flex flex-col h-55 w-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
+                                            v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
+                                            :key="thisClothing.id"
+                                            @click="addClothing(thisClothing.id)"
+                                        >
+                                            <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
+                                            <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
 
-                                        <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
-                                        <div class="flex mt-1 ml-1 overflow-x-scroll">
-                                            <div
-                                                class="custom-wardrobe-label"
-                                                v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
-                                                :key="thisLabel.name"
-                                            >
-                                                {{ thisLabel.name }}
+                                            <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
+                                            <div class="flex mt-1 ml-1 overflow-x-scroll">
+                                                <div
+                                                    class="custom-wardrobe-label"
+                                                    v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
+                                                    :key="thisLabel.name"
+                                                >
+                                                    {{ thisLabel.name }}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </button>
+                                        </button>
 
-                                    <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
-                                </div>
-                            </template>
-                        </PickerDialog>
+                                        <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
+                                    </div>
+                                </template>
+                            </PickerDialog>
+                        </div>
                     </div>
+
                 </div>
 
                 <div v-if="!bodyPartsCategory" class="flex h-full justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none">
