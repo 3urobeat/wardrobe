@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-24 22:11:17
+ * Last Modified: 2026-01-25 14:04:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -183,27 +183,31 @@
                                 <template v-slot:items="slotProps">
                                     <div class="w-180 max-h-140 grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
                                         <button
-                                            class="flex flex-col h-55 w-55 aspect-square p-1 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-embed-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-embed-hover-dark hover:transition-all"
+                                            class="custom-items-grid-card cursor-pointer p-3! h-55! w-55! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
                                             :key="thisClothing.id"
                                             @click="addClothing(thisClothing.id)"
                                         >
-                                            <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
-                                            <label class="self-start font-semibold ml-2">{{ thisClothing.title }}</label>
+                                            <img
+                                                class="w-fit h-3/4 mb-1 self-center"
+                                                :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
+                                                :alt="'Image for ' + thisClothing.title"
+                                            >
+                                            <label class="self-start text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
 
-                                            <!-- Labels --> <!-- TODO: Too many labels will probably clip out, allow x scroll? -->
-                                            <div class="flex mt-1 ml-1 overflow-x-scroll">
-                                                <div
-                                                    class="custom-wardrobe-label"
+                                            <!-- Labels -->
+                                            <div class="flex h-7 mt-1 overflow-scroll gap-0.5">
+                                                <button
+                                                    class="custom-wardrobe-label-clickable text-sm h-fit m-0.5"
                                                     v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
                                                     :key="thisLabel.name"
                                                 >
                                                     {{ thisLabel.name }}
-                                                </div>
+                                                </button>
                                             </div>
                                         </button>
 
-                                        <label class="self-start pl-5 pb-5" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
+                                        <label class="p-1" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
                                     </div>
                                 </template>
                             </PickerDialog>
