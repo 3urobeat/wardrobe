@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-24 22:10:02
+ * Last Modified: 2026-01-25 12:49:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -52,7 +52,7 @@
     <!-- Page content -->
     <div class="flex justify-center items-center py-20" @change="changesMade = true">
         <!-- TODO: Pop-In Animation -->
-        <div class="flex flex-col w-full md:w-xl h-200 px-8 pb-8 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"> <!-- TODO: Why does this use input when it is a field/embed? Sounds like inconsistent styling -->
+        <div class="flex flex-col w-full md:w-xl h-200 px-4 pb-4 sm:px-8 sm:pb-8 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"> <!-- TODO: Why does this use input when it is a field/embed? Sounds like inconsistent styling -->
 
             <!-- Image (Upload) -->
             <div
@@ -108,7 +108,7 @@
 
                     <!-- Separate labels by category -->
                     <div class="flex m-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
-                        <div class="custom-label-primary text-md w-fit py-0! px-2!">
+                        <div class="custom-label-primary text-nowrap text-md w-fit py-0! px-2!">
                             {{ thisCategory.name }}:
                         </div>
 

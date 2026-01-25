@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-18 14:49:28
+ * Last Modified: 2026-01-25 12:53:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -118,4 +118,12 @@
 /* Add with conditional class to mark wardrobe label as selected */
 .custom-wardrobe-label-selected-outline {
     @apply bg-green-600/60 outline-green-700 dark:outline-green-500 outline-2;
+}
+
+/* These two define a custom grid for displaying items with desktop/mobile scaling. The minmax value here is calculated from the h-46 & h-94 below (but I lowered 376px to 342px because there was one window size with just one huge column) */
+.custom-items-grid {
+    @apply grid grid-cols-[repeat(auto-fill,minmax(148px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(342px,1fr))] gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-10
+}
+.custom-items-grid-card {
+    @apply flex flex-col w-full h-46 md:h-94 aspect-square md:aspect-auto p-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all
 }

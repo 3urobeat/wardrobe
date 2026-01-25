@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:19:32
+ * Last Modified: 2026-01-25 12:55:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -26,32 +26,29 @@
         Add Outfit
     </TitleBarFull>
 
-    <div
-        class="overflow-x-clip"
-        :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"
-    >
+    <div :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"> <!-- Push content down on mobile when title bar expands to show filter bar -->
 
         <!-- Responsive grid for outfits - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(365px,1fr))] gap-x-6 gap-y-10">
+        <div class="custom-items-grid">
 
             <!-- Outfit Cards -->
             <NuxtLink
-                class="flex flex-col h-96 w-full lg:w-96 p-4 rounded-2xl shadow-lg cursor-pointer bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
+                class="custom-items-grid-card cursor-pointer"
                 v-for="thisOutfit in outfitsToShow"
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
                 <img
-                    class="w-fit h-50 sm:h-60 mb-1 self-center"
+                    class="w-fit h-2/3 mb-2 self-center"
                     :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
                     :alt="'Image for ' + thisOutfit.title"
                 >
-                <label class="self-start font-semibold mb-1">{{ thisOutfit.title }}</label>
+                <label class="self-start text-sm md:text-base font-semibold md:m-1">{{ thisOutfit.title }}</label>
 
-                <!-- Filter Labels --> <!-- TODO: Click goes through and triggers redirect -->
-                <div class="mt-4">
+                <!-- Filter Labels -->
+                <div class="flex md:flex-wrap h-7 md:h-15 mt-1 overflow-scroll gap-0.5">
                     <button
-                        class="custom-wardrobe-label-clickable m-0.5"
+                        class="custom-wardrobe-label-clickable text-sm md:text-base h-fit m-0.5"
                         :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                         v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
                         :key="thisLabel.id"

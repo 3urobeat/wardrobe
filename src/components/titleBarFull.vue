@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-05 17:39:36
+ * Last Modified: 2026-01-25 12:00:03
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -69,7 +69,7 @@
                 :class="selectedFilters.length > 0 ? 'flex md:hidden w-full md:w-0 lg:w-1/3 p-1 mt-3' : 'w-0 p-0'"
             >
                 <button
-                    class="custom-wardrobe-label-clickable"
+                    class="custom-wardrobe-label-clickable text-sm"
                     :class="selectedFilters.includes(thisFilter.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                     v-for="thisFilter in storedLabels.filter((e) => selectedFilters.includes(e.id))"
                     :key="thisFilter.id"
