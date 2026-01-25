@@ -25,7 +25,7 @@ Wardrobe features:
   - with: Image, Title, Description, Labels
 - **Create Outfits:** Combine your Clothes!
   - with: Clothes per body part, Title, Labels
-  - Preview Image will be automatically generated based on clothes added
+  - Automatically generated preview image based on clothes added
 - **Browse your Clothes & Outfits**
   - What do I want to wear today?
   - Search by text, sort by name/date or filter by a combination of labels
@@ -58,26 +58,30 @@ This can either be a docker volume, which you can create using [docker volume cr
 > [!NOTE]
 > If you are using Portainer, make sure to set the working directory at the bottom to `/usr/src/wardrobe`
 
-&nbsp;
+<br>
 
-## Local:
-Make sure you have git, node & npm installed on your system.
+<details>
+  <summary><strong>Method 2: Local Install</strong> (Click to unfold)</summary>
 
-Clone the git repository:  
-`git clone https://github.com/3urobeat/wardrobe`  
-`cd wardrobe`
+  Make sure you have git, node & npm installed on your system.
 
-Install dependencies:  
-`npm ci --omit=dev`
+  Clone the git repository:  
+  `git clone https://github.com/3urobeat/wardrobe`  
+  `cd wardrobe`
 
-Build the project:  
-`npm run build`
+  Install dependencies:  
+  `npm ci --omit=dev`
 
-Start the service:  
-`PORT=<host_port> npm run start`
+  Build the project:  
+  `npm run build`
 
-Replace `<host_port>` with the port you want to access wardrobe at.  
-If you omit `PORT=`, port 3000 will be used.
+  Start the service:  
+  `PORT=<host_port> npm run start`
+
+  Replace `<host_port>` with the port you want to access wardrobe at.  
+  If you omit `PORT=`, port 3000 will be used.
+
+</details>
 
 &nbsp;
 
