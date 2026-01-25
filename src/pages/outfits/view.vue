@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-25 14:04:43
+ * Last Modified: 2026-01-25 17:45:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -53,15 +53,15 @@
     <div class="py-20" @change="changesMade = true">
         <div class="flex gap-4 mb-4 md:mb-8 justify-between">
             <!-- Outfit title -->
-            <div class="w-1/3">
-                <p     v-if="!editModeEnabled" class="custom-label-primary w-full">{{ thisOutfit.title }}</p>
+            <div class="w-1/3 shrink-0">
+                <p     v-if="!editModeEnabled" class="custom-label-primary text-nowrap w-full">{{ thisOutfit.title }}</p>
                 <input v-if="editModeEnabled"  class="custom-input-secondary w-full" placeholder="Name" v-model.trim="thisOutfit.title" />
             </div>
 
             <!-- Label selector bar with expanding popup -->
-            <div class="flex items-center justify-end rounded-md shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all w-full lg:w-1/2">
+            <div class="flex items-center justify-end min-w-1/2 max-w-screen rounded-md shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all">
                 <!-- Selected labels list -->
-                <div class="flex gap-x-1.5 overflow-x-scroll p-1">
+                <div class="flex gap-x-1 overflow-x-scroll p-1">
                     <p
                         class="custom-wardrobe-label"
                         v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id))"
@@ -72,8 +72,7 @@
                     </p>
 
                     <button
-                        class="custom-wardrobe-label-clickable"
-                        :class="thisOutfit.labelIDs.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
+                        class="custom-wardrobe-label-clickable custom-wardrobe-label-selected-outline mx-0.5"
                         v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
                         :key="thisLabel.id"
                         @click="toggleLabel(thisLabel)"
@@ -95,8 +94,8 @@
                     <!-- TODO: Overflows screen width due to being centered to right aligned CaretDown -->
                     <template v-slot:items>
                         <!-- Separate labels by category -->
-                        <div class="flex w-180 max-h-140 my-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
-                            <div class="custom-label-primary py-0! px-2!">
+                        <div class="flex w-180 max-h-140 my-1.5 gap-x-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
+                            <div class="custom-label-primary text-nowrap py-0! px-2!">
                                 {{ thisCategory.name }}:
                             </div>
 
@@ -181,7 +180,7 @@
 
                                 <!-- Items area -->
                                 <template v-slot:items="slotProps">
-                                    <div class="w-180 max-h-140 grid grid-cols-3 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                    <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] w-180 max-w-screen max-h-140 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
                                         <button
                                             class="custom-items-grid-card cursor-pointer p-3! h-55! w-55! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"

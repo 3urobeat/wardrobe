@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-18 16:46:30
+ * Last Modified: 2026-01-25 17:46:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -21,47 +21,46 @@
 
     <!-- Open/Close button -->
     <div class="flex flex-col items-center">
-        <button
-            class="h-fit z-20"
-            :title="toggleText" @click="isOpen = !isOpen"
-        >           <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click -->
+        <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click --> <!-- TODO: Does this still work? -->
+        <button class="h-fit z-20" :title="toggleText" @click="isOpen = !isOpen" ref="pickerDialogToggleBtn">
             <slot name="toggle"></slot>
         </button>
 
-        <!-- Position dialog absolute to parent by setting parent to relative -->
-        <div v-if="isOpen" class="absolute z-50 mt-6 transition-all">
+        <!-- Triangle -->
+        <p v-if="isOpen" class="absolute z-50 self-center text-2xl pt-2 text-bg-field-light dark:text-bg-field-dark">&#x25B2;</p>
+
+        <!--
+            Position dialog absolute to parent by setting parent to relative.
+            Bind position to computed dialogPosition to be able to move container based on distance to screen bounds.
+        -->
+        <div v-if="isOpen" class="absolute z-50 mt-6 transition-all" :class="dialogPosition"> <!-- TODO: Apply dialogPosition only to itemsDiv, keep triangle centered to button -->
             <!-- Dummy filling the entire page to close popout when clicking on anything outside popout -->
-            <div class="fixed top-0 left-0 h-screen w-screen opacity-0" @click="isOpen = !isOpen"></div>
+            <div class="fixed top-0 left-0 min-h-screen min-w-screen opacity-0" @click="isOpen = !isOpen"></div>
 
-            <div class="flex flex-col transition-all">
-                <!-- Triangle -->
-                <p class="self-center text-2xl -mb-1.5 text-bg-field-light dark:text-bg-field-dark">&#x25B2;</p>
+            <!-- Content -->
+            <dialog id="picker-dialog" class="relative mt-2.5 max-w-screen flex flex-col p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
 
-                <!-- Content -->
-                <dialog id="picker-dialog" class="relative flex flex-col p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
+                <!-- Search and Close button -->
+                <div class="flex justify-end gap-x-4">
+                    <input
+                        class="w-full custom-input-primary"
+                        placeholder="Search"
+                        v-model.trim="searchStr"
+                        type="search"
+                        v-if="!hideSearch"
+                    />
 
-                    <!-- Search and Close button -->
-                    <div class="flex justify-end gap-x-4">
-                        <input
-                            class="w-full custom-input-primary"
-                            placeholder="Search"
-                            v-model.trim="searchStr"
-                            type="search"
-                            v-if="!hideSearch"
-                        />
+                    <button class="custom-input-primary" @click="isOpen = !isOpen">
+                        Close
+                    </button>
+                </div>
 
-                        <button class="custom-input-primary" @click="isOpen = !isOpen">
-                            Close
-                        </button>
-                    </div>
+                <!-- Items. Restrict width to screen size -->
+                <div ref="pickerDialogItemsDiv" class="max-w-screen overflow-x-scroll">
+                    <slot name="items" :searchStr="searchStr"></slot>
+                </div>
 
-                    <!-- Items -->
-                    <div>
-                        <slot name="items" :searchStr="searchStr"></slot>
-                    </div>
-
-                </dialog>
-            </div>
+            </dialog>
         </div>
     </div>
 
@@ -70,8 +69,41 @@
 
 <script setup lang="ts">
 
-    const isOpen:    Ref<boolean> = ref(false);
-    const searchStr: Ref<string>  = ref("");
+    // Refs
+    const isOpen:                Ref<boolean>                     = ref(false);
+    const pickerDialogToggleBtn: Ref<HTMLButtonElement|undefined> = ref();
+    const searchStr:             Ref<string>                      = ref("");
+    const pickerDialogItemsDiv:  Ref<HTMLDivElement|undefined>    = ref();
+
+    // Calculate distance to screen bounds and position dialog accordingly to prevent x-overflow
+    const dialogPosition = computed(() => {
+        const buttonRect  = pickerDialogToggleBtn.value?.getBoundingClientRect(); // Get location of button that toggles dialog
+        const dialogWidth = pickerDialogItemsDiv.value?.clientWidth;              // Get width of dialog
+
+        // Value is initially undefined, prob due to transition. Only take action once itemsDiv width is known
+        if (dialogWidth && buttonRect) {
+            // Calculate distance to left & right screen border. If value is negative, the dialog overflows
+            const leftOverflow  = buttonRect.left - dialogWidth;
+            const rightOverflow = window.innerWidth - (buttonRect.right + dialogWidth);
+            //console.log("[DEBUG] Picker left & right screen border distances:", leftOverflow, rightOverflow)
+
+            // Picker dialog overflows on both screen borders, center on screen and shrink content
+            if (leftOverflow < 0 && rightOverflow < 0) {
+                return "left-1/2 transform -translate-x-1/2";
+
+            } else {    // Picker dialog overflows only on one screen border
+
+                // Align dialog to left or right screen border, depending on which overflows
+                if (leftOverflow < 0) {
+                    return "left-0";
+                } else if (rightOverflow < 0) {
+                    return "right-0";
+                } else {
+                    return ""; // No overflow
+                }
+            }
+        }
+    });
 
     // Define Props to be accepted by this component
     defineProps({
