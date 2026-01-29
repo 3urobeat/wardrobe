@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-25 17:46:41
+ * Last Modified: 2026-01-29 15:23:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@
             <div class="fixed top-0 left-0 min-h-screen min-w-screen opacity-0" @click="isOpen = !isOpen"></div>
 
             <!-- Content -->
-            <dialog id="picker-dialog" class="relative mt-2.5 max-w-screen flex flex-col p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
+            <dialog id="picker-dialog" class="relative mt-2 max-w-screen flex flex-col p-2 md:p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
 
                 <!-- Search and Close button -->
                 <div class="flex justify-end gap-x-4">

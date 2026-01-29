@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-25 17:45:26
+ * Last Modified: 2026-01-29 15:28:51
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -180,15 +180,15 @@
 
                                 <!-- Items area -->
                                 <template v-slot:items="slotProps">
-                                    <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] w-180 max-w-screen max-h-140 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                    <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
                                         <button
-                                            class="custom-items-grid-card cursor-pointer p-3! h-55! w-55! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
+                                            class="custom-items-grid-card cursor-pointer p-3! h-45! md:h-55! aspect-square! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
                                             :key="thisClothing.id"
                                             @click="addClothing(thisClothing.id)"
                                         >
                                             <img
-                                                class="w-fit h-3/4 mb-1 self-center"
+                                                class="w-fit h-2/3 mb-1 self-center"
                                                 :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
                                                 :alt="'Image for ' + thisClothing.title"
                                             >
@@ -206,7 +206,7 @@
                                             </div>
                                         </button>
 
-                                        <label class="p-1" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
+                                        <label class="p-1 text-nowrap" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
                                     </div>
                                 </template>
                             </PickerDialog>
