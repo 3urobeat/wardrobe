@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-25 12:54:58
+ * Last Modified: 2026-01-29 14:00:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -39,14 +39,14 @@
                 :to="'/clothing/view?id=' + thisClothing.id"
             >
                 <img
-                    class="w-fit h-2/3 mb-2 self-center"
+                    class="w-fit h-2/3 mb-1 md:mb-2 self-center"
                     :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
                     :alt="'Image for ' + thisClothing.title"
                 >
                 <label class="self-start text-sm md:text-base font-semibold md:m-1">{{ thisClothing.title }}</label>
 
                 <!-- Labels -->
-                <div class="flex md:flex-wrap h-7 md:h-15 mt-1 overflow-scroll gap-0.5">
+                <div class="flex md:flex-wrap h-7 md:h-15 mt-0.5 md:mt-2 overflow-x-scroll gap-0.5">
                     <button
                         class="custom-wardrobe-label-clickable text-sm md:text-base h-fit m-0.5"
                         :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
