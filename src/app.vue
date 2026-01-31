@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-24 17:23:14
+ * Last Modified: 2026-01-31 11:15:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -32,7 +32,7 @@
         <nav
             id="navbar"
             :class="showNavbar ? '' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
-            class="fixed top-15 z-20 w-52 min-w-52 min-h-screen backdrop-blur-md lg:opacity-100 dark:text-text-dark border-x border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
+            class="fixed top-15 z-20 w-52 min-w-52 min-h-screen backdrop-blur-md lg:opacity-100 dark:text-text-dark border-x border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-opacity"
         > <!-- For some reason this backdrop-blur-md causes a position shift in the footer, so we have to always display it and use bottom-15 in footer -->
 
             <div class="absolute left-9 top-2">
