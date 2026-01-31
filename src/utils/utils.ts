@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-23 22:17:10
+ * Last Modified: 2026-01-31 11:52:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -20,7 +20,9 @@
  * @returns UUID
  */
 export async function getUUIDFromServer(): Promise<string> {
-    return (await useFetch("/api/generate-uuid")).data.value!; // TODO: Do I want to catch any exception here? If ID couldn't be generated, requesting element should not get created anyway
+    const res = await fetch("/api/generate-uuid");
+
+    return (await res.text()); // TODO: Do I want to catch any exception here? If ID couldn't be generated, requesting element should not get created anyway
 }
 
 
