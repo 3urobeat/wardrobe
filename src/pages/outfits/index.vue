@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-29 13:58:08
+ * Last Modified: 2026-01-31 12:59:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -105,7 +105,6 @@
     // Load images for outfits // TODO: Lazy load
     onMounted(() => {
         storedOutfits.value.forEach(async (e) => {
-            console.log(e.previewImgPath)
             outfitImages.value.push({
                 id: e.id,
                 imgBlob: await getImageFromServer(e.previewImgPath, 384)
