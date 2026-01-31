@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-29 15:28:51
+ * Last Modified: 2026-01-31 12:55:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -173,9 +173,7 @@
                             >
                                 <!-- This is the element that will be displayed in the open/close button -->
                                 <template v-slot:toggle>
-                                    <div class="custom-button-icon-only">
-                                        <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
-                                    </div>
+                                    <PhPlus class="custom-button-icon-only size-7 fill-text-light dark:fill-text-dark"></PhPlus>
                                 </template>
 
                                 <!-- Items area -->

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-31 12:40:21
+ * Last Modified: 2026-01-31 12:54:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -99,13 +99,11 @@
                                     <option v-for="[key, value] of Object.entries(CategorySpecialityBodyPartValue)" :value="key">{{ value }}</option>
                                 </select>
                                 <input v-else-if="thisCategory.specialityID == CategorySpecialityID.Color" class="w-7 h-7 rounded-4xl" type="color" :placeholder="CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description" v-model="thisLabel.specialityValue">
-                                <div v-else-if="thisCategory.specialityID == CategorySpecialityID.Season" class="">
+                                <div v-else-if="thisCategory.specialityID == CategorySpecialityID.Season">
                                     <PickerDialog toggleText="Configure Label Speciality" hide-search>
                                         <!-- This is the element that will be displayed in the open/close button -->
                                         <template v-slot:toggle>
-                                            <button class="custom-button-icon-only-secondary">
-                                                <PhSlidersHorizontal class="size-5 fill-text-light dark:fill-text-dark"></PhSlidersHorizontal>
-                                            </button>
+                                            <PhSlidersHorizontal class="custom-button-icon-only-secondary size-7 fill-text-light dark:fill-text-dark"></PhSlidersHorizontal>
                                         </template>
 
                                         <!-- Items area -->
@@ -157,7 +155,6 @@
     import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category-speciality";
     import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
-    import type { UseClonedReturn } from "@vueuse/core";
 
 
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()

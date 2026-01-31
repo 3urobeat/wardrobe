@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-29 15:23:15
+ * Last Modified: 2026-01-31 12:56:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -24,6 +24,7 @@
         <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click --> <!-- TODO: Does this still work? -->
         <button class="h-fit z-20" :title="toggleText" @click="isOpen = !isOpen" ref="pickerDialogToggleBtn">
             <slot name="toggle"></slot>
+            <!-- WARN: This slot *must not* contain another <button>, it will cause a hydration mismatch! -->
         </button>
 
         <!-- Triangle -->
