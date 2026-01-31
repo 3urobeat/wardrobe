@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-24 22:13:06
+ * Last Modified: 2026-01-31 12:40:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -29,7 +29,7 @@
 
         <div
             class="flex flex-col w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"
-            v-for="thisCategory in storedCategories"
+            v-for="thisCategory in localCategories"
             :key="thisCategory.id"
         >
             <!-- Category Title/Name, Speciality Selector & Delete button -->
@@ -157,18 +157,21 @@
     import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category-speciality";
     import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
+    import type { UseClonedReturn } from "@vueuse/core";
 
 
-    // Get global cache from app.vue
+    // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()
     const storedLabels:     Ref<Label[]>    = useState("storedLabels");
     const storedCategories: Ref<Category[]> = useState("storedCategories");
+    let   localLabels:      Label[]         = useCloned(storedLabels, { manual: true }).cloned.value;     // I'm not using useCloned's sync() as it just wouldn't work :shrug:
+    let   localCategories:  Category[]      = useCloned(storedCategories, { manual: true }).cloned.value;
 
-    // Prepare temporary drag & and droppable lists. Changes in this list must be synced to global storedLabels & storedCategories!
+    // Prepare temporary list for drag & drop reorder functionality. Changes in this list must be synced to localLabels & localCategories!
     // Key/Index is category id
     const labelsPerCategory: Reactive<{ [key: string]: Label[] }> = reactive({}); // Nested data structure must use reactive to update correctly in template when dragged
 
-    storedCategories.value.forEach((thisCategory) => {
-        labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(storedLabels.value, thisCategory.id));
+    localCategories.forEach((thisCategory) => {
+        labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(localLabels, thisCategory.id));
 
         useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, handle: "#drag-handle", onUpdate: moveLabel }); // Handle allows dragging action only on item with that id
     });
@@ -201,7 +204,7 @@
             specialityValue: CategorySpecialityMap[category.specialityID].value // Init val
         };
 
-        storedLabels.value.push(newLabel);
+        localLabels.push(newLabel);
         labelsPerCategory[category.id]!.push(newLabel);
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -214,7 +217,7 @@
 
         if (confirmed) {
             labelIDsToDelete.push(selectedLabel.id);
-            storedLabels.value = storedLabels.value.filter((e) => e.id != selectedLabel.id);
+            localLabels = localLabels.filter((e) => e.id != selectedLabel.id);
             labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
 
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -222,7 +225,7 @@
         }
     }
 
-    // Called when label is moved using useSortable() and synchronizes labelsPerCategory with storedLabels
+    // Called when label is moved using useSortable() and synchronizes labelsPerCategory with localLabels
     function moveLabel(event: any) { // This is of type Sortable.SortableEvent but there are no TS type definitons - https://vueuse.org/integrations/useSortable/#usesortable
 
         // Get data from event
@@ -245,7 +248,7 @@
 
             // Apply orderIndex change to both lists
             labelsPerCategory[categoryID]![labelIndex]!.orderIndex = newOrderIndex;
-            storedLabels.value.find((e) => e.id == list[labelIndex]!.id)!.orderIndex = newOrderIndex;
+            localLabels.find((e) => e.id == list[labelIndex]!.id)!.orderIndex = newOrderIndex;
 
             //console.log(list[labelIndex].name)
             //console.log(labelsPerCategory[categoryID].map((e) => e.orderIndex))
@@ -261,7 +264,7 @@
             specialityID: CategorySpecialityID.No_Speciality
         };
 
-        storedCategories.value.push(e);
+        localCategories.push(e);
         labelsPerCategory[e.id] = [];
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -274,11 +277,11 @@
 
         if (confirmed) {
             categoryIDsToDelete.push(selectedCategory.id);
-            storedCategories.value = storedCategories.value.filter((e) => e.id != selectedCategory.id);
+            localCategories = localCategories.filter((e) => e.id != selectedCategory.id);
             delete labelsPerCategory[selectedCategory.id];
 
             // Delete all labels of this category
-            storedLabels.value = storedLabels.value.filter((e) => {
+            localLabels = localLabels.filter((e) => {
                 if (e.categoryID === selectedCategory.id) {
                     labelIDsToDelete.push(e.id);
                     return false;
@@ -297,7 +300,7 @@
             e.specialityValue = CategorySpecialityMap[thisCategory.specialityID].value;
         });
 
-        storedLabels.value.forEach((e) => {
+        localLabels.forEach((e) => {
             if (e.categoryID == thisCategory.id) {
                 e.specialityValue = CategorySpecialityMap[thisCategory.specialityID].value;
             }
@@ -309,7 +312,7 @@
     async function saveChanges() {
 
         // Send labels & categories data to API
-        let rmResBody;
+        let rmResBody = { success: true }; // Default
 
         if (labelIDsToDelete.length > 0 || categoryIDsToDelete.length > 0) {
             const rmRes = await fetch("/api/rm-labels", {
@@ -332,27 +335,26 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                categories: storedCategories.value,
-                labels: storedLabels.value
+                categories: localCategories,
+                labels: localLabels
             })
         });
 
-        const setResBody = await setRes.json(); // TODO: Write into storedLabels & labelsPerCategory to visualize change
+        const setResBody = await setRes.json();
 
         // Update local refs depending on success/failure and indicate result
-        if (setResBody.success) {
+        if (rmResBody.success && setResBody.success) {
             responseIndicatorSuccess();
 
-            changesMade.value = false;
-            labelIDsToDelete = [];
+            changesMade.value   = false;
+            labelIDsToDelete    = [];
             categoryIDsToDelete = [];
+            storedLabels.value     = localLabels;     // Manually sync local clones to global cache, useCloned's sync() didn't work
+            storedCategories.value = localCategories;
         } else {
             responseIndicatorFailure();
         }
-
-        // TODO: Use response and update ref?
-        console.log(rmResBody)
-        console.log(setResBody)
+        // TODO: Handle !success better
 
     }
 
