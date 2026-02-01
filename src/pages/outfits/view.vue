@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-01 15:39:04
+ * Last Modified: 2026-02-01 21:51:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -129,6 +129,7 @@
             <!-- Preview container --> <!-- TODO: Highlight item here when hovering it in the label container? -->
             <div class="relative w-full md:w-1/3 min-h-90 h-90 md:h-auto rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
                 <PhUserFocus class="absolute left-0 top-0 m-4 custom-label-icon-only size-7.5"></PhUserFocus>
+                <threedModelViewer modelUrl="/3d-model/mannequin.glb" :xRotationLimit="0.5"></threedModelViewer>
             </div>
 
             <!-- Clothes per label container -->
@@ -239,6 +240,7 @@
     import type { Outfit } from "~/model/outfit";
     import { defaultSortMode } from "~/model/sort-modes";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
+    import threedModelViewer from "~/components/threedModelViewer.vue";
 
 
     // Get global cache from app.vue
