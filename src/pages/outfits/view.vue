@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-01 14:44:22
+ * Last Modified: 2026-02-01 15:39:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -127,7 +127,8 @@
 
         <div class="flex flex-col md:flex-row gap-4 md:gap-8 select-none">
             <!-- Preview container --> <!-- TODO: Highlight item here when hovering it in the label container? -->
-            <div class="w-full md:w-1/3 min-h-90 h-90 md:h-auto rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
+            <div class="relative w-full md:w-1/3 min-h-90 h-90 md:h-auto rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
+                <PhUserFocus class="absolute left-0 top-0 m-4 custom-label-icon-only size-7.5"></PhUserFocus>
             </div>
 
             <!-- Clothes per label container -->
@@ -228,7 +229,7 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown, PhTrash, PhBinoculars } from "@phosphor-icons/vue";
+    import { PhCheck, PhPencil, PhPlus, PhX, PhCaretDown, PhTrash, PhBinoculars, PhUserFocus } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import PickerDialog from "~/components/pickerDialog.vue";
     import { sortLabelsList, type Label } from "~/model/label";

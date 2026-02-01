@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-31 19:23:16
+ * Last Modified: 2026-02-01 15:41:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -19,26 +19,44 @@
 
 <template>
 
-    <div
-        ref="container"
-        id="3d-model-viewer-container"
-        class="flex w-full h-full cursor-grab items-center"
-        @mousedown="rendererOnMouseDown"
-        @mouseup="rendererOnMouseUp"
-        @mousemove="rendererOnMouseMove"
-        @mouseleave="rendererOnMouseUp"
-    >
+    <div class="relative">
+        <!-- Auto Spin toggle -->
+        <button class="absolute right-0 top-0 m-4 custom-button-icon-only" :class="autoRotationEnabled ? 'bg-green-500/50!' : ''"
+            title="Toggle auto rotation" @click="autoRotationEnabled = !autoRotationEnabled"
+        >
+            <PhArrowCounterClockwise class="ml-0.25 size-5"></PhArrowCounterClockwise>
+        </button>
+
+        <!-- Renderer Canvas Container -->
+        <div
+            ref="container"
+            id="3d-model-viewer-container"
+            class="flex w-full h-full cursor-grab items-center"
+            @mousedown="rendererOnMouseDown"
+            @mouseup="rendererOnMouseUp"
+            @mousemove="rendererOnMouseMove"
+            @mouseleave="rendererOnMouseUp"
+        >
+        </div>
+
+        <!-- Indicator that canvas is rotatable -->
+        <div class="absolute flex justify-between bottom-1/5 w-full">
+            <PhCaretLeft class="custom-label-icon-only size-7 ml-12"></PhCaretLeft>
+            <PhCaretRight class="custom-label-icon-only size-7 mr-12"></PhCaretRight>
+        </div>
     </div>
 
 </template>
 
 
 <script setup lang="ts">
+    import { PhArrowCounterClockwise, PhCaretLeft, PhCaretRight } from "@phosphor-icons/vue";
     import * as threeJs from "three";
     import { GLTFLoader, type GLTF } from "three-stdlib";
 
 
     // Refs
+    const autoRotationEnabled                      = ref(false);
     const container: Ref<HTMLDivElement|undefined> = ref();
 
     let scene:      threeJs.Scene<threeJs.Object3DEventMap>;
@@ -190,7 +208,10 @@
                 if (container.value != null) {
                     setRendererSize();   // Check if container got resized
                     requestAnimationFrame(animate);
-                    //rotateScene(1, 0); // Constantly rotate model
+
+                    if (autoRotationEnabled.value) {
+                        rotateModel(1, 0); // Constantly rotate model
+                    }
                 }
             };
 
