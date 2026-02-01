@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-01 15:41:22
+ * Last Modified: 2026-02-01 19:40:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -19,7 +19,7 @@
 
 <template>
 
-    <div class="relative">
+    <div ref="parentContainer" class="h-full w-full">
         <!-- Auto Spin toggle -->
         <button class="absolute right-0 top-0 m-4 custom-button-icon-only" :class="autoRotationEnabled ? 'bg-green-500/50!' : ''"
             title="Toggle auto rotation" @click="autoRotationEnabled = !autoRotationEnabled"
@@ -29,9 +29,9 @@
 
         <!-- Renderer Canvas Container -->
         <div
-            ref="container"
+            ref="canvasContainer"
             id="3d-model-viewer-container"
-            class="flex w-full h-full cursor-grab items-center"
+            class="absolute cursor-grab left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
             @mousedown="rendererOnMouseDown"
             @mouseup="rendererOnMouseUp"
             @mousemove="rendererOnMouseMove"
@@ -40,7 +40,7 @@
         </div>
 
         <!-- Indicator that canvas is rotatable -->
-        <div class="absolute flex justify-between bottom-1/5 w-full">
+        <div class="absolute flex justify-between bottom-1/8 w-full">
             <PhCaretLeft class="custom-label-icon-only size-7 ml-12"></PhCaretLeft>
             <PhCaretRight class="custom-label-icon-only size-7 mr-12"></PhCaretRight>
         </div>
@@ -56,15 +56,16 @@
 
 
     // Refs
-    const autoRotationEnabled                      = ref(false);
-    const container: Ref<HTMLDivElement|undefined> = ref();
+    const autoRotationEnabled                            = ref(false);
+    const parentContainer: Ref<HTMLDivElement|undefined> = ref();
+    const canvasContainer: Ref<HTMLDivElement|undefined> = ref();
 
     let scene:      threeJs.Scene<threeJs.Object3DEventMap>;
     let camera:     threeJs.PerspectiveCamera;
     let renderer:   threeJs.WebGLRenderer;
     let loader:     GLTFLoader;
-    let model:      GLTF;             // Stores currently loaded GLTF model
-    let boundingBox         = new threeJs.Box3();
+    let model:      GLTF;                           // Stores currently loaded GLTF model
+    let boundingBox         = new threeJs.Box3();   // Stores bounds/sizes (X, Y, Z) of currently loaded model (in meters)
     let rendererIsMouseDown = false;
     let rendererMouseX      = 0;
     let rendererMouseY      = 0;
@@ -74,12 +75,17 @@
     function setRendererSize() {
         try {
 
-            const width  = container.value!.clientWidth;
-            const height = container.value!.clientHeight;
+            const width  = parentContainer.value!.clientWidth;
+            const height = parentContainer.value!.clientHeight;
 
             if (renderer.domElement.width != width || renderer.domElement.height != height) {
-                let factor = width / boundingBox.max.x;
-                renderer.setSize(width, boundingBox.max.y * factor, false); // Experimental: Attempt to scale renderer height to model
+                // Renderer is rectangular - limit its size to either height or width of container's bounds
+                if (height > width) {
+                    renderer.setSize(width, width, false);
+                } else {
+                    renderer.setSize(height, height, false);
+                }
+
                 renderer.render(scene, camera);
             }
 
@@ -95,21 +101,24 @@
 
             // Create a new threeJs renderer
             scene    = new threeJs.Scene();
-            camera   = new threeJs.PerspectiveCamera();
+            camera   = new threeJs.PerspectiveCamera(5);                            // Set a really low FOV to get a pretty flat & undistorted view
             renderer = new threeJs.WebGLRenderer({ antialias: true, alpha: true });
 
             // Give renderer a transparent background
             renderer.setClearColor(0x000000, 0);
 
             // Apply renderer to container div
-            container.value!.appendChild(renderer.domElement);
+            canvasContainer.value!.appendChild(renderer.domElement);
 
             // Create some light so the model is viewable
-            const light = new threeJs.AmbientLight(0xffffff, 1.0);
+            const light = new threeJs.HemisphereLight(0xffffff, 1);
+            light.position.y = 5;
+            light.position.z = 5;
+            light.position.x = 5;
             scene.add(light);
 
-            // Set a default camera position
-            camera.position.z = 5;
+            // Set camera pretty far away (meters) to compensate for low FOV
+            camera.position.z = 20;
 
         } catch(err) {
             console.error("Failed to init threeJs renderer: " + err);
@@ -125,7 +134,7 @@
             loader = new GLTFLoader();
             model = await loader.loadAsync(path);
 
-            // Experimental: Attempt to get size of model to scale renderer later
+            // Get size of model
             boundingBox.setFromObject(model.scene);
 
             // Set default rotation
@@ -133,6 +142,9 @@
 
             // Add model to scene
             scene.add(model.scene);
+
+            // Set camera position based on model size
+            camera.position.y = boundingBox.max.y / 2;
 
         } catch(err) {
             console.error("Failed to load threeJs model: " + err);
@@ -205,7 +217,7 @@
             // Animate!
             const animate = () => {
                 // Abort if container does not exist (e.g. on page switch)
-                if (container.value != null) {
+                if (canvasContainer.value != null) {
                     setRendererSize();   // Check if container got resized
                     requestAnimationFrame(animate);
 
