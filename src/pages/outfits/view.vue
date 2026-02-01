@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-31 12:55:29
+ * Last Modified: 2026-02-01 14:44:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -125,13 +125,13 @@
             </div>
         </div>
 
-        <div class="flex gap-4 md:gap-8 select-none">
+        <div class="flex flex-col md:flex-row gap-4 md:gap-8 select-none">
             <!-- Preview container --> <!-- TODO: Highlight item here when hovering it in the label container? -->
-            <div class="w-1/3 min-h-90 rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
+            <div class="w-full md:w-1/3 min-h-90 h-90 md:h-auto rounded-xl shadow-md bg-bg-embed-light dark:bg-bg-embed-dark">
             </div>
 
             <!-- Clothes per label container -->
-            <div class="flex flex-col gap-4 md:gap-8 w-2/3">
+            <div class="flex flex-col gap-4 md:gap-8 w-full md:w-2/3">
                 <div
                     class="flex flex-col w-full h-65 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"
                     v-for="thisLabel in bodyPartLabels" :key="thisLabel.id"
