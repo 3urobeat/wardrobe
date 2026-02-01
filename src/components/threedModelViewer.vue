@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-01 19:40:47
+ * Last Modified: 2026-02-01 20:31:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -41,8 +41,8 @@
 
         <!-- Indicator that canvas is rotatable -->
         <div class="absolute flex justify-between bottom-1/8 w-full">
-            <PhCaretLeft class="custom-label-icon-only size-7 ml-12"></PhCaretLeft>
-            <PhCaretRight class="custom-label-icon-only size-7 mr-12"></PhCaretRight>
+            <PhCaretLeft class="custom-label-icon-only size-7 ml-4 sm:ml-12"></PhCaretLeft>
+            <PhCaretRight class="custom-label-icon-only size-7 mr-4 sm:mr-12"></PhCaretRight>
         </div>
     </div>
 
@@ -79,13 +79,11 @@
             const height = parentContainer.value!.clientHeight;
 
             if (renderer.domElement.width != width || renderer.domElement.height != height) {
-                // Renderer is rectangular - limit its size to either height or width of container's bounds
-                if (height > width) {
-                    renderer.setSize(width, width, false);
-                } else {
-                    renderer.setSize(height, height, false);
-                }
+                // Update camera to prevent model distorting or clipping out of bounds
+                camera.aspect = width / height;
+                fitCameraToCenteredObject(1.1);
 
+                renderer.setSize(width, height, false);
                 renderer.render(scene, camera);
             }
 
@@ -96,12 +94,72 @@
     }
 
 
+    // Updates camera so that model never clips outside of container's bounds - Massive credit to: https://wejn.org/2020/12/cracking-the-threejs-object-fitting-nut/
+    function fitCameraToCenteredObject(offset?: number) {
+        let size = new threeJs.Vector3();
+        boundingBox.getSize(size);
+
+        // figure out how to fit the box in the view:
+        // 1. figure out horizontal FOV (on non-1.0 aspects)
+        // 2. figure out distance from the object in X and Y planes
+        // 3. select the max distance (to fit both sides in)
+        //
+        // The reason is as follows:
+        //
+        // Imagine a bounding box (BB) is centered at (0,0,0).
+        // Camera has vertical FOV (camera.fov) and horizontal FOV
+        // (camera.fov scaled by aspect, see fovh below)
+        //
+        // Therefore if you want to put the entire object into the field of view,
+        // you have to compute the distance as: z/2 (half of Z size of the BB
+        // protruding towards us) plus for both X and Y size of BB you have to
+        // figure out the distance created by the appropriate FOV.
+        //
+        // The FOV is always a triangle:
+        //
+        //  (size/2)
+        // +--------+
+        // |       /
+        // |      /
+        // |     /
+        // | F° /
+        // |   /
+        // |  /
+        // | /
+        // |/
+        //
+        // F° is half of respective FOV, so to compute the distance (the length
+        // of the straight line) one has to: `size/2 / Math.tan(F)`.
+        //
+        // FTR, from https://threejs.org/docs/#api/en/cameras/PerspectiveCamera
+        // the camera.fov is the vertical FOV.
+
+        const fov = camera.fov * (Math.PI / 180);
+        const fovh = 2 * Math.atan(Math.tan(fov / 2) * camera.aspect);
+        let dx = size.z / 2 + Math.abs(size.x / 2 / Math.tan( fovh / 2 ));
+        let dy = size.z / 2 + Math.abs(size.y / 2 / Math.tan( fov / 2 ));
+        let cameraZ = Math.max(dx, dy);
+
+        // offset the camera, if desired (to avoid filling the whole canvas)
+        if (offset !== undefined && offset !== 0) cameraZ *= offset;
+
+        camera.position.z = cameraZ;
+
+        // set the far plane of the camera so that it easily encompasses the whole object
+        const minZ = boundingBox.min.z;
+        const cameraToFarEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
+
+        camera.far = cameraToFarEdge * 3;
+        camera.updateProjectionMatrix();
+    };
+
+
     function initRenderer() {
         try {
 
             // Create a new threeJs renderer
             scene    = new threeJs.Scene();
-            camera   = new threeJs.PerspectiveCamera(5);                            // Set a really low FOV to get a pretty flat & undistorted view
+            camera   = new threeJs.PerspectiveCamera();
             renderer = new threeJs.WebGLRenderer({ antialias: true, alpha: true });
 
             // Give renderer a transparent background
@@ -116,9 +174,6 @@
             light.position.z = 5;
             light.position.x = 5;
             scene.add(light);
-
-            // Set camera pretty far away (meters) to compensate for low FOV
-            camera.position.z = 20;
 
         } catch(err) {
             console.error("Failed to init threeJs renderer: " + err);
