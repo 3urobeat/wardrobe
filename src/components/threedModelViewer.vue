@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-01 20:31:00
+ * Last Modified: 2026-02-01 21:58:46
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -20,13 +20,6 @@
 <template>
 
     <div ref="parentContainer" class="h-full w-full">
-        <!-- Auto Spin toggle -->
-        <button class="absolute right-0 top-0 m-4 custom-button-icon-only" :class="autoRotationEnabled ? 'bg-green-500/50!' : ''"
-            title="Toggle auto rotation" @click="autoRotationEnabled = !autoRotationEnabled"
-        >
-            <PhArrowCounterClockwise class="ml-0.25 size-5"></PhArrowCounterClockwise>
-        </button>
-
         <!-- Renderer Canvas Container -->
         <div
             ref="canvasContainer"
@@ -38,6 +31,13 @@
             @mouseleave="rendererOnMouseUp"
         >
         </div>
+
+        <!-- Auto Spin toggle -->
+        <button class="absolute right-0 top-0 m-4 custom-button-icon-only" :class="autoRotationEnabled ? 'bg-green-500/50!' : ''"
+            title="Toggle auto rotation" @click="autoRotationEnabled = !autoRotationEnabled"
+        >
+            <PhArrowCounterClockwise class="ml-0.25 size-5"></PhArrowCounterClockwise>
+        </button>
 
         <!-- Indicator that canvas is rotatable -->
         <div class="absolute flex justify-between bottom-1/8 w-full">
@@ -70,6 +70,8 @@
     let rendererMouseX      = 0;
     let rendererMouseY      = 0;
 
+    const cameraPadding = 1.2;
+
 
     // Updates size of renderer if container got resized
     function setRendererSize() {
@@ -81,7 +83,7 @@
             if (renderer.domElement.width != width || renderer.domElement.height != height) {
                 // Update camera to prevent model distorting or clipping out of bounds
                 camera.aspect = width / height;
-                fitCameraToCenteredObject(1.1);
+                fitCameraToCenteredObject();
 
                 renderer.setSize(width, height, false);
                 renderer.render(scene, camera);
@@ -95,7 +97,7 @@
 
 
     // Updates camera so that model never clips outside of container's bounds - Massive credit to: https://wejn.org/2020/12/cracking-the-threejs-object-fitting-nut/
-    function fitCameraToCenteredObject(offset?: number) {
+    function fitCameraToCenteredObject() {
         let size = new threeJs.Vector3();
         boundingBox.getSize(size);
 
@@ -141,7 +143,7 @@
         let cameraZ = Math.max(dx, dy);
 
         // offset the camera, if desired (to avoid filling the whole canvas)
-        if (offset !== undefined && offset !== 0) cameraZ *= offset;
+        if (cameraPadding) cameraZ *= cameraPadding;
 
         camera.position.z = cameraZ;
 
