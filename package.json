@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Selfhosted clothing management web app for your personal wardrobe or commercial store!",
   "author": "3urobeat",
-  "license": "GPL-3.0",
+  "license": "AGPL-3.0",
   "homepage": "https://github.com/3urobeat",
   "repository": "https://github.com/3urobeat/wardrobe",
   "scripts": {
