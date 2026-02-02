@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 17:57:33
+ * Last Modified: 2026-02-02 18:50:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -57,7 +57,7 @@
             <div class="flex">
                 <!-- Labels of this category -->
                 <div
-                    class="flex h-44 mx-2 overflow-x-scroll"
+                    class="flex h-44 mx-2 overflow-x-auto"
                     :id="'labels-' + thisCategory.id"
                 >                                               <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                     <div

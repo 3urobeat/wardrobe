@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-29 14:00:05
+ * Last Modified: 2026-02-02 18:39:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -46,7 +46,7 @@
                 <label class="self-start text-sm md:text-base font-semibold md:m-1">{{ thisClothing.title }}</label>
 
                 <!-- Labels -->
-                <div class="flex md:flex-wrap h-7 md:h-15 mt-0.5 md:mt-2 overflow-x-scroll gap-0.5">
+                <div class="flex md:flex-wrap h-7 md:h-15 mt-0.5 md:mt-2 overflow-y-auto gap-0.5">
                     <button
                         class="custom-wardrobe-label-clickable text-sm md:text-base h-fit m-0.5"
                         :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"

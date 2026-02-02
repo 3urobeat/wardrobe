@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-01 21:51:42
+ * Last Modified: 2026-02-02 18:52:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -61,7 +61,7 @@
             <!-- Label selector bar with expanding popup -->
             <div class="flex items-center justify-end min-w-1/2 max-w-screen rounded-md shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark transition-all">
                 <!-- Selected labels list -->
-                <div class="flex gap-x-1 overflow-x-scroll p-1">
+                <div class="flex gap-x-1 overflow-x-auto p-1">
                     <p
                         class="custom-wardrobe-label"
                         v-for="thisLabel in storedLabels.filter((e: Label) => thisOutfit.labelIDs.includes(e.id))"
@@ -146,7 +146,7 @@
                     <!-- Category content -->
                     <div class="flex">
                         <!-- Clothes of this label -->
-                        <div class="flex h-50 mx-2 overflow-x-scroll"> <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
+                        <div class="flex h-50 mx-2 overflow-x-auto"> <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                             <div
                                 class="flex flex-col w-55 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                                 v-for="thisClothing in storedClothes.filter((e) => thisOutfit.clothes.some((f) => f.clothingID == e.id) && e.labelIDs.includes(thisLabel.id))"
@@ -180,7 +180,7 @@
 
                                 <!-- Items area -->
                                 <template v-slot:items="slotProps">
-                                    <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-scroll"> <!-- TODO: overflow-y-scroll clips shadow -->
+                                    <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-auto"> <!-- TODO: overflow clips shadow -->
                                         <button
                                             class="custom-items-grid-card cursor-pointer p-3! h-45! md:h-55! aspect-square! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
@@ -195,7 +195,7 @@
                                             <label class="self-start text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
 
                                             <!-- Labels -->
-                                            <div class="flex h-7 mt-1 overflow-scroll gap-0.5">
+                                            <div class="flex h-7 mt-1 overflow-auto gap-0.5">
                                                 <button
                                                     class="custom-wardrobe-label-clickable text-sm h-fit m-0.5"
                                                     v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"

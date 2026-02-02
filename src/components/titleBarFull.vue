@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-25 12:00:03
+ * Last Modified: 2026-02-02 18:49:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         <!-- Title Bar which is always displayed -->
         <div class="flex w-full justify-between md:justify-end gap-x-4">
             <!-- Sort dropdown -->
-            <div class="flex justify-end overflow-scroll rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
+            <div class="flex justify-end rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
                 <select class="w-full px-2 m-0.5" v-model="selectedSort">
                     <option :value="sortModes.dateDesc">Date (Newest first)</option>
                     <option :value="sortModes.dateAsc">Date (Oldest first)</option>
@@ -34,9 +34,9 @@
                 </select>
             </div>
 
-            <!-- Filters selection for Desktop --> <!-- TODO: Does not want to scroll -->
+            <!-- Filters selection for Desktop -->
             <div
-                class="justify-end rounded-xl overflow-x-scroll shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                class="justify-end rounded-xl overflow-x-auto shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
                 :class="selectedFilters.length > 0 ? 'hidden md:flex w-0 md:w-full lg:w-1/3 p-1' : 'w-0 p-0'"
             >
                 <button
@@ -65,7 +65,7 @@
         <div id="title-mobile-extension" v-if="selectedFilters.length > 0">
             <!-- Filters selection for Mobile --> <!-- TODO: Does not want to scroll -->
             <div
-                class="justify-center rounded-xl overflow-x-scroll shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                class="justify-center rounded-xl overflow-x-auto shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
                 :class="selectedFilters.length > 0 ? 'flex md:hidden w-full md:w-0 lg:w-1/3 p-1 mt-3' : 'w-0 p-0'"
             >
                 <button

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-19 18:39:26
+ * Last Modified: 2026-02-02 18:52:45
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -34,7 +34,7 @@
             </div>
 
             <!-- Job cards -->
-            <div class="flex h-44 mx-2 overflow-x-scroll">
+            <div class="flex h-44 mx-2 overflow-x-auto">
                 <div
                     class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                     v-for="thisJobInfo in jobs"

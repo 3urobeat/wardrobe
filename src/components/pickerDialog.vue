@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-31 12:56:58
+ * Last Modified: 2026-02-02 18:47:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- Items. Restrict width to screen size -->
-                <div ref="pickerDialogItemsDiv" class="max-w-screen overflow-x-scroll">
+                <div ref="pickerDialogItemsDiv" class="max-w-screen overflow-x-auto">
                     <slot name="items" :searchStr="searchStr"></slot>
                 </div>
 

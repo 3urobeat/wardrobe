@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-25 12:49:28
+ * Last Modified: 2026-02-02 18:50:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -104,7 +104,7 @@
                 />
 
                 <!-- Label selector area -->
-                <div class="w-full h-full overflow-scroll self-center rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
+                <div class="w-full h-full overflow-auto self-center rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
 
                     <!-- Separate labels by category -->
                     <div class="flex m-1.5 gap-1.5" v-for="thisCategory in storedCategories" :key="thisCategory.id">
