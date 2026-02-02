@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-01-31 12:54:58
+ * Last Modified: 2026-02-02 17:57:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -61,7 +61,7 @@
                     :id="'labels-' + thisCategory.id"
                 >                                               <!-- TODO: I don't like the hardcoded height but h-full glitches out of the box? Also changing any width breaks scroll overflow? -->
                     <div
-                        class="w-60 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
+                        class="w-50 md:w-60 shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                         v-for="thisLabel in labelsPerCategory[thisCategory.id]"
                         :key="thisLabel.id"
                     >
@@ -160,15 +160,15 @@
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()
     const storedLabels:     Ref<Label[]>    = useState("storedLabels");
     const storedCategories: Ref<Category[]> = useState("storedCategories");
-    let   localLabels:      Label[]         = useCloned(storedLabels, { manual: true }).cloned.value;     // I'm not using useCloned's sync() as it just wouldn't work :shrug:
-    let   localCategories:  Category[]      = useCloned(storedCategories, { manual: true }).cloned.value;
+    let   localLabels:      Ref<Label[]>    = useCloned(storedLabels, { manual: true }).cloned;     // I'm not using useCloned's sync() as it just wouldn't work :shrug:
+    let   localCategories:  Ref<Category[]> = useCloned(storedCategories, { manual: true }).cloned;
 
     // Prepare temporary list for drag & drop reorder functionality. Changes in this list must be synced to localLabels & localCategories!
     // Key/Index is category id
     const labelsPerCategory: Reactive<{ [key: string]: Label[] }> = reactive({}); // Nested data structure must use reactive to update correctly in template when dragged
 
-    localCategories.forEach((thisCategory) => {
-        labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(localLabels, thisCategory.id));
+    localCategories.value.forEach((thisCategory) => {
+        labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(localLabels.value, thisCategory.id));
 
         useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, handle: "#drag-handle", onUpdate: moveLabel }); // Handle allows dragging action only on item with that id
     });
@@ -201,7 +201,7 @@
             specialityValue: CategorySpecialityMap[category.specialityID].value // Init val
         };
 
-        localLabels.push(newLabel);
+        localLabels.value.push(newLabel);
         labelsPerCategory[category.id]!.push(newLabel);
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -214,7 +214,7 @@
 
         if (confirmed) {
             labelIDsToDelete.push(selectedLabel.id);
-            localLabels = localLabels.filter((e) => e.id != selectedLabel.id);
+            localLabels.value = localLabels.value.filter((e) => e.id != selectedLabel.id);
             labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
 
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -245,7 +245,7 @@
 
             // Apply orderIndex change to both lists
             labelsPerCategory[categoryID]![labelIndex]!.orderIndex = newOrderIndex;
-            localLabels.find((e) => e.id == list[labelIndex]!.id)!.orderIndex = newOrderIndex;
+            localLabels.value.find((e) => e.id == list[labelIndex]!.id)!.orderIndex = newOrderIndex;
 
             //console.log(list[labelIndex].name)
             //console.log(labelsPerCategory[categoryID].map((e) => e.orderIndex))
@@ -261,7 +261,7 @@
             specialityID: CategorySpecialityID.No_Speciality
         };
 
-        localCategories.push(e);
+        localCategories.value.push(e);
         labelsPerCategory[e.id] = [];
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
@@ -274,11 +274,11 @@
 
         if (confirmed) {
             categoryIDsToDelete.push(selectedCategory.id);
-            localCategories = localCategories.filter((e) => e.id != selectedCategory.id);
+            localCategories.value = localCategories.value.filter((e) => e.id != selectedCategory.id);
             delete labelsPerCategory[selectedCategory.id];
 
             // Delete all labels of this category
-            localLabels = localLabels.filter((e) => {
+            localLabels.value = localLabels.value.filter((e) => {
                 if (e.categoryID === selectedCategory.id) {
                     labelIDsToDelete.push(e.id);
                     return false;
@@ -297,7 +297,7 @@
             e.specialityValue = CategorySpecialityMap[thisCategory.specialityID].value;
         });
 
-        localLabels.forEach((e) => {
+        localLabels.value.forEach((e) => {
             if (e.categoryID == thisCategory.id) {
                 e.specialityValue = CategorySpecialityMap[thisCategory.specialityID].value;
             }
@@ -332,8 +332,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                categories: localCategories,
-                labels: localLabels
+                categories: localCategories.value,
+                labels: localLabels.value
             })
         });
 
@@ -346,8 +346,8 @@
             changesMade.value   = false;
             labelIDsToDelete    = [];
             categoryIDsToDelete = [];
-            storedLabels.value     = localLabels;     // Manually sync local clones to global cache, useCloned's sync() didn't work
-            storedCategories.value = localCategories;
+            storedLabels.value     = localLabels.value;     // Manually sync local clones to global cache, useCloned's sync() didn't work
+            storedCategories.value = localCategories.value;
         } else {
             responseIndicatorFailure();
         }
