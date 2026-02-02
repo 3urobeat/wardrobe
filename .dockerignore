@@ -1,0 +1,11 @@
+node_modules/
+Dockerfile
+docker-compose.yml
+.dockerignore
+.git
+.gitignore
+eslint.config.mjs
+resources/
+.output
+.nuxt
+data/*
