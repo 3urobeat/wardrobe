@@ -26,4 +26,5 @@ logs
 *.xcf
 
 wardrobe.code-workspace
-data/
+data/*
+!data/defaults/

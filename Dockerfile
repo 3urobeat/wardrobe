@@ -65,6 +65,10 @@ COPY --chown=node:node . ./
 RUN npm run build
 RUN ls -al ./
 
+# Install defaults
+RUN mv ./data/defaults/* ./data
+RUN rmdir ./data/defaults
+
 # Expose port 3000 which nuxt uses
 EXPOSE 3000
 
