@@ -1,5 +1,5 @@
 <div align="center">
-    <p align="center"><img width=65% src="src/public/logo-dark.png"></p>
+    <p align="center"><img width=65% src="resources/img/showcase.png"></p>
     <h4>👚 Selfhosted clothing management web app for your personal wardrobe or commercial store!</h4>
     <div>
         <a href="#introduction">Introduction</a> •
@@ -37,8 +37,6 @@ Wardrobe features:
 
 ...and more to come!
 
-<!-- <p align="center"><img src=".github/img/preview.png"></p>  -->
-
 &nbsp;
 
 <a id="installation"></a>
@@ -47,13 +45,13 @@ Wardrobe features:
 System Requirements: Next to none.
 
 ## Docker (recommended):
-Run the container using:  
-`docker run -p <host_port>:3000 -v <path_on_host>:/usr/src/wardrobe/data 3urobeat/wardrobe:latest`
+```bash
+# Create a volume for wardrobe to store your data in:
+docker volume create wardrobe-data
 
-Replace `<host_port>` with the port you want to access wardrobe at.
-
-Replace `<path_on_host>` with a path to where wardrobe should store persistent data at on your system.  
-This can either be a docker volume, which you can create using [docker volume create](https://docs.docker.com/reference/cli/docker/volume/create/) (recommended), or a directory bind (to e.g. your home folder `~/wardrobe-data`).
+# Run the container - Replace <host_port> with the port you want to access wardrobe at
+docker run -p <host_port>:3000 -v wardrobe-data:/usr/src/wardrobe/data 3urobeat/wardrobe:latest
+```
 
 > [!NOTE]
 > If you are using Portainer, make sure to set the working directory at the bottom to `/usr/src/wardrobe`
@@ -65,21 +63,23 @@ This can either be a docker volume, which you can create using [docker volume cr
 
   Make sure you have git, node & npm installed on your system.
 
-  Clone the git repository:  
-  `git clone https://github.com/3urobeat/wardrobe`  
-  `cd wardrobe`
+  ```bash
+  # Clone the git repository:
+  git clone https://github.com/3urobeat/wardrobe
+  cd wardrobe
 
-  Install dependencies:  
-  `npm ci --omit=dev`
+  # Install dependencies:
+  npm ci --omit=dev
 
-  Build the project:  
-  `npm run build`
+  # Build the project:
+  npm run build
 
-  Start the service:  
-  `PORT=<host_port> npm run start`
+  # Start the service:
+  PORT=<host_port> npm run start
 
-  Replace `<host_port>` with the port you want to access wardrobe at.  
-  If you omit `PORT=`, port 3000 will be used.
+  # Replace <host_port> with the port you want to access wardrobe at.
+  # If you omit 'PORT=', port 3000 will be used.
+  ```
 
 </details>
 
@@ -98,13 +98,55 @@ This can either be a docker volume, which you can create using [docker volume cr
 After starting the service, access wardrobe in your browser using the IP of your host and the port you specified above.  
 Assuming you started the project on your current device using the default port 3000, open: `http://localhost:3000`
 
-TBA
+You will be greeted by an empty clothes browse page!
+
+<br>
+
+**Clothes:**  
+Start by adding a few of your clothes by clicking the "+ Add Clothing button".  
+- Take and upload a picture of your piece of clothing hanging behind or lying on a neutral background
+- Give your piece of clothing a fitting name
+- Select a few fitting labels from the pre-configured list 
+  - Make sure to select a body part label to be able to find it in the outfit editor!
+- Save!
+
+<br>
+
+**Outfits:**  
+You can now create an outfit using the clothes you've added.  
+Switch to the "Outfits" menu using the nav bar on the left side and click "+ Add Outfit".
+- Select a fitting piece of clothing for each body part from the clothing picker by clicking on "+"
+- Give your new outfit a fitting name at the top left
+- Select a few fitting labels from the pre-configured popout-list at the top right by clicking on "v"
+- Save!
+
+<br>
+
+**Labels:**  
+Lastly, check out the labels menu:  
+This menu allows you to add categories, which hold the labels you've already seen, to categorize and filter your clothing collection.
+
+Categories may be configured to have a speciality, which unlocks another setting field for each label.  
+Besides the already discovered body part speciality, you can also configure a color and a date/temperature range to wear that piece of clothing/outfit using the Season speciality.
 
 &nbsp;
 
 <a id="other"></a>
 
 # 📝 Other
+## Contribution
+Every contribution is welcome!  
+Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
+
+## License
+This project is licensed under the Open Source Copyleft AGPL-3.0 license.  
+Please see [LICENSE](/LICENSE).
+
 ## Icons
 SVG Icons, including the favicon, were taken from [Phosphor Icons](https://phosphoricons.com/).  
-All icons are licensed under [MIT](https://raw.githubusercontent.com/phosphor-icons/homepage/master/LICENSE).
+All their icons are licensed under the [MIT](https://raw.githubusercontent.com/phosphor-icons/homepage/master/LICENSE) license.
+
+## 3D Model
+Modified version of the Human Base Mesh from [Blender.org](https://www.blender.org/download/demo-files/).  
+The original is licensed under the CC0 license.  
+Please see [resources/3d-model/](/resources/3d-model/).
