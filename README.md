@@ -1,5 +1,5 @@
 <div align="center">
-    <p align="center"><img width=65% src="resources/img/showcase.png"></p>
+    <p align="center"><img width=85% src="resources/img/showcase.png"></p>
     <h4>👚 Selfhosted clothing management web app for your personal wardrobe or commercial store!</h4>
     <div>
         <a href="#introduction">Introduction</a> •
