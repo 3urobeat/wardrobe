@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-04 16:44:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -91,7 +91,7 @@
     // Toggles dark mode
     function toggleDarkMode() {
         const isDark = document.documentElement.classList.toggle("dark");
-        localStorage.setItem("darkModeEnabled", String(isDark));
+        setUXSetting("darkModeEnabled", isDark);
     }
 
     // Define Props to be accepted by this component
