@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-05 19:26:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -29,33 +29,37 @@
     <div :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"> <!-- Push content down on mobile when title bar expands to show filter bar -->
 
         <!-- Responsive grid for outfits - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
-        <div class="custom-items-grid">
+        <div class="custom-items-grid" :class="itemsGridScalingToTailwind(titleBarFull.selectedScaling)">
 
             <!-- Outfit Cards -->
             <NuxtLink
-                class="custom-items-grid-card cursor-pointer"
+                class="custom-items-grid-card justify-between cursor-pointer"
+                :class="itemsGridCardScalingToTailwind(titleBarFull.selectedScaling)"
                 v-for="thisOutfit in outfitsToShow"
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
                 <img
-                    class="w-fit h-2/3 mb-1 md:mb-2 self-center"
+                    class="w-fit h-5/7 mb-1 md:mb-2 self-center"
                     :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
                     :alt="'Image for ' + thisOutfit.title"
                 >
-                <label class="self-start text-sm md:text-base font-semibold md:m-1">{{ thisOutfit.title }}</label>
 
-                <!-- Filter Labels -->
-                <div class="flex md:flex-wrap h-7 md:h-15 mt-0.5 md:mt-2 overflow-y-auto gap-0.5">
-                    <button
-                        class="custom-wardrobe-label-clickable text-sm md:text-base h-fit m-0.5"
-                        :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
-                        v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
-                        :key="thisLabel.id"
-                        @click.prevent="titleBarFull.toggleFilter(thisLabel.id)"
-                    >
-                        {{ thisLabel.name }}
-                    </button>
+                <div>
+                    <label class="self-start text-sm @md:text-base font-semibold @md:m-1">{{ thisOutfit.title }}</label>
+
+                    <!-- Filter Labels -->
+                    <div class="flex @xs:flex-wrap h-7 @xs:h-15 mt-0.5 @xs:mt-2 overflow-y-auto gap-0.5">
+                        <button
+                            class="custom-wardrobe-label-clickable text-sm @md:text-base h-fit m-0.5"
+                            :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
+                            v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
+                            :key="thisLabel.id"
+                            @click.prevent="titleBarFull.toggleFilter(thisLabel.id)"
+                        >
+                            {{ thisLabel.name }}
+                        </button>
+                    </div>
                 </div>
             </NuxtLink>
 
@@ -95,7 +99,7 @@
     const outfitImages:  Ref<{ id: string, imgBlob: string }[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
-    const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
+    const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
 
 
     // Get all outfits and their details on load

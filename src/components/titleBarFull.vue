@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-05 19:39:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -50,13 +50,20 @@
                 </button>
             </div>
 
+            <!-- Scaling slider for Desktop -->
+            <input
+                type="range"
+                class="w-1/12 bg-neutral-quaternary rounded-full appearance-none cursor-pointer [&::-moz-range-track]:bg-bg-field-light dark:[&::-moz-range-track]:bg-bg-field-dark [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-bg-field-light dark:[&::-webkit-slider-runnable-track]:bg-bg-field-dark [&::-webkit-slider-runnable-track]:rounded-full"
+                min="0"
+                max="9"
+                v-model="selectedScaling"
+                v-on:change="saveUxSetting"
+            >
+
             <!-- Add button -->
             <NuxtLink :to="buttonRedirectTo" class="custom-button-primary">
                 <slot></slot>
             </NuxtLink>
-
-            <!-- Scaling slider -->
-            <!-- TODO -->
         </div>
 
 
@@ -86,6 +93,7 @@
 
 
 <script setup lang="ts">
+    import { defaultUXSettings } from '~/model/cookie';
     import type { Label } from '~/model/label';
     import { sortModes } from '~/model/sort-modes';
 
@@ -95,7 +103,19 @@
 
     // Refs
     const selectedSort:    Ref<sortModes> = ref(sortModes.dateDesc);
-    const selectedFilters: Ref<string[]>       = ref([]);
+    const selectedFilters: Ref<string[]>  = ref([]);
+    const selectedScaling: Ref<number>    = ref(defaultUXSettings.selectedItemCardsScaling);
+
+    // Client side only
+    onBeforeMount(() => {
+        selectedScaling.value = getUXSettings().selectedItemCardsScaling;
+    });
+
+
+    // Save scaling setting
+    function saveUxSetting() {
+        setUXSetting("selectedItemCardsScaling", selectedScaling.value);
+    }
 
 
     /**
@@ -135,6 +155,7 @@
     defineExpose({
         selectedSort,
         selectedFilters,
+        selectedScaling,
         toggleFilter
     });
 

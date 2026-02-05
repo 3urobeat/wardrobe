@@ -4,7 +4,7 @@
  * Created Date: 2026-02-04 16:23:39
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-04 16:44:12
+ * Last Modified: 2026-02-04 17:07:17
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -28,7 +28,7 @@ export type UXSettings = {
     darkModeEnabled: boolean | null, // WARN: Used in public/global.js as well
 
     // Selected scaling for item cards in titleBarFull
-    selectedItemCardsScaling: number,
+    selectedItemCardsScaling: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9,
 
     // Whether user enabled if selected filters should be persisted
     saveSelectedFilters: boolean // TODO
@@ -37,6 +37,6 @@ export type UXSettings = {
 
 export const defaultUXSettings: UXSettings = {
     darkModeEnabled: null,
-    selectedItemCardsScaling: 100,
+    selectedItemCardsScaling: 7,
     saveSelectedFilters: false
 };

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-04 13:14:02
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -27,7 +27,27 @@
 
     <div class="flex flex-col py-20 gap-8" @change="changesMade = true">
 
-        <!-- Server jobs section -->
+        <!-- User Settings section -->
+        <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
+            <div class="custom-label-primary w-fit h-fit py-0! px-2! m-2">
+                User Settings
+            </div>
+            <div>
+
+            </div>
+        </div>
+
+        <!-- Server Settings section -->
+        <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
+            <div class="custom-label-primary w-fit h-fit py-0! px-2! m-2">
+                Server Settings
+            </div>
+            <div>
+
+            </div>
+        </div>
+
+        <!-- Server Jobs section -->
         <div class="flex-col w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
             <div class="custom-label-primary w-fit h-fit py-0! px-2! m-2">
                 Server Jobs
@@ -75,7 +95,7 @@
             </div>
         </div>
 
-        <!-- Server info section -->
+        <!-- Server Info section -->
         <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
             <div class="custom-label-primary w-fit h-fit py-0! px-2! m-2">
                 Server Information
