@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-05 19:39:58
+ * Last Modified: 2026-02-05 19:46:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         <!-- Title Bar which is always displayed -->
         <div class="flex w-full justify-between md:justify-end gap-x-4">
             <!-- Sort dropdown -->
-            <div class="flex justify-end rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
+            <div class="flex min-w-18 sm:min-w-32 justify-end rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
                 <select class="w-full px-2 m-0.5" v-model="selectedSort">
                     <option :value="sortModes.dateDesc">Date (Newest first)</option>
                     <option :value="sortModes.dateAsc">Date (Oldest first)</option>
@@ -53,7 +53,7 @@
             <!-- Scaling slider for Desktop -->
             <input
                 type="range"
-                class="w-1/12 bg-neutral-quaternary rounded-full appearance-none cursor-pointer [&::-moz-range-track]:bg-bg-field-light dark:[&::-moz-range-track]:bg-bg-field-dark [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-bg-field-light dark:[&::-webkit-slider-runnable-track]:bg-bg-field-dark [&::-webkit-slider-runnable-track]:rounded-full"
+                class="w-full md:w-1/12 bg-neutral-quaternary rounded-full appearance-none cursor-pointer [&::-moz-range-track]:bg-bg-field-light dark:[&::-moz-range-track]:bg-bg-field-dark [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-bg-field-light dark:[&::-webkit-slider-runnable-track]:bg-bg-field-dark [&::-webkit-slider-runnable-track]:rounded-full"
                 min="0"
                 max="9"
                 v-model="selectedScaling"

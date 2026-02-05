@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-05 19:37:11
+ * Last Modified: 2026-02-05 19:43:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -23,7 +23,8 @@
         ref="titleBarFull"
     >
         <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
-        Add Clothing
+        Add
+        <text class="hidden sm:block ml-1">Clothing</text>
     </TitleBarFull>
 
     <div :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"> <!-- Push content down on mobile when title bar expands to show filter bar -->
