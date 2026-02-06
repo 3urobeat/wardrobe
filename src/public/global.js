@@ -4,7 +4,7 @@
  * Created Date: 2025-12-03 18:23:42
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-04 16:43:53
+ * Last Modified: 2026-02-06 23:02:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -18,15 +18,20 @@
 // This file is loaded in header of app.vue
 
 
-// TODO: Duplicates utils/storage.ts but cannot import that here
+// TODO: Duplicates utils/storage.ts (except auto detection) but cannot import that here
 // Sets dark mode on page load. Defined in header to fix transition load - https://stackoverflow.com/a/14416030
 try {
-    const res = localStorage.getItem("uxSettings");
+    const res         = localStorage.getItem("uxSettings");
+    const darkModeMql = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
 
     if (res) {
         const obj = JSON.parse(res);
 
-        if (obj.darkModeEnabled) {
+        if ((obj.darkModeEnabled === null && darkModeMql && darkModeMql.matches) || obj.darkModeEnabled) {
+            document.documentElement.classList.add("dark");
+        }
+    } else {
+        if (darkModeMql && darkModeMql.matches) {
             document.documentElement.classList.add("dark");
         }
     }
