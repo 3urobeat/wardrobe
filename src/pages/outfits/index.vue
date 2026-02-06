@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-05 19:43:45
+ * Last Modified: 2026-02-05 20:08:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -47,12 +47,12 @@
                 >
 
                 <div>
-                    <label class="self-start text-sm @md:text-base font-semibold @md:m-1">{{ thisOutfit.title }}</label>
+                    <label class="self-start text-sm @xs:text-base font-semibold @xs:m-1">{{ thisOutfit.title }}</label>
 
                     <!-- Filter Labels -->
-                    <div class="flex @xs:flex-wrap h-7 @xs:h-15 mt-0.5 @xs:mt-2 overflow-y-auto gap-0.5">
+                    <div class="flex @3xs:flex-wrap h-7 @3xs:h-10 @2xs:h-15 mt-0.5 @3xs:mt-2 overflow-y-auto gap-0.5">
                         <button
-                            class="custom-wardrobe-label-clickable text-sm @md:text-base h-fit m-0.5"
+                            class="custom-wardrobe-label-clickable text-sm @xs:text-base h-fit m-0.5"
                             :class="titleBarFull.selectedFilters.includes(thisLabel.id) ? 'custom-wardrobe-label-selected-outline' : ''"
                             v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
                             :key="thisLabel.id"

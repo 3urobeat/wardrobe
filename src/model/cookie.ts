@@ -4,7 +4,7 @@
  * Created Date: 2026-02-04 16:23:39
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-04 17:07:17
+ * Last Modified: 2026-02-05 20:10:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -37,6 +37,6 @@ export type UXSettings = {
 
 export const defaultUXSettings: UXSettings = {
     darkModeEnabled: null,
-    selectedItemCardsScaling: 7,
+    selectedItemCardsScaling: 6,
     saveSelectedFilters: false
 };
