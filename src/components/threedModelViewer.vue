@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-09 18:01:59
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -29,6 +29,10 @@
             @mouseup="rendererOnMouseUp"
             @mousemove="rendererOnMouseMove"
             @mouseleave="rendererOnMouseUp"
+            @touchstart="rendererOnTouchDown"
+            @touchend="rendererOnMouseUp"
+            @touchmove="rendererOnTouchMove"
+            @touchcancel="rendererOnMouseUp"
         >
         </div>
 
@@ -227,6 +231,24 @@
         rotateModel(deltaX, deltaY);
     }
 
+    function rendererOnTouchMove(evt: TouchEvent) {
+        if (!rendererIsMouseDown) {
+            return;
+        }
+
+        evt.preventDefault();
+
+        // Calculate delta between last known position and now, refresh last known position and render change
+        if (evt.changedTouches[0]) {
+            let deltaX = evt.changedTouches[0].clientX - rendererMouseX;
+            let deltaY = evt.changedTouches[0].clientY - rendererMouseY;
+            rendererMouseX = evt.changedTouches[0].clientX;
+            rendererMouseY = evt.changedTouches[0].clientY;
+
+            rotateModel(deltaX, deltaY);
+        }
+    }
+
     function rendererOnMouseDown(evt: MouseEvent) {
         evt.preventDefault();
         rendererIsMouseDown = true;
@@ -236,7 +258,18 @@
         rendererMouseY = evt.clientY;
     }
 
-    function rendererOnMouseUp(evt: MouseEvent) {
+    function rendererOnTouchDown(evt: TouchEvent) {
+        evt.preventDefault();
+        rendererIsMouseDown = true;
+
+        // Set starting position to calculate delta on mouseMove
+        if (evt.touches[0]) {
+            rendererMouseX = evt.touches[0].clientX;
+            rendererMouseY = evt.touches[0].clientY;
+        }
+    }
+
+    function rendererOnMouseUp(evt: MouseEvent | TouchEvent) {
         evt.preventDefault();
         rendererIsMouseDown = false;
     }
