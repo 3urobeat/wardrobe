@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-05 19:46:28
+ * Last Modified: 2026-02-09 19:20:40
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -34,9 +34,9 @@
                 </select>
             </div>
 
-            <!-- Filters selection for Desktop -->
+            <!-- Filters selection for Desktop. flex-auto-reverse allows right aligned overflowing list that does not hide elements or breaks scroll (looking at you justify-end) -->
             <div
-                class="justify-end rounded-xl overflow-x-auto shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                class="flex-row-reverse rounded-xl overflow-x-auto shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
                 :class="selectedFilters.length > 0 ? 'hidden md:flex w-0 md:w-full lg:w-1/3 p-1' : 'w-0 p-0'"
             >
                 <button
@@ -70,9 +70,9 @@
         <!-- Title bar extension that gets added on mobile -->
         <!-- TODO: Having to duplicate the entire filter selection sucks -->
         <div id="title-mobile-extension" v-if="selectedFilters.length > 0">
-            <!-- Filters selection for Mobile --> <!-- TODO: Does not want to scroll -->
+            <!-- Filters selection for Mobile. justify-center hides left overflowing elements so a roundabout ml-auto for the first and last element is necessary -->
             <div
-                class="justify-center rounded-xl overflow-x-auto shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                class="[&>*:first-child]:ml-auto [&>*:last-child]:mr-auto flex-row rounded-xl overflow-x-scroll shadow-md select-none gap-2 bg-bg-field-light dark:bg-bg-field-dark transition-all"
                 :class="selectedFilters.length > 0 ? 'flex md:hidden w-full md:w-0 lg:w-1/3 p-1 mt-3' : 'w-0 p-0'"
             >
                 <button
