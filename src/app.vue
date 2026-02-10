@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 17:46:16
+ * Last Modified: 2026-02-10 19:57:33
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -131,12 +131,12 @@
 
 
     // Refs
-    const showNavbar        = ref(false);
-    const onlineVersion     = ref("");
+    const showNavbar    = ref(false);
+    const onlineVersion = ref("");
 
     // Global cache, accessed by pages
-    const storedLabels:     Ref<Label[]>     = useState("storedLabels", () => []);
-    const storedCategories: Ref<Category[]>  = useState("storedCategories", () => []);
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels",     () => []);
+    const storedCategories: Ref<Category[]> = useState("storedCategories", () => []);
 
     // Get all labels and categories
     let labelsRes = await useFetch("/api/get-all-labels");
@@ -146,6 +146,13 @@
     let categoriesRes = await useFetch("/api/get-all-label-categories");
     storedCategories.value = categoriesRes.data.value!; // TODO: Error handling
 
+
+    // Update global search bar on page switch
+    useRouter().afterEach((to) => {
+        nextTick(() => {
+            updateGlobalSearchBar(to.meta);
+        });
+    });
 
     // Specify page information
     useSeoMeta({
@@ -160,9 +167,21 @@
         script: [{ src: "/global.js" }] // Sets initial dark mode. Defined in header to fix transition load - https://stackoverflow.com/a/14416030
     });
 
-    // Check if update available note should be displayed in navbar
+    // Do initial page load stuff
+    updateGlobalSearchBar(useRoute().meta);
     checkForUpdate();
 
+
+    // Resets and toggles global search bar visibility
+    function updateGlobalSearchBar(pageProps: object) {
+        useState("globalSearchStr").value = null;
+
+        if (pageProps && pageProps.supportsSearchBar) {
+            useState("globalSearchBarShown").value = true;
+        } else {
+            useState("globalSearchBarShown").value = false;
+        }
+    }
 
     // Checks for an available update and displays a notification in the navbar
     async function checkForUpdate() {

@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-04 16:44:25
+ * Last Modified: 2026-02-10 19:27:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -33,10 +33,11 @@
         <div class="fixed right-0 flex pr-3 gap-4 select-none">
             <!-- Search input. Use click.prevent to prevent click from passing through and thus preventing search bar from expanding -->
             <div
-                class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark transition-all"
+                class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
                 type="search"
-                @click.stop="showGlobalSearchBar()"
-            >                                                                                       <!-- bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light dark:hover:bg-bg-input-hover-dark outline-border-secondary-light dark:outline-border-secondary-dark outline-2 -->
+                @click.stop="toggleGlobalSearchBar()"
+                v-if="globalSearchBarShown"
+            >
                 <PhMagnifyingGlass class="self-center mx-2 size-5"></PhMagnifyingGlass>
                 <input
                     ref="globalSearchInput"
@@ -64,8 +65,10 @@
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass } from "@phosphor-icons/vue";
 
-    const globalSearchInput = useTemplateRef("globalSearchInput");
-    const globalSearchStr:  Ref<string|null> = useState("globalSearchStr", () => null); // null on page load, set to "" on click to expand input
+    const globalSearchInput                      = useTemplateRef("globalSearchInput");
+    const globalSearchBarShown: Ref<boolean>     = useState("globalSearchBarShown", () => false); // Poor woman's approach at page properties
+    const globalSearchStr:      Ref<string|null> = useState("globalSearchStr",      () => null);  // null on page load, set to "" on click to expand input
+
 
     // Global mouse event listener to collapse search input when clicking anywhere while search bar is empty
     onMounted(() => {
@@ -78,8 +81,9 @@
         });
     });
 
+
     // Sets globalSearchStr to !null to expand search bar and sets focus
-    function showGlobalSearchBar() {
+    function toggleGlobalSearchBar() {
         globalSearchStr.value = globalSearchStr.value || "";
 
         // Wait a moment as we cannot focus the non-expanded input. nextTick() is not enough
@@ -88,11 +92,13 @@
         }, 50);
     }
 
+
     // Toggles dark mode
     function toggleDarkMode() {
         const isDark = document.documentElement.classList.toggle("dark");
         setUXSetting("darkModeEnabled", isDark);
     }
+
 
     // Define Props to be accepted by this component
     defineProps({ });

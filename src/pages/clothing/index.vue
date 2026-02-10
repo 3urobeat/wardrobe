@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-05 20:09:56
+ * Last Modified: 2026-02-10 19:55:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -90,6 +90,12 @@
     import type { Clothing } from "~/model/clothing";
     import type { Label } from "~/model/label";
     import { defaultSortMode, sortModes } from "~/model/sort-modes";
+
+
+    // Set page properties
+    definePageMeta({
+        supportsSearchBar: true
+    });
 
 
     // Get global cache from app.vue
