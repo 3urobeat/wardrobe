@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:33:22
+ * Last Modified: 2026-02-10 17:46:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -31,7 +31,7 @@
     <nav
         id="navbar"
         :class="showNavbar ? '' : 'invisible lg:visible w-0 min-w-0 opacity-0'"
-        class="fixed top-15 z-20 w-52 min-w-52 min-h-screen backdrop-blur-md lg:opacity-100 dark:text-text-dark border-x border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-all"
+        class="fixed top-15 z-20 w-52 min-w-52 min-h-screen backdrop-blur-md lg:opacity-100 dark:text-text-dark border-x border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-[width,opacity,visibility]"
     >
 
         <div class="absolute left-9 top-2">
