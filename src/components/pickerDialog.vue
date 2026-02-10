@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-10 18:16:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -20,7 +20,8 @@
 <template>
 
     <!-- Open/Close button -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center" @keydown.esc="dialogCloseEvent">
+
         <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click --> <!-- TODO: Does this still work? -->
         <button class="h-fit z-20" :title="toggleText" @click="isOpen = !isOpen" ref="pickerDialogToggleBtn">
             <slot name="toggle"></slot>
@@ -34,12 +35,16 @@
             Position dialog absolute to parent by setting parent to relative.
             Bind position to computed dialogPosition to be able to move container based on distance to screen bounds.
         -->
-        <div v-if="isOpen" class="absolute z-50 mt-6 transition-all" :class="dialogPosition"> <!-- TODO: Apply dialogPosition only to itemsDiv, keep triangle centered to button -->
+        <div v-if="isOpen" class="absolute z-50 mt-6 transition-all" :class="dialogPosition">
             <!-- Dummy filling the entire page to close popout when clicking on anything outside popout -->
             <div class="fixed top-0 left-0 min-h-screen min-w-screen opacity-0" @click="isOpen = !isOpen"></div>
 
             <!-- Content -->
-            <dialog id="picker-dialog" class="relative mt-2 max-w-screen flex flex-col p-2 md:p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark">
+            <dialog
+                id="picker-dialog"
+                class="relative mt-2 max-w-screen flex flex-col p-2 md:p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark"
+                ref="pickerDialog"
+            >
 
                 <!-- Search and Close button -->
                 <div class="flex justify-end gap-x-4">
@@ -63,6 +68,7 @@
 
             </dialog>
         </div>
+
     </div>
 
 </template>
@@ -74,7 +80,9 @@
     const isOpen:                Ref<boolean>                     = ref(false);
     const pickerDialogToggleBtn: Ref<HTMLButtonElement|undefined> = ref();
     const searchStr:             Ref<string>                      = ref("");
+    const pickerDialog:          Ref<HTMLDialogElement|undefined> = ref();
     const pickerDialogItemsDiv:  Ref<HTMLDivElement|undefined>    = ref();
+
 
     // Calculate distance to screen bounds and position dialog accordingly to prevent x-overflow
     const dialogPosition = computed(() => {
@@ -105,6 +113,14 @@
             }
         }
     });
+
+
+    // Handles kedown ESC event on dialog
+    function dialogCloseEvent() {
+        isOpen.value = false;
+        pickerDialog.value?.close();
+    }
+
 
     // Define Props to be accepted by this component
     defineProps({
