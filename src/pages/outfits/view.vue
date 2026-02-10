@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-10 19:54:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -244,13 +244,13 @@
 
 
     // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]> = useState("storedLabels");
-    const storedCategories: Ref<Category[]>     = useState("storedCategories");
+    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
+    const storedCategories: Ref<Category[]> = useState("storedCategories");
 
     // Refs
-    const thisOutfit:     Ref<Outfit>         = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
-    const bodyPartLabels: Ref<Label[]> = ref([]);
-    const storedClothes:  Ref<Clothing[]>     = ref([]); // Edit Mode only
+    const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
+    const bodyPartLabels: Ref<Label[]>    = ref([]);
+    const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
     const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]); // Edit Mode only
 
 

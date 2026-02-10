@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-10 20:22:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -158,8 +158,8 @@
 
 
     // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]> = useState("storedLabels");
-    const storedCategories: Ref<Category[]>     = useState("storedCategories");
+    const storedLabels:     Ref<Label[]>     = useState("storedLabels");
+    const storedCategories: Ref<Category[]>  = useState("storedCategories");
 
     // Refs
     const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0, modifiedTimestamp: 0 });

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 19:55:28
+ * Last Modified: 2026-02-10 20:21:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -94,7 +94,7 @@
 
     // Set page properties
     definePageMeta({
-        supportsSearchBar: true
+        showGlobalSearchBar: true
     });
 
 

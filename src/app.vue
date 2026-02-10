@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 19:57:33
+ * Last Modified: 2026-02-10 21:43:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -126,6 +126,7 @@
     import packagejson from "../package.json";
     import type { Label } from "~/model/label";
     import type { Category } from "./model/label-category";
+    import type { PageProperties } from "./model/page";
 
     const route = useRoute();
 
@@ -173,10 +174,10 @@
 
 
     // Resets and toggles global search bar visibility
-    function updateGlobalSearchBar(pageProps: object) {
+    function updateGlobalSearchBar(pageProps: PageProperties) {
         useState("globalSearchStr").value = null;
 
-        if (pageProps && pageProps.supportsSearchBar) {
+        if (pageProps && pageProps.showGlobalSearchBar) {
             useState("globalSearchBarShown").value = true;
         } else {
             useState("globalSearchBarShown").value = false;
