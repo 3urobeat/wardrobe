@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-11 23:04:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         </button>
     </TitleBarBasic>
 
-    <div class="flex flex-col items-center py-20 gap-8" @change="changesMade = true">
+    <div class="flex flex-col items-center py-20 gap-8" @change="emitChangesMadeEvent()">
 
         <div
             class="flex flex-col w-full h-60 p-2 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"
@@ -177,19 +177,6 @@
     let labelIDsToDelete:    string[] = [];
     let categoryIDsToDelete: string[] = [];
 
-    // Track if user made changes
-    const changesMade = ref(false);
-
-    onBeforeRouteLeave((to, from, next) => {
-        if (changesMade.value) {
-            if (!confirm("You have unsaved changes!\nWould you still like to continue?")) {
-                next(false);
-            }
-        }
-
-        next();
-    });
-
 
     // Add a new label to a category
     async function addLabel(category: Category) {
@@ -205,7 +192,7 @@
         labelsPerCategory[category.id]!.push(newLabel);
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
-        changesMade.value = true;
+        emitChangesMadeEvent();
     }
 
     // Delete a label
@@ -218,7 +205,7 @@
             labelsPerCategory[selectedLabel.categoryID]! = labelsPerCategory[selectedLabel.categoryID]!.filter((e: Label) => e != selectedLabel);
 
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
-            changesMade.value = true;
+            emitChangesMadeEvent();
         }
     }
 
@@ -265,7 +252,7 @@
         labelsPerCategory[e.id] = [];
 
         // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
-        changesMade.value = true;
+        emitChangesMadeEvent();
     }
 
     // Delete a category
@@ -287,7 +274,7 @@
             });
 
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
-            changesMade.value = true;
+            emitChangesMadeEvent();
         }
     }
 
@@ -343,7 +330,7 @@
         if (rmResBody.success && setResBody.success) {
             responseIndicatorSuccess();
 
-            changesMade.value   = false;
+            emitChangesMadeEvent(false);
             labelIDsToDelete    = [];
             categoryIDsToDelete = [];
             storedLabels.value     = localLabels.value;     // Manually sync local clones to global cache, useCloned's sync() didn't work

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-04 13:14:02
+ * Last Modified: 2026-02-11 23:05:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@
         </button>
     </TitleBarBasic>
 
-    <div class="flex flex-col py-20 gap-8" @change="changesMade = true">
+    <div class="flex flex-col py-20 gap-8" @change="emitChangesMadeEvent()">
 
         <!-- User Settings section -->
         <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
@@ -132,19 +132,6 @@
     jobs.value = jobRes.data.value!;
 
 
-    // Track if user made changes
-    const changesMade = ref(false);
-
-    onBeforeRouteLeave((to, from, next) => {
-        if (changesMade.value) {
-            if (!confirm("You have unsaved changes!\nWould you still like to continue?")) {
-                next(false);
-            }
-        }
-
-        next();
-    });
-
 
     // Sends changes to the database
     async function saveChanges() {
@@ -161,7 +148,7 @@
         if (success.data.value) {
             responseIndicatorSuccess();
 
-            changesMade.value = false;
+            emitChangesMadeEvent(false);
         } else {
             responseIndicatorFailure();
         }

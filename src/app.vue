@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 21:43:21
+ * Last Modified: 2026-02-11 23:02:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -128,7 +128,8 @@
     import type { Category } from "./model/label-category";
     import type { PageProperties } from "./model/page";
 
-    const route = useRoute();
+    const route       = useRoute();
+    let   changesMade = false;
 
 
     // Refs
@@ -148,12 +149,24 @@
     storedCategories.value = categoriesRes.data.value!; // TODO: Error handling
 
 
-    // Update global search bar on page switch
-    useRouter().afterEach((to) => {
-        nextTick(() => {
-            updateGlobalSearchBar(to.meta);
-        });
+    // Handle changesMade event from pages
+    useNuxtApp().hook("app:user:changesMade", (val: boolean = true) => {
+        console.log(`[DEBUG] Received changesMade = '${val}' event!'`)
+        changesMade = val;
     });
+
+    // Handle page switch
+    addRouteMiddleware("page-switch", (to, from) => {
+        if (changesMade) {
+            if (!confirm("You have unsaved changes!\nWould you still like to continue?")) {
+                return abortNavigation();
+            }
+        }
+        changesMade = false;
+
+        updateGlobalSearchBar(to.meta);
+    }, { global: true });
+
 
     // Specify page information
     useSeoMeta({

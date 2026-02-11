@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 20:22:22
+ * Last Modified: 2026-02-11 23:09:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -50,7 +50,10 @@
 
 
     <!-- Page content -->
-    <div class="flex justify-center items-center py-20" @change="changesMade = true">
+    <div
+        class="flex justify-center items-center py-20"
+        @change="editModeEnabled ? emitChangesMadeEvent() : null"
+    >
         <!-- TODO: Pop-In Animation -->
         <div class="flex flex-col w-full md:w-xl h-200 px-4 pb-4 sm:px-8 sm:pb-8 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark transition-all"> <!-- TODO: Why does this use input when it is a field/embed? Sounds like inconsistent styling -->
 
@@ -192,19 +195,6 @@
         thisClothingImgBlob.value = await getImageFromServer(thisClothing.value.imgPath, 512) || "";
     }
 
-    // Track if user made changes
-    const changesMade = ref(false);
-
-    onBeforeRouteLeave((to, from, next) => {
-        if (editModeEnabled && changesMade.value) {
-            if (!confirm("You have unsaved changes!\nWould you still like to continue?")) {
-                next(false);
-            }
-        }
-
-        next();
-    });
-
 
     // Adds/Removes a label
     async function toggleLabel(selectedLabel: Label) {
@@ -222,7 +212,7 @@
             thisClothing.value.labelIDs.push(selectedLabel.id);
         }
 
-        changesMade.value = true;
+        emitChangesMadeEvent();
     }
 
 
@@ -257,7 +247,7 @@
             thisClothing.value.labelIDs.push(newLabel.id);
 
             // Vue does not detect this change (as no element was edited in the DOM) so we need to track this manually
-            changesMade.value = true;
+            emitChangesMadeEvent();
         }
     }
 
@@ -296,7 +286,7 @@
             if (resBody.success) {
                 responseIndicatorSuccess();
 
-                changesMade.value = false;
+                emitChangesMadeEvent(false);
             } else {
                 responseIndicatorFailure();
                 return;
@@ -329,7 +319,7 @@
         if (resBody.success) {
             responseIndicatorSuccess();
 
-            changesMade.value = false;
+            emitChangesMadeEvent(false);
             thisClothing.value = resBody.document;
             thisClothingImgBlob.value = await getImageFromServer(resBody.document.imgPath, 512) || "";
         } else {

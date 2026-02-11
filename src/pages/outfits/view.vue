@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 19:54:52
+ * Last Modified: 2026-02-11 23:02:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -50,7 +50,10 @@
 
 
     <!-- Page content -->
-    <div class="py-20" @change="changesMade = true">
+    <div
+        class="py-20"
+        @change="editModeEnabled ? emitChangesMadeEvent() : null"
+    >
         <div class="flex gap-4 mb-4 md:mb-8 justify-between">
             <!-- Outfit title -->
             <div class="w-1/3 shrink-0">
@@ -301,20 +304,6 @@
     });
 
 
-    // Track if user made changes when in edit mode
-    const changesMade = ref(false);
-
-    onBeforeRouteLeave((to, from, next) => {
-        if (editModeEnabled && changesMade.value) {
-            if (!confirm("You have unsaved changes!\nWould you still like to continue?")) {
-                next(false);
-            }
-        }
-
-        next();
-    });
-
-
     // Add clothing to a label of this outfit
     function addClothing(id: string) {
         thisOutfit.value.clothes.push({
@@ -322,7 +311,7 @@
             clothingID: id
         });
 
-        changesMade.value = true;
+        emitChangesMadeEvent();
     }
 
 
@@ -330,7 +319,7 @@
     function removeClothing(id: string) {
         thisOutfit.value.clothes = thisOutfit.value.clothes.filter((e) => e.clothingID != id);
 
-        changesMade.value = true;
+        emitChangesMadeEvent();
     }
 
 
@@ -363,7 +352,7 @@
             thisOutfit.value.labelIDs.push(selectedLabel.id);
         }
 
-        changesMade.value = true;
+        emitChangesMadeEvent();
     }
 
 
@@ -390,7 +379,7 @@
             if (resBody.success) {
                 responseIndicatorSuccess();
 
-                changesMade.value = false;
+                emitChangesMadeEvent(false);
             } else {
                 responseIndicatorFailure();
                 return;
@@ -423,7 +412,7 @@
         if (resBody.success) {
             responseIndicatorSuccess();
 
-            changesMade.value = false;
+            emitChangesMadeEvent(false);
             thisOutfit.value = resBody.document;
         } else {
             responseIndicatorFailure();
