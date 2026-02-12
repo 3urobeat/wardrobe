@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 19:27:37
+ * Last Modified: 2026-02-12 20:57:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -72,7 +72,7 @@
 
     // Global mouse event listener to collapse search input when clicking anywhere while search bar is empty
     onMounted(() => {
-        console.log("DEBUG - globalTitleBar: Attaching mouse event listener")
+        console.debug("DEBUG - globalTitleBar: Attaching mouse event listener")
 
         document.addEventListener("mouseup", () => {
             if (globalSearchStr.value === "") {

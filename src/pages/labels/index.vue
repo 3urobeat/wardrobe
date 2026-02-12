@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-11 23:04:53
+ * Last Modified: 2026-02-12 21:00:03
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -234,8 +234,8 @@
             labelsPerCategory[categoryID]![labelIndex]!.orderIndex = newOrderIndex;
             localLabels.value.find((e) => e.id == list[labelIndex]!.id)!.orderIndex = newOrderIndex;
 
-            //console.log(list[labelIndex].name)
-            //console.log(labelsPerCategory[categoryID].map((e) => e.orderIndex))
+            //console.debug(list[labelIndex].name)
+            //console.debug(labelsPerCategory[categoryID].map((e) => e.orderIndex))
         });
 
     }

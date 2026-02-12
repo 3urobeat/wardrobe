@@ -4,7 +4,7 @@
  * Created Date: 2025-12-09 21:00:14
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:59:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.log("API set-outfit: Received request for: ", params.outfit);
+    console.debug("API set-outfit: Received request for: ", params.outfit);
 
     // Ask db helper to upsert entry
     const res = await upsertOutfit(params.outfit);

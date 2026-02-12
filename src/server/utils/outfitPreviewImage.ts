@@ -4,7 +4,7 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 21:00:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -97,7 +97,7 @@ export async function generateOutfitPreviewImage(outfit: Outfit): Promise<string
 
 
     // Generate collage
-    console.log(`DEBUG: Generating new outfit preview image for '${outfit.id}' with ${images.length} images...`);
+    console.log(`Generating new outfit preview image for '${outfit.id}' with ${images.length} images...`);
 
     const collage = await generateImageCollage(images, 1024, 1024);
 
@@ -105,7 +105,7 @@ export async function generateOutfitPreviewImage(outfit: Outfit): Promise<string
     // Save image & return path
     const imgPath = await saveImage(imgCategory.outfit, collage);
 
-    console.log("DEBUG: Finished generating outfit preview image " + imgPath);
+    console.log("Finished generating outfit preview image " + imgPath);
     return imgPath;
 
 }
@@ -120,7 +120,7 @@ export function updateImagesOfAffectedOutfits(clothingID: string) {
     // Get all outfits containing this piece of clothing
     getOutfitsContainingClothing(clothingID)
         .then((outfits) => {
-            console.log(`DEBUG: Re-generating ${outfits.length} preview images which contain clothing '${clothingID}'...`);
+            console.log(`Re-generating ${outfits.length} preview images which contain clothing '${clothingID}'...`);
 
             outfits.forEach(async (e) => upsertOutfit(e)); // UpsertOutfit handles preview generation
         });

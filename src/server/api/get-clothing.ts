@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:54
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:58:03
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.log(`API get-clothing: Received request for id '${params.id}'...`);
+    console.debug(`API get-clothing: Received request for id '${params.id}'...`);
 
     // Ask db helper to retrieve item
     const clothing = await getClothes([ params.id ]);

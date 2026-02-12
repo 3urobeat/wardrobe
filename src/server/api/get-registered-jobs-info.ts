@@ -4,7 +4,7 @@
  * Created Date: 2025-12-31 13:03:12
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:58:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -29,7 +29,7 @@ import { JobInfo } from "~/model/job";
 // This function is executed when this API route is called
 export default defineEventHandler(async () => {
 
-    console.log("API get-jobs-status: Received request...");
+    console.debug("API get-jobs-status: Received request...");
 
     // Ask job manager what's going on and remove functions from result as they can't be passed anyway
     const registeredJobs: JobInfo[] = getRegisteredJobs().map((e) => e.info);

@@ -4,7 +4,7 @@
  * Created Date: 2025-12-29 14:47:41
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 21:00:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export function registerJob(job: Job) {
         throw("A Job with that is already registered");
     }
 
-    console.log(`DEBUG Jobs Plugin: Registering job '${job.info.name}' which executes ${job.info.runOnRegistration ? "now and then " : ""}${job.info.interval > 0 ? "every " + formatTime(job.info.interval) : "only manually"}`);
+    console.log(`Jobs Plugin: Registering job '${job.info.name}' which executes ${job.info.runOnRegistration ? "now and then " : ""}${job.info.interval > 0 ? "every " + formatTime(job.info.interval) : "only manually"}`);
 
     // Check if job shall run on registration
     if (job.info.runOnRegistration) {
@@ -70,7 +70,7 @@ export function unregisterJob(jobName: string) {
     }
 
     // Remove job
-    console.log(`DEBUG Jobs Plugin: Unregistering job '${jobName}'...`);
+    console.log(`Jobs Plugin: Unregistering job '${jobName}'...`);
     _registeredJobs.splice(index, 1);
 
 }
@@ -80,7 +80,7 @@ export function unregisterJob(jobName: string) {
  * Internal: Registers core jobs which are shipped by default after 30 seconds
  */
 function _registerCoreJobs() {
-    console.log("DEBUG - Jobs Plugin: Registering core jobs in 30 seconds...");
+    console.log("Jobs Plugin: Registering core jobs in 30 seconds...");
 
     // Register dummy job to explain pending registration
     registerJob({
@@ -111,7 +111,7 @@ function _runDueJobs() {
         if (job.info.interval !== 0
             && job.info._lastExecTimestamp! + job.info.interval < Date.now()
         ) {
-            console.log(`DEBUG - JobManager: Running due job '${job.info.name}'...`);
+            console.log(`JobManager: Running due job '${job.info.name}'...`);
 
             job.run();
 

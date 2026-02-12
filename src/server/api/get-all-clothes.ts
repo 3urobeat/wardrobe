@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:16:50
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:57:50
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -28,7 +28,7 @@ import { getClothes } from "~/server/utils/useClothesDb";
 // This function is executed when this API route is called
 export default defineEventHandler(async () => {
 
-    console.log("API get-all-clothes: Received request");
+    console.debug("API get-all-clothes: Received request");
 
     // Ask db helper to retrieve item
     const clothes = await getClothes();

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-11 23:09:05
+ * Last Modified: 2026-02-12 20:57:40
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -198,7 +198,7 @@
 
     // Adds/Removes a label
     async function toggleLabel(selectedLabel: Label) {
-        console.log("DEBUG: Toggling label " + selectedLabel.id);
+        console.debug("DEBUG: Toggling label " + selectedLabel.id);
 
         // Get all selected labels without this one
         const filtered = thisClothing.value.labelIDs.filter((e: string) => e != selectedLabel.id);
@@ -257,7 +257,7 @@
         if (!fileName) throw("Error: Image was uploaded without file name?");
 
         thisClothing.value.imgPath = fileName;
-        console.log("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
+        console.debug("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
 
         thisClothingImgBlob.value = await getImageFromServer(fileName, 512) || "";
     }

@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-09 18:01:59
+ * Last Modified: 2026-02-12 20:57:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -94,7 +94,7 @@
             }
 
         } catch(err) {
-            console.log("Failed to set threeJs renderer size: " + err);
+            console.error("Failed to set threeJs renderer size: " + err);
             throw err;
         }
     }

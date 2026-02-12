@@ -4,7 +4,7 @@
  * Created Date: 2025-12-08 17:43:05
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:59:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    //console.log("API set-labels: Received request for: ", params.labels, params.categories);
+    console.debug("API set-labels: Received request for: ", params.labels, params.categories);
 
     // Ask db helper to process entries
     let categoriesRes;

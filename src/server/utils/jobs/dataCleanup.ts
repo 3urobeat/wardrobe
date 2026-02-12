@@ -4,7 +4,7 @@
  * Created Date: 2025-12-30 22:18:23
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 21:01:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -53,7 +53,7 @@ async function deleteUnusedImages(clothes: Clothing[], outfits: Outfit[]): Promi
         }
     });
 
-    if (deletedImages.length > 0) console.log("DEBUG - dataCleanup: Unused images: ", deletedImages);
+    if (deletedImages.length > 0) console.debug("DEBUG - dataCleanup: Unused images: ", deletedImages);
     return deletedImages.length;
 }
 
@@ -92,7 +92,7 @@ export default {
             }
         });
 
-        console.log("DEBUG - dataCleanup: Unreferenced labels: ", labelIDsToRemove);
+        console.debug("DEBUG - dataCleanup: Unreferenced labels: ", labelIDsToRemove);
         removeLabels(labelIDsToRemove);
 
 
@@ -106,7 +106,7 @@ export default {
                 const exists = labels.findIndex((label) => label.id == id) != -1;
 
                 if (!exists) {
-                    console.log(`DEBUG - dataCleanup: Clothing '${clothing.id}' references deleted label '${id}'`);
+                    console.debug(`DEBUG - dataCleanup: Clothing '${clothing.id}' references deleted label '${id}'`);
                     mod = true;
                 }
                 return exists;
@@ -130,7 +130,7 @@ export default {
                 const exists = labels.findIndex((label) => label.id == id) != -1;
 
                 if (!exists) {
-                    console.log(`DEBUG - dataCleanup: Outfit '${outfit.id}' references deleted label '${id}'`);
+                    console.debug(`DEBUG - dataCleanup: Outfit '${outfit.id}' references deleted label '${id}'`);
                     mod = true;
                 }
                 return exists;
@@ -140,7 +140,7 @@ export default {
                 const exists = clothes.findIndex((clothing) => clothing.id == assignment.clothingID) != -1;
 
                 if (!exists) {
-                    console.log(`DEBUG - dataCleanup: Outfit '${outfit.id}' references deleted clothing '${assignment.clothingID}'`);
+                    console.debug(`DEBUG - dataCleanup: Outfit '${outfit.id}' references deleted clothing '${assignment.clothingID}'`);
                     mod = true;
                 }
                 return exists;
@@ -159,7 +159,7 @@ export default {
 
 
         // Return result
-        console.log(`INFO - dataCleanup job: Deleted ${labelIDsToRemove.length} unreferences labels, deleted ${imagesDeleted} unused images and removed broken references from ${clothesUpdated} clothes & ${outfitsUpdated} outfits...`);
+        console.log(`Job dataCleanup: Deleted ${labelIDsToRemove.length} unreferences labels, deleted ${imagesDeleted} unused images and removed broken references from ${clothesUpdated} clothes & ${outfitsUpdated} outfits...`);
 
         return {
             labelsDeleted: labelIDsToRemove.length,

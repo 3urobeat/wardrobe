@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 17:06:47
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:59:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     // Get database instance
 
 
-    console.log("API set-settings: Received request");
+    console.debug("API set-settings: Received request");
 
 
     // Read body of the request we received

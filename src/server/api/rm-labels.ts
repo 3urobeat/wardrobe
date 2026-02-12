@@ -4,7 +4,7 @@
  * Created Date: 2025-12-27 11:55:39
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-02-12 20:58:48
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.log("API rm-labels: Received request for: ", params.labelIDs, params.categoryIDs);
+    console.debug("API rm-labels: Received request for: ", params.labelIDs, params.categoryIDs);
 
     // Ask db helper to process entries
     let labelRmRes;

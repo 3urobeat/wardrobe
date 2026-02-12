@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-11 23:02:29
+ * Last Modified: 2026-02-12 20:57:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -151,7 +151,7 @@
 
     // Handle changesMade event from pages
     useNuxtApp().hook("app:user:changesMade", (val: boolean = true) => {
-        console.log(`[DEBUG] Received changesMade = '${val}' event!'`)
+        console.debug(`[DEBUG] Received changesMade = '${val}' event!'`)
         changesMade = val;
     });
 
@@ -209,7 +209,7 @@
 
         } catch (err) {
 
-            console.log("checkForUpdate: Failed to check GitHub repository for an available update. " + err)
+            console.error("checkForUpdate: Failed to check GitHub repository for an available update. " + err)
         }
     }
 
