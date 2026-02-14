@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:57:09
+ * Last Modified: 2026-02-14 16:18:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -30,30 +30,28 @@
         </NuxtLink>
 
         <!-- Right side -->
-        <div class="fixed right-0 flex pr-3 gap-4 select-none">
+        <div class="fixed h-8 right-3 flex select-none shadow-md rounded-xl bg-bg-field-light dark:bg-bg-field-dark divide-border-secondary-light dark:divide-border-secondary-dark divide-x">
             <!-- Search input. Use click.prevent to prevent click from passing through and thus preventing search bar from expanding -->
-            <div
-                class="flex rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
-                type="search"
+            <button
+                class="flex px-2 py-1 rounded-l-xl hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
                 @click.stop="toggleGlobalSearchBar()"
                 v-if="globalSearchBarShown"
             >
-                <PhMagnifyingGlass class="self-center mx-2 size-5"></PhMagnifyingGlass>
+                <PhMagnifyingGlass class="self-center size-5"></PhMagnifyingGlass>
                 <input
                     ref="globalSearchInput"
-                    class="w-0 py-1 outline-0 transition-all"
-                    :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50' : 'invisible w-0'"
+                    class="w-0 outline-0 transition-all"
+                    :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50 ml-2' : 'invisible w-0'"
                     placeholder="Search"
                     type="search"
                     v-model.trim="globalSearchStr"
                 />
-            </div>
+            </button>
 
-            <!-- Light/Dark Mode toggle. "p-0.5!" overwrites custom-button-icon-only's p-1 to make button smaller -->
-            <button class="custom-button-icon-only p-0.5!" @click="toggleDarkMode()">
-                <!-- This must tailwind tags instead of nuxt refs in order to work on page load (see global.js) -->
-                <PhMoon class="hidden dark:block size-7 p-0.5 transition-opacity"></PhMoon>
-                <PhSun class="block dark:hidden size-7 p-0.5 transition-opacity"></PhSun>
+            <!-- Light/Dark Mode toggle -->
+            <button class="w-9 px-2 py-1 rounded-r-xl hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="toggleDarkMode()">
+                <PhMoon class="hidden dark:block size-5.5 transition-opacity"></PhMoon>
+                <PhSun class="block dark:hidden size-5.5 transition-opacity"></PhSun>
             </button>
         </div>
 
