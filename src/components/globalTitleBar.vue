@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-14 16:18:18
+ * Last Modified: 2026-02-14 18:59:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -19,15 +19,62 @@
 
 <template>
 
-    <div class="fixed flex items-center shrink-0 h-15 min-w-screen dark:text-text-dark border-y border-y-border-primary-light dark:border-y-border-primary-dark border-t-0">
+    <div class="fixed flex items-center z-40 shrink-0 h-15 min-w-screen dark:text-text-dark border-y border-y-border-primary-light dark:border-y-border-primary-dark border-t-0">
 
-        <!-- Wardrobe Icon(s) for light/dark mode with cut for expanded search bar on mobile -->
-        <NuxtLink class="fixed left-12.5 lg:left-7.5 select-none z-20 cursor-pointer transition-opacity duration-500" to="/">
-            <div :class="globalSearchStr != null ? 'w-10 sm:w-fit' : ''">
-                <img src="/logo-dark.png" class="h-7.5 object-left object-cover sm:object-contain hidden dark:block">
-                <img src="/logo-light.png" class="h-7.5 object-left object-cover sm:object-contain block dark:hidden">
-            </div>
-        </NuxtLink>
+        <!-- Left side -->
+        <div class="fixed h-8 left-12.5 lg:left-7.5 flex gap-4 select-none">
+            <!-- Wardrobe Icon(s) for light/dark mode with cut for expanded search bar on mobile -->
+            <NuxtLink class="z-20 cursor-pointer transition-opacity duration-500" to="/">
+                <div :class="globalSearchStr != null ? 'w-10 sm:w-fit' : ''">
+                    <img src="/logo-dark.png" class="h-7.5 object-left object-cover sm:object-contain hidden dark:block">
+                    <img src="/logo-light.png" class="h-7.5 object-left object-cover sm:object-contain block dark:hidden">
+                </div>
+            </NuxtLink>
+
+            <!-- User's current weather -->
+            <PickerDialog
+                :toggleText="currentWeather?.weather?.at(0)?.description || 'Couldn\'t load weather!'"
+                hideSearch
+            >
+                <template v-slot:toggle>
+                    <div class="flex items-center gap-2 px-2 py-1 select-none rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                        <!-- Icon -->
+                        <div>
+                            <PhSpinnerGap v-if="weatherLoading" class="size-5 text-orange-500 animate-spin"></PhSpinnerGap>
+                            <PhWarning v-else-if="currentWeather == null" class="size-5 text-orange-500"></PhWarning>
+
+                            <div v-else>
+                                <PhCloudLightning v-if="weatherIdToCondition(currentWeather.weather[0]!.id) == WeatherConditionGroupID.Thunderstorm" />
+                                <PhCloudRain v-else-if="[WeatherConditionGroupID.Drizzle, WeatherConditionGroupID.Rain].includes(weatherIdToCondition(currentWeather.weather[0]!.id))" />
+                                <PhSnowflake v-else-if="weatherIdToCondition(currentWeather.weather[0]!.id) == WeatherConditionGroupID.Snow" />
+                                <PhCloudFog  v-else-if="weatherIdToCondition(currentWeather.weather[0]!.id) == WeatherConditionGroupID.Fog" />
+                                <PhSun       v-else-if="weatherIdToCondition(currentWeather.weather[0]!.id) == WeatherConditionGroupID.Clear" />
+                                <!-- TODO: PhMoonStars when it's dark? -->
+                                <PhCloud     v-else-if="weatherIdToCondition(currentWeather.weather[0]!.id) == WeatherConditionGroupID.Clouds" />
+                            </div> <!-- TODO: Ugh, what a block -->
+                        </div>
+
+                        <!-- Temperature -->
+                        <label>{{ currentWeather?.main?.temp != null ? formatTemp(currentWeather?.main.temp) : '?' }} °C</label>
+                    </div>
+                </template>
+
+                <template v-slot:items>
+                    <div v-if="currentWeather" class="w-120 break-normal gap-x-2 ml-1">
+                        <label class="custom-label-secondary py-0! px-2! w-fit">Weather for {{ currentWeather.name }}:</label> <br>
+                        <br>
+                        {{ currentWeather.weather[0]?.main }} ({{ currentWeather.weather[0]?.description }}) <br>
+                        {{ formatTemp(currentWeather.main.temp) }} °C (feels like {{ formatTemp(currentWeather.main.feels_like) }} °C) <br>
+                        <br>
+                        <label class="custom-label-secondary py-0! px-2! w-fit">Last refresh:</label> {{ formatTimestamp(currentWeather.dt * 1000) }} <br>
+                        <label class="custom-label-secondary py-0! px-2! w-fit">Powered by</label> openweathermap.org
+                    </div>
+                    <div v-else class="w-120 break-normal">
+                        {{ weatherAPIErrorMessage }}
+                    </div>
+                </template>
+            </PickerDialog>
+        </div>
 
         <!-- Right side -->
         <div class="fixed h-8 right-3 flex select-none shadow-md rounded-xl bg-bg-field-light dark:bg-bg-field-dark divide-border-secondary-light dark:divide-border-secondary-dark divide-x">
@@ -61,11 +108,16 @@
 
 
 <script setup lang="ts">
-    import { PhMoon, PhSun, PhMagnifyingGlass } from "@phosphor-icons/vue";
+    import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
+    import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
 
     const globalSearchInput                      = useTemplateRef("globalSearchInput");
     const globalSearchBarShown: Ref<boolean>     = useState("globalSearchBarShown", () => false); // Poor woman's approach at page properties
     const globalSearchStr:      Ref<string|null> = useState("globalSearchStr",      () => null);  // null on page load, set to "" on click to expand input
+
+    const currentWeather: Ref<WeatherData|null> = ref(null);
+    const weatherLoading: Ref<boolean>          = ref(false);
+    let   weatherAPIErrorMessage                = "";
 
 
     // Global mouse event listener to collapse search input when clicking anywhere while search bar is empty
@@ -77,6 +129,9 @@
                 globalSearchStr.value = null;
             }
         });
+
+        // Load weather
+        getWeather();
     });
 
 
@@ -95,6 +150,46 @@
     function toggleDarkMode() {
         const isDark = document.documentElement.classList.toggle("dark");
         setUXSetting("darkModeEnabled", isDark);
+    }
+
+
+    // Gets current weather from server
+    async function getWeather() {
+
+        // Display loading icon and clear stored value
+        weatherLoading.value = true;
+        currentWeather.value = null;
+
+        // TODO: Get lat/lon from ip-api.com using utils helper if no coords are set in settings
+
+        const res = await fetch("/api/get-weather", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                lat: 0,
+                lon: 0
+            })
+        })
+
+        const resBody = await res?.json();
+
+        if (res.ok) {
+            currentWeather.value = resBody as WeatherData;
+        } else {
+            weatherAPIErrorMessage = resBody.message;
+        }
+
+        // Disable loading icon again
+        weatherLoading.value = false;
+
+    }
+
+
+    // Formats temp in kelvin to human unit
+    function formatTemp(temp: number): number {
+        return Math.round(temp - 272.15);
     }
 
 

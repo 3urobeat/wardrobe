@@ -4,7 +4,7 @@
  * Created Date: 2026-02-12 17:57:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 18:00:13
+ * Last Modified: 2026-02-14 18:44:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,20 +15,48 @@
  */
 
 
+// https://openweathermap.org/weather-conditions
+export enum WeatherConditionGroupID {
+    "Thunderstorm" = 2,
+    "Drizzle" =      3,
+    "Rain" =         5,
+    "Snow" =         6,
+    "Fog" =          7,
+    "Clear" =        8,
+    "Clouds" =       81
+}
+
+
+/**
+ * Converts openweathermap weather ID to WeatherConditionGroupID
+ * @param val Value to convert
+ */
+export function weatherIdToCondition(val: number): WeatherConditionGroupID {
+    if (!val || val < WeatherConditionGroupID.Thunderstorm * 100 || val > WeatherConditionGroupID.Clouds * 100) {
+        throw("Invalid val");
+    }
+
+    if (val > 800 && val < 900) { // Special case
+        return WeatherConditionGroupID.Clouds;
+    }
+
+    return Math.trunc(val / 100);
+}
+// TODO: This sucks and can probably be realised directly in TS types but I don't know how right now
+
+
 // https://openweathermap.org/current?collection=current_forecast
 export type WeatherData = {
     coord: {
         lon: number
         lat: number
     },
-    weather: [
-        {
-            id: number,
-            main: string,
-            description: string,
-            icon: string
-        }
-    ],
+    weather: {
+        id: number,
+        main: string,
+        description: string,
+        icon: string
+    }[],
     base: string,
     main: {
         temp: number,
