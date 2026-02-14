@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-14 18:59:57
+ * Last Modified: 2026-02-14 19:29:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -96,7 +96,11 @@
             </button>
 
             <!-- Light/Dark Mode toggle -->
-            <button class="w-9 px-2 py-1 rounded-r-xl hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all" @click="toggleDarkMode()">
+            <button
+                class="w-9 px-2 py-1 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
+                :class="globalSearchBarShown ? 'rounded-r-xl' : 'rounded-xl'"
+                @click="toggleDarkMode()"
+            >
                 <PhMoon class="hidden dark:block size-5.5 transition-opacity"></PhMoon>
                 <PhSun class="block dark:hidden size-5.5 transition-opacity"></PhSun>
             </button>
