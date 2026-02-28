@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 17:06:47
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:59:13
+ * Last Modified: 2026-02-28 14:03:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,29 +15,34 @@
  */
 
 
+import { setServerSettings } from "../utils/useSettingsDb";
+
+
 /**
  * This API route saves all transmitted settings
- * Params: { }
- * Returns: boolean
+ * Params: ServerSettings
+ * Returns:
  */
 
 
 // This function is executed when this API route is called
 export default defineEventHandler(async (event) => {
 
-    // Get database instance
-
-
-    console.debug("API set-settings: Received request");
-
-
     // Read body of the request we received
     const params = await readBody(event);
 
-    if (!params) return false;
+    if (!params) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "No settings to set!",
+        });
+    }
 
+    console.debug("API set-settings: Received request for:", params);
 
-    // Indicate we're done
-    return true;
+    // Ask db helper to figure stuff out
+    const res = setServerSettings(params);
+
+    return res;
 
 });

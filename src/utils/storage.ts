@@ -4,7 +4,7 @@
  * Created Date: 2026-02-04 16:25:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-04 16:45:25
+ * Last Modified: 2026-02-14 19:34:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 
-import { defaultUXSettings, UXSettingsName, type UXSettings } from "~/model/cookie";
+import { defaultUXSettings, UXSettingsName, type UXSettings } from "~/model/storage";
 
 
 /**

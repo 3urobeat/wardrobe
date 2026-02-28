@@ -4,7 +4,7 @@
  * Created Date: 2026-02-04 16:37:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-05 19:03:30
+ * Last Modified: 2026-02-14 19:34:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -63,7 +63,7 @@ const itemsGridSizes = [
         card: "h-132 md:h-152"
     },
 ];
-// TODO: Link array length to type in cookie.ts
+// TODO: Link array length to type in storage.ts
 
 /**
  * Takes a selected scaling value for an items grid card and returns tailwind classes

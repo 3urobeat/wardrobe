@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:57:28
+ * Last Modified: 2026-02-14 19:34:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -93,7 +93,7 @@
 
 
 <script setup lang="ts">
-    import { defaultUXSettings } from '~/model/cookie';
+    import { defaultUXSettings } from '~/model/storage';
     import type { Label } from '~/model/label';
     import { sortModes } from '~/model/sort-modes';
 

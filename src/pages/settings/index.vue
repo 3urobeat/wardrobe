@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-11 23:05:27
+ * Last Modified: 2026-02-28 13:59:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -112,22 +112,17 @@
 <script setup lang="ts">
     import { PhArrowClockwise, PhCheck, PhHourglassMedium } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import type { Settings } from "~/model/settings";
+    import type { ServerSettings } from "~/model/storage";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
     import { CoreJobPendingDummy, type JobInfo } from "~/model/job";
 
 
     // Refs
-    const settings: Ref<Settings> = ref({
-
-    });
-    const jobs: Ref<JobInfo[]> = ref([]);
+    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
+    const jobs:                 Ref<JobInfo[]>      = ref([]);
 
 
     // Load data
-    const settingsRes = await useFetch<any>("/api/get-settings");
-    settings.value = settingsRes.data.value;
-
     const jobRes = await useFetch("/api/get-registered-jobs-info");
     jobs.value = jobRes.data.value!;
 
@@ -141,7 +136,7 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(settings.value)
+            body: JSON.stringify(storedServerSettings.value)
         });
 
         // Indicate success/failure

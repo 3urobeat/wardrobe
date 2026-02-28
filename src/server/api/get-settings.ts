@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:44:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:58:17
+ * Last Modified: 2026-02-28 14:02:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,13 +15,14 @@
  */
 
 
-import { Settings } from "~/model/settings";
+import { ServerSettings } from "~/model/storage";
+import { getServerSettings } from "../utils/useSettingsDb";
 
 
 /**
  * This API route gets all stored settings and returns them
  * Params: {}
- * Returns: { }
+ * Returns: ServerSettings
  */
 
 
@@ -30,6 +31,9 @@ export default defineEventHandler(async () => {
 
     console.debug("API get-settings: Received request");
 
-    return {};
+    // Ask db helper for data
+    const settings = await getServerSettings();
+
+    return settings;
 
 });
