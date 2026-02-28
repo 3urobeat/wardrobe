@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 16:40:24
+ * Last Modified: 2026-02-28 17:56:17
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -113,8 +113,9 @@
 
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
-import type { ServerSettings } from "~/model/storage";
+    import type { ServerSettings } from "~/model/storage";
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
+import { geolocateClient } from "~/utils/utils";
 
     const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
     const globalSearchInput                         = useTemplateRef("globalSearchInput");
@@ -166,28 +167,49 @@ import type { ServerSettings } from "~/model/storage";
         weatherLoading.value = true;
         currentWeather.value = null;
 
-        // TODO: Get lat/lon from ip-api.com using utils helper if no coords are set in settings
-        const lat = storedServerSettings.value.location.lat;
-        const lon = storedServerSettings.value.location.lon;
 
-        const res = await fetch("/api/get-weather", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                lat: lat,
-                lon: lon
-            })
-        })
+        // Get lat/lon from geolocation API or from settings
+        let lat;
+        let lon;
 
-        const resBody = await res?.json();
-
-        if (res.ok) {
-            currentWeather.value = resBody as WeatherData;
+        if (storedServerSettings.value.location.useGeolocation) {
+            [ lat, lon ] = await geolocateClient()
+                .catch((err) => {
+                    weatherAPIErrorMessage = "Geolocation failed: " + err + " - You may set a fixed latitude / longitude value in settings.";
+                    return [ undefined, undefined ];
+                })
         } else {
-            weatherAPIErrorMessage = resBody.message;
+            lat = storedServerSettings.value.location.lat;
+            lon = storedServerSettings.value.location.lon;
+
+            if (lat == undefined || lon == undefined) {
+                weatherAPIErrorMessage = "Geolocation is disabled but no latitude / longitude is set in settings!";
+            }
         }
+
+
+        // Use lat/lon to get weather
+        if (lat != undefined && lon != undefined) {
+            const res = await fetch("/api/get-weather", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    lat: lat,
+                    lon: lon
+                })
+            })
+
+            const resBody = await res?.json();
+
+            if (res.ok) {
+                currentWeather.value = resBody as WeatherData;
+            } else {
+                weatherAPIErrorMessage = resBody.message;
+            }
+        }
+
 
         // Disable loading icon again
         weatherLoading.value = false;
