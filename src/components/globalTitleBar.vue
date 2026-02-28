@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-14 19:29:00
+ * Last Modified: 2026-02-28 16:40:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -113,11 +113,13 @@
 
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
+import type { ServerSettings } from "~/model/storage";
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
 
-    const globalSearchInput                      = useTemplateRef("globalSearchInput");
-    const globalSearchBarShown: Ref<boolean>     = useState("globalSearchBarShown", () => false); // Poor woman's approach at page properties
-    const globalSearchStr:      Ref<string|null> = useState("globalSearchStr",      () => null);  // null on page load, set to "" on click to expand input
+    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
+    const globalSearchInput                         = useTemplateRef("globalSearchInput");
+    const globalSearchBarShown: Ref<boolean>        = useState("globalSearchBarShown", () => false); // Poor woman's approach at page properties
+    const globalSearchStr:      Ref<string|null>    = useState("globalSearchStr",      () => null);  // null on page load, set to "" on click to expand input
 
     const currentWeather: Ref<WeatherData|null> = ref(null);
     const weatherLoading: Ref<boolean>          = ref(false);
@@ -165,6 +167,8 @@
         currentWeather.value = null;
 
         // TODO: Get lat/lon from ip-api.com using utils helper if no coords are set in settings
+        const lat = storedServerSettings.value.location.lat;
+        const lon = storedServerSettings.value.location.lon;
 
         const res = await fetch("/api/get-weather", {
             method: "POST",
@@ -172,8 +176,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                lat: 0,
-                lon: 0
+                lat: lat,
+                lon: lon
             })
         })
 

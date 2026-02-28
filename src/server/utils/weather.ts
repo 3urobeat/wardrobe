@@ -4,7 +4,7 @@
  * Created Date: 2026-02-12 17:29:48
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:55:24
+ * Last Modified: 2026-02-28 16:33:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -20,8 +20,6 @@ import type { WeatherData } from "~/model/weather";
 
 let weatherCache: WeatherData[] = [];
 
-const token = "";
-
 
 /**
  * Gets current weather data from API
@@ -33,6 +31,12 @@ const token = "";
 async function getCurrentWeatherFromApi(lat: number, lon: number): Promise<WeatherData> {
     if (lat == undefined || lon == undefined) {
         throw("Parameters lat and lon are required");
+    }
+
+    const token = (await getServerSettings()).weatherApiKey;
+
+    if (!token) {
+        throw("No API key set! Please configure one in settings."); // TODO: Control flow via exception is meh
     }
 
     const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&appid=${token}`, {
@@ -62,9 +66,9 @@ export async function getWeather(lat: number, lon: number): Promise<WeatherData>
         throw("Parameters lat and lon are required");
     }
 
-    // Attempt to find recent entry (2 hours) in cache with precision of one decimal place; should be around 10km: https://en.wikipedia.org/wiki/Decimal_degrees#Precision
+    // Attempt to find recent entry (1 hour) in cache with precision of one decimal place; should be around 10km: https://en.wikipedia.org/wiki/Decimal_degrees#Precision
     const rounded = (num: number) => Math.round(num * 10) / 10;
-    const recent  = 60 * 60 * 2;
+    const recent  = 60 * 60 * 1;
 
     // Iterate over entire cache to find relevant element and clean it at the same time
     let cachedRes;
