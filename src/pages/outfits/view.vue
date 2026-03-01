@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-11 23:02:38
+ * Last Modified: 2026-03-01 18:02:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -323,7 +323,7 @@
     }
 
 
-    // Gets items to show to in the popout for each label
+    // Gets items to show to in the popout for each label   // TODO: use computed() to avoid multiple calculations?
     function getClothesToShowInPopout(thisLabel: Label, searchStr: string = "") {
         // Get all clothes that have this body part label
         const clothesForThisLabel = getItemsToShow(storedClothes.value, defaultSortMode, [ thisLabel.id ]) as Clothing[];

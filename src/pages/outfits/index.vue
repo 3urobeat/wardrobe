@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 20:21:29
+ * Last Modified: 2026-03-01 15:32:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -27,6 +27,8 @@
         <text class="hidden sm:block ml-1">Outfit</text>
     </TitleBarFull>
 
+
+    <!-- Outfit Cards -->
     <div :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"> <!-- Push content down on mobile when title bar expands to show filter bar -->
 
         <!-- Responsive grid for outfits - Thank you: https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns -->
@@ -68,6 +70,8 @@
 
     </div>
 
+
+    <!-- Fallback Text -->
     <div class="w-full flex justify-center items-center text-text-secondary-light dark:text-text-secondary-dark select-none"> <!-- TODO: Could be a little lower -->
         <!-- No items available text (DB empty) -->
         <label class="custom-label-primary flex items-center w-fit" v-if="storedOutfits.length == 0">

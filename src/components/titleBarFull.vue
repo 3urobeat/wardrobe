@@ -20,7 +20,7 @@
 <template>
 
     <!-- TODO: Blur only size of components -->
-    <div id="fixed-title" class="fixed flex flex-col right-0 top-20.5 w-full text-nowrap select-none p-1.5 px-3 md:px-7 rounded-2xl backdrop-blur-lg">
+    <div id="fixed-title" class="fixed flex flex-col right-0 top-20.5 w-full text-nowrap select-none p-1.5 px-3 md:mx-4 rounded-2xl backdrop-blur-lg">
 
         <!-- Title Bar which is always displayed -->
         <div class="flex w-full justify-between md:justify-end gap-x-4">
