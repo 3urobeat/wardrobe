@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 17:54:38
+ * Last Modified: 2026-03-01 18:46:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -13,6 +13,10 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+
+
+import type { ServerSettings } from "~/model/storage";
+import type { WeatherData } from "~/model/weather";
 
 
 /**
@@ -69,5 +73,69 @@ export async function geolocateClient(): Promise<[ lat: number, lon: number ]> {
     }
 
     return [ resBody.lat, resBody.lon ];
+
+}
+
+
+/**
+ * Helper function to query get-weather API route
+ * @returns Object containing error message and weather data
+ */
+export async function getWeatherFromServer() {
+
+    // Get settings
+    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
+
+    const response: { error: string | null, weather: WeatherData | null } = {
+        error: null,
+        weather: null
+    };
+
+
+    // Get lat/lon from geolocation API or from settings
+    let lat;
+    let lon;
+
+    if (storedServerSettings.value.location.useGeolocation) {
+        [ lat, lon ] = await geolocateClient()
+            .catch((err) => {
+                response.error = "Geolocation failed: " + err + " - You may set a fixed latitude / longitude value in settings.";
+                return [ undefined, undefined ];
+            });
+    } else {
+        lat = storedServerSettings.value.location.lat;
+        lon = storedServerSettings.value.location.lon;
+
+        if (lat == undefined || lon == undefined) {
+            response.error = "Geolocation is disabled but no latitude / longitude is set in settings!";
+        }
+    }
+
+
+    // Use lat/lon to get weather
+    if (lat != undefined && lon != undefined) {
+        const res = await fetch("/api/get-weather", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                lat: lat,
+                lon: lon
+            })
+        });
+
+        const resBody = await res?.json();
+
+        if (res.ok) {
+            response.weather = resBody as WeatherData;
+        } else {
+            response.error = resBody.message;
+        }
+    }
+
+
+    // Return result
+    return response;
 
 }
