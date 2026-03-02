@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 18:31:36
+ * Last Modified: 2026-03-02 21:22:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -47,6 +47,25 @@
 
             <!-- Setting cards -->
             <div class="flex h-44 mx-2">
+
+                <!-- General -->
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                    <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
+                        <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                            <PhGear class="text-text-light dark:text-text-dark"></PhGear>
+                        </div>
+                        <label class="custom-label-primary py-0! px-2!">General</label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1">
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="temperatureUnit">Temperature Unit:</label>
+                        <select id="temperatureUnit" class="custom-input-secondary w-1/2 h-6! px-2!" v-model="storedServerSettings.temperatureUnit"> <!-- TODO: Options are not centered? -->
+                            <option :value="TemperatureUnit.KELVIN">{{ UnitMap[TemperatureUnit.KELVIN] }}</option>
+                            <option :value="TemperatureUnit.CELSIUS">{{ UnitMap[TemperatureUnit.CELSIUS] }}</option>
+                            <option :value="TemperatureUnit.FAHRENHEIT">{{ UnitMap[TemperatureUnit.FAHRENHEIT] }}</option>
+                        </select>
+                    </div>
+                </div>
 
                 <!-- Weather Settings -->
                 <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
@@ -136,11 +155,12 @@
 
 
 <script setup lang="ts">
-    import { PhArrowClockwise, PhCheck, PhCloud, PhHourglassMedium } from "@phosphor-icons/vue";
+    import { PhArrowClockwise, PhCheck, PhCloud, PhGear, PhHourglassMedium } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import type { ServerSettings } from "~/model/storage";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
     import { CoreJobPendingDummy, type JobInfo } from "~/model/job";
+    import { TemperatureUnit, UnitMap } from "~/model/unit";
 
 
     // Refs

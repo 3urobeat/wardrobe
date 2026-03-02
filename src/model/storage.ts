@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 14:10:39
+ * Last Modified: 2026-03-01 22:06:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -13,6 +13,9 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+
+
+import { TemperatureUnit } from "./unit";
 
 
 /*
@@ -58,7 +61,8 @@ export type ServerSettings = {
         lat: number | null,
         lon: number | null
     },
-    weatherApiKey: string
+    weatherApiKey: string,
+    temperatureUnit: TemperatureUnit
 
 }
 
@@ -68,5 +72,6 @@ export const defaultServerSettings: ServerSettings = {
         lat: null,
         lon: null
     },
-    weatherApiKey: ""
+    weatherApiKey: "",
+    temperatureUnit: TemperatureUnit.CELSIUS
 };
