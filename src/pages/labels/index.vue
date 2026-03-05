@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 21:00:03
+ * Last Modified: 2026-03-05 22:50:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -108,15 +108,21 @@
 
                                         <!-- Items area -->
                                         <template v-slot:items>
-                                            <div class="w-80">
-                                                <label for="specialSeasonFromTemp" class="mr-2">From Temperature:</label>
-                                                <input id="specialSeasonFromTemp" type="number" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp"> <br>
-                                                <label for="specialSeasonToTemp" class="mr-2">To Temperature:</label>
-                                                <input id="specialSeasonToTemp"   type="number" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp"> <br>
-                                                <label for="specialSeasonFromTime" class="mr-2">From Date:</label>
-                                                <input id="specialSeasonFromTime" type="date"   class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp"> <br>
-                                                <label for="specialSeasonToTime" class="mr-2">To Date:</label>
-                                                <input id="specialSeasonToTime"   type="date"   class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp"> <br>
+                                            <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 items-center w-80">
+                                                <label for="specialSeasonFromTemp">From Temperature:</label>
+                                                <div class="flex items-center">
+                                                    <input id="specialSeasonFromTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" v-model="computedTemp(getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp).value.value">
+                                                    <label>{{ getConfTempUnitStr() }}</label>
+                                                </div>
+                                                <label for="specialSeasonToTemp">To Temperature:</label>
+                                                <div class="flex items-center">
+                                                    <input id="specialSeasonToTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" v-model="computedTemp(getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp).value.value">
+                                                    <label>{{ getConfTempUnitStr() }}</label>
+                                                </div>
+                                                <label for="specialSeasonFromTime">From Date:</label>
+                                                <input id="specialSeasonFromTime" type="date" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp">
+                                                <label for="specialSeasonToTime">To Date:</label>
+                                                <input id="specialSeasonToTime" type="date" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp">
                                             </div>
                                         </template>
                                     </PickerDialog>
