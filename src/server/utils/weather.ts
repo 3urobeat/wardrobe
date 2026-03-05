@@ -4,7 +4,7 @@
  * Created Date: 2026-02-12 17:29:48
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 16:33:10
+ * Last Modified: 2026-03-04 22:10:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,6 +15,7 @@
  */
 
 
+import { UnitTypes } from "~/model/unit";
 import type { WeatherData } from "~/model/weather";
 
 
@@ -48,6 +49,18 @@ async function getCurrentWeatherFromApi(lat: number, lon: number): Promise<Weath
     if (res.status != 200 || resBody.cod != 200) {
         throw("Couldn't get weather data from API: " + (resBody.message || "Unknown Error"));
     }
+
+    // Create known types
+    /* eslint-disable camelcase */
+    /* resBody.main.temp       = new TemperatureUnit(resBody.main.temp);
+    resBody.main.feels_like = new TemperatureUnit(resBody.main.feels_like);
+    resBody.main.temp_min   = new TemperatureUnit(resBody.main.temp_min);
+    resBody.main.temp_max   = new TemperatureUnit(resBody.main.temp_max); */
+    resBody.main.temp       = { unit: UnitTypes.KELVIN, value: resBody.main.temp };
+    resBody.main.feels_like = { unit: UnitTypes.KELVIN, value: resBody.main.feels_like };
+    resBody.main.temp_min   = { unit: UnitTypes.KELVIN, value: resBody.main.temp_min };
+    resBody.main.temp_max   = { unit: UnitTypes.KELVIN, value: resBody.main.temp_max };
+    /* eslint-enable camelcase */
 
     return resBody;
 
