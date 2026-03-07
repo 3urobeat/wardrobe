@@ -6,7 +6,7 @@
  * Author: 3urobeat
  *
  * Modified By: 3urobeat
- * Last Modified: 2026-03-05 22:07:32
+ * Last Modified: 2026-03-07 16:06:39
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
@@ -113,7 +113,6 @@
 
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
-    import { getConfTempUnit } from "~/composables/unitConversion";
     import { UnitStrMap, type TemperatureUnit } from "~/model/unit";
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
     import { getWeatherFromServer } from "~/utils/utils";
@@ -178,13 +177,13 @@
     // Formats temp in kelvin to human unit
     function formatTemp(temp: TemperatureUnit | undefined): string {
         if (!temp) {
-            return `? ${getConfTempUnit()}`; // Data not loaded (yet)
+            return `? ${getConfTempUnitStr()}`; // Data not loaded (yet)
         }
 
         // Get temp converted to unit configured in settings
         let computed = computedTemp(temp);
 
-        return `${Math.round(computed.value.value)} ${UnitStrMap[computed.value.unit]}`;
+        return `${Math.round(computed.value!.value)} ${UnitStrMap[computed.value!.unit]}`;
     }
     // By calling this function multiple times from template the computed() in computedTemp() probably becomes obsolete, right?
 
