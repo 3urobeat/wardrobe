@@ -4,7 +4,7 @@
  * Created Date: 2026-03-01 22:01:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 22:36:49
+ * Last Modified: 2026-03-07 20:38:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -42,13 +42,13 @@ export type Unit<T> = {
     value: T
 }
 
-export type TemperatureUnit = Unit<number>;
+export type TemperatureKelvin = number; // I added this type alias to make raw incoming data (e.g. in WeatherData) more descriptive
+export type TemperatureUnit   = Unit<TemperatureKelvin>;
 
 export const TemperatureUnitDefault: TemperatureUnit = {
     unit: UnitTypes.KELVIN,
     value: 0
 } as const;
-
 
 
 // Unit operation base class
@@ -88,14 +88,14 @@ abstract class UnitOperation {
 
     // Unit conversions from and to base type, to be implemented by subclass
     abstract getAs(unit: UnitTypes): Unit<unknown>;
-    abstract setFrom(unitData: Unit<number>): Unit<unknown>; // Return converted unitData
+    abstract setFrom(unitData: Unit<unknown>): Unit<unknown>; // Return converted unitData
     //abstract toString(): string;
 }
 
 
 // Temperature Unit operation class
 export class TemperatureOperation extends UnitOperation {
-    protected override valueRaw: number;
+    protected override valueRaw: TemperatureKelvin;
 
     /**
      * Create Temperature Unit
