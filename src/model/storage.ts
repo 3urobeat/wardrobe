@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-04 16:34:23
+ * Last Modified: 2026-03-01 22:06:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 
-import { UnitTypes } from "./unit";
+import { TemperatureUnit } from "./unit";
 
 
 /*
@@ -62,7 +62,7 @@ export type ServerSettings = {
         lon: number | null
     },
     weatherApiKey: string,
-    temperatureUnit: UnitTypes
+    temperatureUnit: TemperatureUnit
 
 }
 
@@ -73,5 +73,5 @@ export const defaultServerSettings: ServerSettings = {
         lon: null
     },
     weatherApiKey: "",
-    temperatureUnit: UnitTypes.CELSIUS
+    temperatureUnit: TemperatureUnit.CELSIUS
 };

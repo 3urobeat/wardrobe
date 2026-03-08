@@ -5,8 +5,8 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
+ * Last Modified: 2026-03-01 18:46:05
  * Modified By: 3urobeat
- * Last Modified: 2026-03-07 16:06:39
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
@@ -55,7 +55,7 @@
                         </div>
 
                         <!-- Temperature -->
-                        <label>{{ formatTemp(currentWeather?.main.temp) }}</label>
+                        <label>{{ currentWeather?.main?.temp != null ? formatTemp(currentWeather?.main.temp) : '?' }} °C</label>
                     </div>
                 </template>
 
@@ -64,7 +64,7 @@
                         <label class="custom-label-secondary py-0! px-2! w-fit">Weather for {{ currentWeather.name }}:</label> <br>
                         <br>
                         {{ currentWeather.weather[0]?.main }} ({{ currentWeather.weather[0]?.description }}) <br>
-                        {{ formatTemp(currentWeather.main.temp) }} (feels like {{ formatTemp(currentWeather.main.feels_like) }}) <br>
+                        {{ formatTemp(currentWeather.main.temp) }} °C (feels like {{ formatTemp(currentWeather.main.feels_like) }} °C) <br>
                         <br>
                         <label class="custom-label-secondary py-0! px-2! w-fit">Last refresh:</label> {{ formatTimestamp(currentWeather.dt * 1000) }} <br>
                         <label class="custom-label-secondary py-0! px-2! w-fit">Powered by</label> openweathermap.org
@@ -113,7 +113,6 @@
 
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
-    import { UnitStrMap, type TemperatureUnit } from "~/model/unit";
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
     import { getWeatherFromServer } from "~/utils/utils";
 
@@ -175,17 +174,9 @@
 
 
     // Formats temp in kelvin to human unit
-    function formatTemp(temp: TemperatureUnit | undefined): string {
-        if (!temp) {
-            return `? ${getConfTempUnitStr()}`; // Data not loaded (yet)
-        }
-
-        // Get temp converted to unit configured in settings
-        let computed = computedTemp(temp);
-
-        return `${Math.round(computed.value!.value)} ${UnitStrMap[computed.value!.unit]}`;
+    function formatTemp(temp: number): number {
+        return Math.round(temp - 272.15);
     }
-    // By calling this function multiple times from template the computed() in computedTemp() probably becomes obsolete, right?
 
 
     // Define Props to be accepted by this component

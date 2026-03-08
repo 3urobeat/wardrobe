@@ -4,7 +4,7 @@
  * Created Date: 2026-01-17 17:38:27
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 21:46:17
+ * Last Modified: 2026-02-02 21:32:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -13,9 +13,6 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-
-
-import { TemperatureUnitDefault, type TemperatureUnit } from "./unit";
 
 
 // UUID for each category speciality
@@ -42,7 +39,7 @@ export type CategorySpecialityLabelValueMap<T extends CategorySpecialityID> = {
     [CategorySpecialityID.No_Speciality]: null;
     [CategorySpecialityID.Body_Part]:     CategorySpecialityBodyPartValue;
     [CategorySpecialityID.Color]:         `#${string}`;
-    [CategorySpecialityID.Season]:        { fromTemp: TemperatureUnit, toTemp: TemperatureUnit, fromTimestamp: number, toTimestamp: number };
+    [CategorySpecialityID.Season]:        { fromTemp: string, toTemp: string, fromTimestamp: number, toTimestamp: number };
 }[T]
 
 
@@ -80,7 +77,7 @@ export const CategorySpecialitySeason: CategorySpeciality = {
     id: CategorySpecialityID.Season,
     name: "Season",
     description: "Temperature Range",
-    value: { fromTemp: TemperatureUnitDefault, toTemp: TemperatureUnitDefault, fromTimestamp: 0, toTimestamp: 0 }
+    value: { fromTemp: "", toTemp: "", fromTimestamp: 0, toTimestamp: 0 }
 } as const;
 
 export const CategorySpecialityMap = {

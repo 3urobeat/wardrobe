@@ -4,7 +4,7 @@
  * Created Date: 2026-03-01 22:01:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-07 20:38:44
+ * Last Modified: 2026-03-02 21:29:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,142 +15,74 @@
  */
 
 
-/*
-    Implements units supported by wardrobe and their operations
-*/
-
-
 // Supported temperature units
-export enum UnitTypes {
+export enum TemperatureUnit {
     KELVIN = 0,
     CELSIUS = 1,
     FAHRENHEIT = 2
 }
-// Subtype indicating which Unit can have which types would probably be neat
 
-// Provides mappings of supported units to human readable format
-export const UnitStrMap = {
-    [UnitTypes.KELVIN]: "K",
-    [UnitTypes.CELSIUS]: "°C",
-    [UnitTypes.FAHRENHEIT]: "°F"
+/**
+ * Convert temperature to Kelvin
+ * @param unit Input unit
+ * @param value Input value
+ * @returns Value converted to Kelvin
+ */
+export function toKelvin(unit: TemperatureUnit, value: number): number {
+    switch (unit) {
+        case TemperatureUnit.KELVIN:
+            return value;
+        case TemperatureUnit.CELSIUS:
+            return value + 273.15;
+        case TemperatureUnit.FAHRENHEIT:
+            return ((value - 32) / 1.8) + 273.15;
+        default:
+            throw("Unsupported unit");
+    }
+}
+
+/**
+ * Convert temperature to Celsius
+ * @param unit Input unit
+ * @param value Input value
+ * @returns Value converted to Celsius
+ */
+export function toCelsius(unit: TemperatureUnit, value: number): number {
+    switch (unit) {
+        case TemperatureUnit.KELVIN:
+            return value - 273.15;
+        case TemperatureUnit.CELSIUS:
+            return value;
+        case TemperatureUnit.FAHRENHEIT:
+            return (value - 32) / 1.8;
+        default:
+            throw("Unsupported unit");
+    }
+}
+
+/**
+ * Convert temperature to Fahrenheit
+ * @param unit Input unit
+ * @param value Input value
+ * @returns Value converted to Fahrenheit
+ */
+export function toFahrenheit(unit: TemperatureUnit, value: number): number {
+    switch (unit) {
+        case TemperatureUnit.KELVIN:
+            return ((value - 273.15) * 1.8) + 32;
+        case TemperatureUnit.CELSIUS:
+            return (value * 1.8) + 32;
+        case TemperatureUnit.FAHRENHEIT:
+            return value;
+        default:
+            throw("Unsupported unit");
+    }
+}
+
+
+// Provides mappings of units to human readable format
+export const UnitMap = {
+    [TemperatureUnit.KELVIN]: "K",
+    [TemperatureUnit.CELSIUS]: "°C",
+    [TemperatureUnit.FAHRENHEIT]: "°F"
 } as const;
-
-
-// Generic type to communicate value with corresponding unit to frontend
-export type Unit<T> = {
-    unit: UnitTypes,
-    value: T
-}
-
-export type TemperatureKelvin = number; // I added this type alias to make raw incoming data (e.g. in WeatherData) more descriptive
-export type TemperatureUnit   = Unit<TemperatureKelvin>;
-
-export const TemperatureUnitDefault: TemperatureUnit = {
-    unit: UnitTypes.KELVIN,
-    value: 0
-} as const;
-
-
-// Unit operation base class
-abstract class UnitOperation {
-    protected          unitTypeRaw: UnitTypes; // Base type never changes
-    protected abstract valueRaw:    unknown;   // Value is always of base type
-
-    // Constructor sets immutable base type, subclass constructor sets value (since valueRaw is abstract here)
-    constructor(unitData: Unit<unknown>) {
-        this.unitTypeRaw = unitData.unit;
-    }
-
-    /**
-     * Get current data
-     * @returns Current data of base type
-     */
-    get(): Unit<unknown> {
-        return {
-            unit: this.unitTypeRaw,
-            value: this.valueRaw
-        };
-    }
-
-    /**
-     * Set new data
-     * @param unitData New raw type value to set
-     */
-    protected set(unitData: Unit<unknown>) { // Set operation on raw type should not be directly accessible
-        if (unitData.unit != this.unitTypeRaw) {
-            throw(`UnitData is not of base type ${UnitStrMap[this.unitTypeRaw]} (${this.unitTypeRaw})!`);
-        }
-
-        this.valueRaw = unitData.value;
-    }
-
-    //static toString(unitData: Unit<unknown>): string {}
-
-    // Unit conversions from and to base type, to be implemented by subclass
-    abstract getAs(unit: UnitTypes): Unit<unknown>;
-    abstract setFrom(unitData: Unit<unknown>): Unit<unknown>; // Return converted unitData
-    //abstract toString(): string;
-}
-
-
-// Temperature Unit operation class
-export class TemperatureOperation extends UnitOperation {
-    protected override valueRaw: TemperatureKelvin;
-
-    /**
-     * Create Temperature Unit
-     * @constructor
-     * @param unitData Initial data of base type Kelvin
-     */
-    constructor(unitData: TemperatureUnit) {
-        if (unitData.unit != TemperatureUnitDefault.unit) { // Would be cool to enforce this check in parent base class
-            throw(`UnitData ${unitData.unit} is not of base type ${TemperatureUnitDefault.unit}!`);
-        }
-
-        super(unitData);
-        this.valueRaw = unitData.value;
-    }
-
-    /**
-     * Convert and get value
-     * @param unit Unit to convert to
-     * @returns Returns converted value
-     */
-    getAs(unit: UnitTypes): TemperatureUnit {
-        switch (unit) {
-            case UnitTypes.KELVIN:
-                return { unit: UnitTypes.KELVIN, value: this.valueRaw }; // Raw value is already kelvin
-            case UnitTypes.CELSIUS:
-                return { unit: UnitTypes.CELSIUS, value: this.valueRaw - 273.15 };
-            case UnitTypes.FAHRENHEIT:
-                return { unit: UnitTypes.FAHRENHEIT, value: ((this.valueRaw - 273.15) * 1.8) + 32 };
-            default:
-                throw("Unsupported unit");
-        }
-    }
-
-    /**
-     * Convert and set new value
-     * @param unitData Unit & Value to convert from
-     */
-    setFrom(unitData: TemperatureUnit): TemperatureUnit {
-        switch (unitData.unit) {
-            case UnitTypes.KELVIN:
-                break;              // Nothing to do
-            case UnitTypes.CELSIUS:
-                unitData.value += 273.15;
-                break;
-            case UnitTypes.FAHRENHEIT:
-                unitData.value = ((unitData.value - 32) / 1.8) + 273.15;
-                break;
-            default:
-                throw("Unsupported unit");
-        }
-
-        unitData.unit = UnitTypes.KELVIN; // We converted value to base unit Kelvin above
-        this.set(unitData);
-
-        return unitData;
-    }
-
-}

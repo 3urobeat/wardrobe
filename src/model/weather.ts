@@ -4,7 +4,7 @@
  * Created Date: 2026-02-12 17:57:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 18:19:38
+ * Last Modified: 2026-02-14 18:44:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -13,8 +13,6 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  * You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-
-import type { TemperatureUnit } from "./unit";
 
 
 // https://openweathermap.org/weather-conditions
@@ -61,10 +59,10 @@ export type WeatherData = {
     }[],
     base: string,
     main: {
-        temp: TemperatureUnit,
-        feels_like: TemperatureUnit,
-        temp_min: TemperatureUnit,
-        temp_max: TemperatureUnit,
+        temp: number,
+        feels_like: number,
+        temp_min: number,
+        temp_max: number,
         pressure: number,
         humidity: number,
         sea_level: number,
