@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 13:15:25
+ * Last Modified: 2026-03-08 15:32:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -128,6 +128,7 @@
     import type { Category } from "./model/label-category";
     import type { PageProperties } from "./model/page";
     import { defaultServerSettings, type ServerSettings } from "./model/storage";
+    import { CategorySpecialityID, reactifyCategorySpecialitySeasonValue } from "./model/label-category-speciality";
 
     const route       = useRoute();
     let   changesMade = false;
@@ -144,7 +145,11 @@
 
     // Get all labels and categories
     let labelsRes = await useFetch("/api/get-all-labels");
-    storedLabels.value = labelsRes.data.value!; // TODO: Error handling
+    storedLabels.value = labelsRes.data.value!.filter((e) => { // TODO: Error handling
+        if (e.categoryID == CategorySpecialityID.Season) {
+            e.specialityValue = reactifyCategorySpecialitySeasonValue(e.specialityValue); // Convert Season labels
+        }
+    });
 
     // Get all labels and categories
     let categoriesRes = await useFetch("/api/get-all-label-categories");

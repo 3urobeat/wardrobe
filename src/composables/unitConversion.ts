@@ -4,7 +4,7 @@
  * Created Date: 2026-03-04 10:39:01
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 22:57:06
+ * Last Modified: 2026-03-07 20:42:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,13 +15,16 @@
  */
 
 
+/*
+    Implements Vue frontend interaction with model/unit.ts with automatic conversion based on user settings
+*/
+
+
 import type { ServerSettings } from "~/model/storage";
 import { UnitTypes, TemperatureOperation, type TemperatureUnit, UnitStrMap } from "~/model/unit";
 
 
-/*
-    Implements Vue frontend interaction with model/unit.ts with automatic conversion based on user settings
-*/
+const useSet = (): Ref<ServerSettings> => useState("storedServerSettings");
 
 
 /**
@@ -29,9 +32,7 @@ import { UnitTypes, TemperatureOperation, type TemperatureUnit, UnitStrMap } fro
  * @returns Returns configured temp unit type
  */
 export function getConfTempUnit(): UnitTypes {
-    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
-
-    return storedServerSettings.value.temperatureUnit;
+    return useSet().value.temperatureUnit;
 }
 
 /**
@@ -47,19 +48,17 @@ export function getConfTempUnitStr(): string {
  * Auto converts TemperatureUnit between user setting (get) and base type (set)
  * @param prop Reference to property
  */
-export function computedTemp(prop: TemperatureUnit) { // ...or should this be a Ref<>?
+export function computedTemp(prop: TemperatureOperation) {
     console.debug("[DEBUG] computedTemp init");
-    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
-    const unitOperation = new TemperatureOperation(prop); // Throws exception if prop is not of base type
 
     return computed({
         get(): TemperatureUnit {
             console.debug("[DEBUG] computedTemp get");
-            return unitOperation.getAs(storedServerSettings.value.temperatureUnit);
+            return prop.getAs(useSet().value.temperatureUnit);
         },
         set(newValue: TemperatureUnit) {
             console.debug("[DEBUG] computedTemp set");
-            prop = unitOperation.setFrom(newValue);
+            prop.setFrom(newValue);
         }
     });
 }

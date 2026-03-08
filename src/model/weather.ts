@@ -4,7 +4,7 @@
  * Created Date: 2026-02-12 17:57:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 18:19:38
+ * Last Modified: 2026-03-08 14:04:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { TemperatureUnit } from "./unit";
+import { TemperatureOperation, UnitTypes, type TemperatureKelvin } from "./unit";
 
 
 // https://openweathermap.org/weather-conditions
@@ -47,8 +47,9 @@ export function weatherIdToCondition(val: number): WeatherConditionGroupID {
 // TODO: This sucks and can probably be realised directly in TS types but I don't know how right now
 
 
+// Static data type for backend which only operates on base types (regarding Temperature)
 // https://openweathermap.org/current?collection=current_forecast
-export type WeatherData = {
+export interface WeatherData {
     coord: {
         lon: number
         lat: number
@@ -61,10 +62,10 @@ export type WeatherData = {
     }[],
     base: string,
     main: {
-        temp: TemperatureUnit,
-        feels_like: TemperatureUnit,
-        temp_min: TemperatureUnit,
-        temp_max: TemperatureUnit,
+        temp: TemperatureKelvin,
+        feels_like: TemperatureKelvin,
+        temp_min: TemperatureKelvin,
+        temp_max: TemperatureKelvin,
         pressure: number,
         humidity: number,
         sea_level: number,
@@ -97,4 +98,39 @@ export type WeatherData = {
     id: number,
     name: string,
     cod: number
+}
+
+
+// Reactive data type for frontend
+export interface WeatherDataReactive extends Omit<WeatherData, "main"> {
+    main: {
+        temp: TemperatureOperation,
+        feels_like: TemperatureOperation,
+        temp_min: TemperatureOperation,
+        temp_max: TemperatureOperation,
+        pressure: number,
+        humidity: number,
+        sea_level: number,
+        grnd_level: number
+    }
+}
+// TODO: label-category-speciality does this in one type with an OR instead of an additional type
+
+
+/**
+ * Converts WeatherData to WeatherDataReactive
+ * @param weather WeatherData to convert
+ * @returns Converted WeatherDataReactive
+ */
+export function reactifyWeatherData(weather: WeatherData): WeatherDataReactive {
+    const weatherConv = weather as unknown as WeatherDataReactive;
+
+    /* eslint-disable camelcase */
+    weatherConv.main.temp       = new TemperatureOperation({ unit: UnitTypes.KELVIN, value: weather.main.temp });
+    weatherConv.main.feels_like = new TemperatureOperation({ unit: UnitTypes.KELVIN, value: weather.main.feels_like });
+    weatherConv.main.temp_min   = new TemperatureOperation({ unit: UnitTypes.KELVIN, value: weather.main.temp_min });
+    weatherConv.main.temp_max   = new TemperatureOperation({ unit: UnitTypes.KELVIN, value: weather.main.temp_max });
+    /* eslint-enable camelcase */
+
+    return weatherConv;
 }

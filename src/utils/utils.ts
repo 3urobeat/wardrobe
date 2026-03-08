@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 21:47:39
+ * Last Modified: 2026-03-07 21:01:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,7 @@
 
 
 import type { ServerSettings } from "~/model/storage";
-import type { WeatherData } from "~/model/weather";
+import { reactifyWeatherData, type WeatherData, type WeatherDataReactive } from "~/model/weather";
 
 
 /**
@@ -86,7 +86,7 @@ export async function getWeatherFromServer() {
     // Get settings
     const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
 
-    const response: { error: string | null, weather: WeatherData | null } = {
+    const response: { error: string | null, weather: WeatherDataReactive | null } = {
         error: null,
         weather: null
     };
@@ -128,7 +128,7 @@ export async function getWeatherFromServer() {
         const resBody = await res?.json();
 
         if (res.ok) {
-            response.weather = resBody as WeatherData;
+            response.weather = reactifyWeatherData(resBody as WeatherData);
         } else {
             response.error = resBody.message;
         }

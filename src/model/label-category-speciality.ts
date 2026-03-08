@@ -4,7 +4,7 @@
  * Created Date: 2026-01-17 17:38:27
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-05 21:46:17
+ * Last Modified: 2026-03-08 15:32:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 
-import { TemperatureUnitDefault, type TemperatureUnit } from "./unit";
+import { TemperatureOperation, TemperatureUnitDefault, UnitTypes, type TemperatureKelvin } from "./unit";
 
 
 // UUID for each category speciality
@@ -42,7 +42,7 @@ export type CategorySpecialityLabelValueMap<T extends CategorySpecialityID> = {
     [CategorySpecialityID.No_Speciality]: null;
     [CategorySpecialityID.Body_Part]:     CategorySpecialityBodyPartValue;
     [CategorySpecialityID.Color]:         `#${string}`;
-    [CategorySpecialityID.Season]:        { fromTemp: TemperatureUnit, toTemp: TemperatureUnit, fromTimestamp: number, toTimestamp: number };
+    [CategorySpecialityID.Season]:        { fromTemp: TemperatureKelvin | TemperatureOperation, toTemp: TemperatureKelvin | TemperatureOperation, fromTimestamp: number, toTimestamp: number };
 }[T]
 
 
@@ -76,11 +76,18 @@ export const CategorySpecialityColor: CategorySpeciality = {
     value: "#000000",
 } as const;
 
-export const CategorySpecialitySeason: CategorySpeciality = {
+export const CategorySpecialitySeason: CategorySpeciality = { // Backend raw type
     id: CategorySpecialityID.Season,
     name: "Season",
     description: "Temperature Range",
-    value: { fromTemp: TemperatureUnitDefault, toTemp: TemperatureUnitDefault, fromTimestamp: 0, toTimestamp: 0 }
+    value: { fromTemp: TemperatureUnitDefault.value, toTemp: TemperatureUnitDefault.value, fromTimestamp: 0, toTimestamp: 0 }
+} as const;
+
+export const CategorySpecialitySeasonReactive: CategorySpeciality = { // Frontend "overload"
+    id: CategorySpecialityID.Season,
+    name: "Season",
+    description: "Temperature Range",
+    value: { fromTemp: new TemperatureOperation(TemperatureUnitDefault), toTemp: new TemperatureOperation(TemperatureUnitDefault), fromTimestamp: 0, toTimestamp: 0 }
 } as const;
 
 export const CategorySpecialityMap = {
@@ -93,3 +100,22 @@ export const CategorySpecialityMap = {
 
 // All supported specialities in an array to iterate over it in labels page
 export const CategorySpecialities: CategorySpeciality[] = Object.values(CategorySpecialityMap);
+
+
+/**
+ * Converts static temperatures in CategorySpecialitySeason value to class
+ * @param data WeatherData to convert
+ * @returns Converted WeatherDataReactive
+ */
+export function reactifyCategorySpecialitySeasonValue(data: CategorySpecialityLabelValueMap<CategorySpecialityID.Season>) {
+    const conv = data;
+
+    if (typeof conv.fromTemp == "number") {
+        conv.fromTemp = new TemperatureOperation({ unit: UnitTypes.KELVIN, value: data.fromTemp as number });
+    }
+    if (typeof conv.toTemp == "number") {
+        conv.toTemp   = new TemperatureOperation({ unit: UnitTypes.KELVIN, value: data.toTemp as number });
+    }
+
+    return conv;
+}

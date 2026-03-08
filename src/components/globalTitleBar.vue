@@ -6,7 +6,7 @@
  * Author: 3urobeat
  *
  * Modified By: 3urobeat
- * Last Modified: 2026-03-07 16:06:39
+ * Last Modified: 2026-03-07 21:29:08
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
  *
@@ -113,17 +113,17 @@
 
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
-    import { UnitStrMap, type TemperatureUnit } from "~/model/unit";
-    import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
+    import { TemperatureOperation, temperatureUnitToString, UnitStrMap, type TemperatureUnit } from "~/model/unit";
+    import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData, type WeatherDataReactive } from "~/model/weather";
     import { getWeatherFromServer } from "~/utils/utils";
 
     const globalSearchInput                         = useTemplateRef("globalSearchInput");
     const globalSearchBarShown: Ref<boolean>        = useState("globalSearchBarShown", () => false); // Poor woman's approach at page properties
     const globalSearchStr:      Ref<string|null>    = useState("globalSearchStr",      () => null);  // null on page load, set to "" on click to expand input
 
-    const currentWeather: Ref<WeatherData|null> = ref(null);
-    const weatherLoading: Ref<boolean>          = ref(false);
-    let   weatherAPIErrorMessage                = null;
+    const currentWeather: Ref<WeatherDataReactive|null> = ref(null);
+    const weatherLoading: Ref<boolean>                  = ref(false);
+    let   weatherAPIErrorMessage                        = null;
 
 
     // Global mouse event listener to collapse search input when clicking anywhere while search bar is empty
@@ -175,7 +175,7 @@
 
 
     // Formats temp in kelvin to human unit
-    function formatTemp(temp: TemperatureUnit | undefined): string {
+    function formatTemp(temp: TemperatureOperation | undefined): string {
         if (!temp) {
             return `? ${getConfTempUnitStr()}`; // Data not loaded (yet)
         }
@@ -183,7 +183,7 @@
         // Get temp converted to unit configured in settings
         let computed = computedTemp(temp);
 
-        return `${Math.round(computed.value!.value)} ${UnitStrMap[computed.value!.unit]}`;
+        return temperatureUnitToString(computed.value, true);
     }
     // By calling this function multiple times from template the computed() in computedTemp() probably becomes obsolete, right?
 

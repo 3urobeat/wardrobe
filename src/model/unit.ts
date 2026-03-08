@@ -4,7 +4,7 @@
  * Created Date: 2026-03-01 22:01:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-07 20:38:44
+ * Last Modified: 2026-03-07 21:24:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -36,7 +36,7 @@ export const UnitStrMap = {
 } as const;
 
 
-// Generic type to communicate value with corresponding unit to frontend
+// Generic type to communicate (a converted/non base unit) value with corresponding unit
 export type Unit<T> = {
     unit: UnitTypes,
     value: T
@@ -49,6 +49,17 @@ export const TemperatureUnitDefault: TemperatureUnit = {
     unit: UnitTypes.KELVIN,
     value: 0
 } as const;
+
+
+/**
+ * Converts temperature unit data to human readable string
+ * @param data Data to convert
+ * @param round Optional: Should value be rounded
+ * @returns Returns string in "value unit" format
+ */
+export function temperatureUnitToString(data: TemperatureUnit, round?: boolean): string {
+    return `${round ? Math.round(data.value) : data.value} ${UnitStrMap[data.unit]}`;
+}
 
 
 // Unit operation base class
@@ -84,12 +95,9 @@ abstract class UnitOperation {
         this.valueRaw = unitData.value;
     }
 
-    //static toString(unitData: Unit<unknown>): string {}
-
     // Unit conversions from and to base type, to be implemented by subclass
     abstract getAs(unit: UnitTypes): Unit<unknown>;
     abstract setFrom(unitData: Unit<unknown>): Unit<unknown>; // Return converted unitData
-    //abstract toString(): string;
 }
 
 
