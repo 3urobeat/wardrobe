@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 18:57:33
+ * Last Modified: 2026-03-09 18:58:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -111,12 +111,12 @@
                                             <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 items-center w-80">
                                                 <label for="specialSeasonFromTemp">From Temperature:</label>
                                                 <div class="flex items-center">
-                                                    <input id="specialSeasonFromTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp">
+                                                    <ConvertedUnit id="specialSeasonFromTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp" />
                                                     <label>{{ getConfTempUnitStr() }}</label>
                                                 </div>
                                                 <label for="specialSeasonToTemp">To Temperature:</label>
                                                 <div class="flex items-center">
-                                                    <input id="specialSeasonToTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp">
+                                                    <ConvertedUnit id="specialSeasonToTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp" />
                                                     <label>{{ getConfTempUnitStr() }}</label>
                                                 </div>
                                                 <label for="specialSeasonFromTime">From Date:</label>
@@ -161,6 +161,7 @@
     import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category-speciality";
     import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
+    import { UnitType } from "~/model/unit";
 
 
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()

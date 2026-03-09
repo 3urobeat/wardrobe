@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-02 21:24:38
+ * Last Modified: 2026-03-09 18:48:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,6 @@
 
 
 import type { ServerSettings } from "~/model/storage";
-import { TemperatureUnit, toCelsius, toFahrenheit } from "~/model/unit";
 import type { WeatherData } from "~/model/weather";
 
 
@@ -143,19 +142,11 @@ export async function getWeatherFromServer() {
 
 
 /**
- * Helper function to convert temperature in kelvin to unit selected in settings
- * @param value Input value
- * @returns Output value
+ * Rounds a number with x decimals
+ * @param value Number to round
+ * @param decimals Amount of decimals
+ * @returns Rounded number
  */
-export function convertTempKelvinToSetting(value: number) {
-    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
-
-    switch (storedServerSettings.value.temperatureUnit) {
-        case TemperatureUnit.CELSIUS:
-            return toCelsius(TemperatureUnit.KELVIN, value);
-        case TemperatureUnit.FAHRENHEIT:
-            return toFahrenheit(TemperatureUnit.KELVIN, value);
-        default:
-            return value;
-    }
+export function round(value: number, decimals: number): number {
+    return Number(Math.round(value+"e"+decimals)+"e-"+decimals);
 }

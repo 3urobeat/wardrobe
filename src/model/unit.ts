@@ -4,7 +4,7 @@
  * Created Date: 2026-03-01 22:01:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-02 21:29:07
+ * Last Modified: 2026-03-09 18:46:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,74 +15,82 @@
  */
 
 
-// Supported temperature units
-export enum TemperatureUnit {
+// Supported unit types
+export enum UnitType {
+    TEMPERATURE = 0
+}
+
+// Supported units
+export enum Unit {
     KELVIN = 0,
     CELSIUS = 1,
     FAHRENHEIT = 2
 }
 
-/**
- * Convert temperature to Kelvin
- * @param unit Input unit
- * @param value Input value
- * @returns Value converted to Kelvin
- */
-export function toKelvin(unit: TemperatureUnit, value: number): number {
-    switch (unit) {
-        case TemperatureUnit.KELVIN:
-            return value;
-        case TemperatureUnit.CELSIUS:
-            return value + 273.15;
-        case TemperatureUnit.FAHRENHEIT:
-            return ((value - 32) / 1.8) + 273.15;
-        default:
-            throw("Unsupported unit");
-    }
-}
-
-/**
- * Convert temperature to Celsius
- * @param unit Input unit
- * @param value Input value
- * @returns Value converted to Celsius
- */
-export function toCelsius(unit: TemperatureUnit, value: number): number {
-    switch (unit) {
-        case TemperatureUnit.KELVIN:
-            return value - 273.15;
-        case TemperatureUnit.CELSIUS:
-            return value;
-        case TemperatureUnit.FAHRENHEIT:
-            return (value - 32) / 1.8;
-        default:
-            throw("Unsupported unit");
-    }
-}
-
-/**
- * Convert temperature to Fahrenheit
- * @param unit Input unit
- * @param value Input value
- * @returns Value converted to Fahrenheit
- */
-export function toFahrenheit(unit: TemperatureUnit, value: number): number {
-    switch (unit) {
-        case TemperatureUnit.KELVIN:
-            return ((value - 273.15) * 1.8) + 32;
-        case TemperatureUnit.CELSIUS:
-            return (value * 1.8) + 32;
-        case TemperatureUnit.FAHRENHEIT:
-            return value;
-        default:
-            throw("Unsupported unit");
-    }
-}
-
-
 // Provides mappings of units to human readable format
-export const UnitMap = {
-    [TemperatureUnit.KELVIN]: "K",
-    [TemperatureUnit.CELSIUS]: "°C",
-    [TemperatureUnit.FAHRENHEIT]: "°F"
+export const UnitStrMap = {
+    [Unit.KELVIN]: "K",
+    [Unit.CELSIUS]: "°C",
+    [Unit.FAHRENHEIT]: "°F"
 } as const;
+
+export type TemperatureKelvin = number; // I added this type alias to make raw incoming data (e.g. in WeatherData) more descriptive
+
+
+/**
+ * Convert value from base unit
+ * @param value
+ * @param toUnit
+ * @returns Value converted to toUnit
+ */
+export function tempKelvinTo(value: TemperatureKelvin, toUnit: Unit): number {
+    switch (toUnit) {
+        case Unit.KELVIN:
+            break; // Raw value is already kelvin
+        case Unit.CELSIUS:
+            value -= 273.15;
+            break;
+        case Unit.FAHRENHEIT:
+            value = ((value - 273.15) * 1.8) + 32;
+            break;
+        default:
+            throw("Unsupported unit");
+    }
+    return round(value, 2); // Round to two decimal places
+}
+// In the past I used an object to bind unit and value together which was kinda cool but it caused a lot of "overhead"
+
+
+/**
+ * Convert value to base unit
+ * @param value
+ * @param fromUnit
+ * @returns Value converted to base unit
+ */
+export function tempToKelvin(value: number, fromUnit: Unit): TemperatureKelvin {
+    switch (fromUnit) {
+        case Unit.KELVIN:
+            break; // Raw value is already kelvin
+        case Unit.CELSIUS:
+            value += 273.15;
+            break;
+        case Unit.FAHRENHEIT:
+            value = ((value - 32) / 1.8) + 273.15;
+            break;
+        default:
+            throw("Unsupported unit");
+    }
+    return round(value, 2); // Round to two decimal places
+}
+
+
+/**
+ * Converts temperature unit data to human readable string
+ * @param value Value to display
+ * @param unit Unit to display
+ * @param round Optional: Should value be rounded
+ * @returns Returns string in "value unit" format
+ */
+export function temperatureUnitToString(value: TemperatureKelvin, unit: Unit, round?: boolean): string {
+    return `${round ? Math.round(value) : value} ${UnitStrMap[unit]}`;
+}

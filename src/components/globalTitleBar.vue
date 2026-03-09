@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-01 18:46:05
+ * Last Modified: 2026-03-09 18:39:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -55,7 +55,7 @@
                         </div>
 
                         <!-- Temperature -->
-                        <label>{{ currentWeather?.main?.temp != null ? formatTemp(currentWeather?.main.temp) : '?' }} °C</label>
+                        <label>{{ formatTemp(currentWeather?.main.temp) }}</label>
                     </div>
                 </template>
 
@@ -64,7 +64,7 @@
                         <label class="custom-label-secondary py-0! px-2! w-fit">Weather for {{ currentWeather.name }}:</label> <br>
                         <br>
                         {{ currentWeather.weather[0]?.main }} ({{ currentWeather.weather[0]?.description }}) <br>
-                        {{ formatTemp(currentWeather.main.temp) }} °C (feels like {{ formatTemp(currentWeather.main.feels_like) }} °C) <br>
+                        {{ formatTemp(currentWeather.main.temp) }} (feels like {{ formatTemp(currentWeather.main.feels_like) }}) <br>
                         <br>
                         <label class="custom-label-secondary py-0! px-2! w-fit">Last refresh:</label> {{ formatTimestamp(currentWeather.dt * 1000) }} <br>
                         <label class="custom-label-secondary py-0! px-2! w-fit">Powered by</label> openweathermap.org
@@ -113,6 +113,8 @@
 
 <script setup lang="ts">
     import { PhMoon, PhSun, PhMagnifyingGlass, PhSpinnerGap, PhCloudLightning, PhCloudRain, PhSnowflake, PhCloudFog, PhCloud, PhWarning } from "@phosphor-icons/vue";
+    import { confTempToStr } from "~/composables/unitConversion";
+    import { type TemperatureKelvin } from "~/model/unit";
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
     import { getWeatherFromServer } from "~/utils/utils";
 
@@ -173,9 +175,13 @@
     }
 
 
-    // Formats temp in kelvin to human unit
-    function formatTemp(temp: number): number {
-        return Math.round(temp - 272.15);
+    // Formats temp in kelvin to human readable string. Middleman function to display "? unit" on undefined
+    function formatTemp(temp: TemperatureKelvin | undefined): string {
+        if (!temp) {
+            return `? ${getConfTempUnitStr()}`; // Data not loaded (yet)
+        }
+
+        return confTempToStr(temp, true);
     }
 
 
