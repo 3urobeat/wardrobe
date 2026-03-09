@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:10:31
+ * Last Modified: 2026-03-09 19:36:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -55,7 +55,7 @@
                         </div>
 
                         <!-- Temperature -->
-                        <label>{{ formatTemp(currentWeather?.main.temp) }}</label>
+                        <label class="cursor-pointer">{{ formatTemp(currentWeather?.main.temp) }}</label>
                     </div>
                 </template>
 
