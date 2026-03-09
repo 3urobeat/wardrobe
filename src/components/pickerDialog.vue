@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:54:53
+ * Last Modified: 2026-03-09 21:04:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -86,30 +86,52 @@
 
     // Calculate distance to screen bounds and position dialog accordingly to prevent x-overflow
     const dialogPosition = computed(() => {
-        const buttonRect  = pickerDialogToggleBtn.value?.getBoundingClientRect(); // Get location of button that toggles dialog
-        const dialogWidth = pickerDialogItemsDiv.value?.clientWidth;              // Get width of dialog
+        const buttonRect   = pickerDialogToggleBtn.value?.getBoundingClientRect(); // Get location of button that toggles dialog
+        const dialogWidth  = pickerDialogItemsDiv.value?.clientWidth;              // Get width of dialog
+        const dialogHeight = pickerDialogItemsDiv.value?.clientHeight;
 
         // Value is initially undefined, prob due to transition. Only take action once itemsDiv width is known
-        if (dialogWidth && buttonRect) {
-            // Calculate distance to left & right screen border. If value is negative, the dialog overflows
-            const leftOverflow  = buttonRect.left - dialogWidth;
-            const rightOverflow = window.innerWidth - (buttonRect.right + dialogWidth);
-            //console.debug("[DEBUG] Picker left & right screen border distances:", leftOverflow, rightOverflow)
+        if (buttonRect) {
+            let result = "";
 
-            // Picker dialog overflows on both screen borders, center on screen and shrink content
-            if (leftOverflow < 0 && rightOverflow < 0) {
-                return "left-1/2 transform -translate-x-1/2";
+            if (dialogWidth) {
+                // Calculate distance to left & right screen border. If value is negative, the dialog overflows
+                const leftOverflow  = buttonRect.left - dialogWidth;
+                const rightOverflow = window.innerWidth - (buttonRect.right + dialogWidth);
+                //console.debug("[DEBUG] Picker left & right screen border distances:", leftOverflow, rightOverflow)
 
-            } else {    // Picker dialog overflows only on one screen border
+                // Picker dialog overflows on both screen borders, center on screen and shrink content
+                if (leftOverflow < 0 && rightOverflow < 0) {
+                    result += "left-1/2 transform -translate-x-1/2";
 
-                // Align dialog to left or right screen border, depending on which overflows
-                if (leftOverflow < 0) {
-                    return "left-0";
-                } else if (rightOverflow < 0) {
-                    return "right-0";
-                } else {
-                    return ""; // No overflow
+                } else {    // Picker dialog overflows only on one screen border
+
+                    // Align dialog to left or right screen border, depending on which overflows
+                    if (leftOverflow < 0) {
+                        result += "left-0";
+                    } else if (rightOverflow < 0) {
+                        result += "right-0";
+                    }
+                    // else: No overflow
                 }
+            }
+
+            // ...do the same as above but for top & bottom
+            if (dialogHeight) {
+                const topOverflow    = buttonRect?.bottom - dialogHeight;
+                const bottomOverflow = window.innerHeight - (buttonRect?.bottom + dialogHeight);
+
+                if (topOverflow < 0 && bottomOverflow < 0) {
+                    result += " top-1/2 transform -translate-y-1/2";
+                } else {
+                    if (topOverflow < 0) {
+                        result += " top-0";
+                    } else if (bottomOverflow < 0) {
+                        result += " bottom-0";
+                    }
+                }
+
+                return result;
             }
         }
     });
