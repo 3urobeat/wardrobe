@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 18:39:47
+ * Last Modified: 2026-03-09 19:10:31
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -97,7 +97,7 @@
 
             <!-- Light/Dark Mode toggle -->
             <button
-                class="w-9 px-2 py-1 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
+                class="w-9 px-1.75 py-1 hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all"
                 :class="globalSearchBarShown ? 'rounded-r-xl' : 'rounded-xl'"
                 @click="toggleDarkMode()"
             >
