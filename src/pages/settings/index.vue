@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:02:27
+ * Last Modified: 2026-03-10 18:38:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -187,7 +187,7 @@
         setUXSetting("saveSelectedFilters", saveSelectedFilters.value);
 
         // Send server settings to backend to be saved in database
-        const success = await useFetch("/api/set-settings", {
+        const res = await fetch("/api/set-settings", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -195,8 +195,10 @@
             body: JSON.stringify(storedServerSettings.value)
         });
 
+        const resBody = await res.json();
+
         // Indicate success/failure
-        if (success.data.value) {
+        if (resBody.success) {
             responseIndicatorSuccess();
 
             // TODO: Refresh weather in globalTitleBar
