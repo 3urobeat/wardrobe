@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 13:15:25
+ * Last Modified: 2026-03-10 19:26:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -20,8 +20,8 @@
 <template>
 
     <header id="titlebar">
-        <PhList :class="!showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhList>
-        <PhCaretLeft :class="showNavbar ? 'block' : 'opacity-0'" class="fixed z-30 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhCaretLeft>
+        <PhList :class="!showNavbar ? 'block' : 'opacity-0'" class="fixed z-50 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhList>
+        <PhCaretLeft :class="showNavbar ? 'block' : 'opacity-0'" class="fixed z-50 cursor-pointer left-3 top-4.5 dark:text-text-dark lg:hidden block transition-opacity" size="25px" @click="showNavbar = !showNavbar"></PhCaretLeft>
 
         <GlobalTitleBar></GlobalTitleBar>
     </header>
