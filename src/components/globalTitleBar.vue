@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:36:43
+ * Last Modified: 2026-03-10 18:49:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -138,6 +138,13 @@
         });
 
         // Load weather
+        getWeather();
+    });
+
+
+    // Re-fetch weather from server when settings have been changed to react to changed position/api key
+    useNuxtApp().hook("app:user:settingsSaved", () => {
+        console.debug(`[DEBUG] Received settingsSaved event, refetching weather'`)
         getWeather();
     });
 

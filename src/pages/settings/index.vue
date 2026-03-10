@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 18:38:42
+ * Last Modified: 2026-03-10 18:47:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -201,9 +201,8 @@
         if (resBody.success) {
             responseIndicatorSuccess();
 
-            // TODO: Refresh weather in globalTitleBar
-
             emitChangesMadeEvent(false);
+            emitSettingsSavedEvent(); // Notify listeners to e.g. refresh weather in globalTitleBar
         } else {
             responseIndicatorFailure();
         }

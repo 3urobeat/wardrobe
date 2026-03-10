@@ -1,10 +1,10 @@
 /*
- * File: unsavedChangesMade.ts
+ * File: events.ts
  * Project: wardrobe
  * Created Date: 2026-02-11 21:31:19
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-11 22:41:57
+ * Last Modified: 2026-03-10 18:49:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,6 +15,18 @@
  */
 
 
+/**
+ * Sets (or unsets) dirty flag to prompt user for unsaved changes before leaving route
+ * @param val Optional: Unset dirty flag by passing false
+ */
 export function emitChangesMadeEvent(val: boolean = true) {
-    useNuxtApp().callHook('app:user:changesMade', val);
+    useNuxtApp().callHook("app:user:changesMade", val);
+}
+
+
+/**
+ * Notifies listeners that might want to recalculate/fetch values that settings have been saved
+ */
+export function emitSettingsSavedEvent() {
+    useNuxtApp().callHook("app:user:settingsSaved");
 }
