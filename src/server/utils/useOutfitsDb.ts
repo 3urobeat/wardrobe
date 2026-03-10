@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-10 19:17:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -49,7 +49,7 @@ export async function upsertOutfit(outfit: Outfit) {
     // Re-generate preview image // TODO: ...when previewImgPath == null or imgPath of referenced clothing has changed
     const newPreviewImg = await generateOutfitPreviewImage(outfit);
 
-    if (newPreviewImg) {
+    if (newPreviewImg != undefined) {          // Explicitly match against undefined to accept empty string (e.g. when all clothes were removed)
         outfit.previewImgPath = newPreviewImg; // Unused image will be deleted by periodic database cleanup job
     }
 

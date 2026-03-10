@@ -4,7 +4,7 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 21:00:38
+ * Last Modified: 2026-03-10 19:12:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -80,6 +80,10 @@ async function generateImageCollage(images: Buffer<ArrayBufferLike>[], collageWi
  */
 export async function generateOutfitPreviewImage(outfit: Outfit): Promise<string> {
 
+    if (outfit.clothes.length == 0) {
+        return "";
+    }
+
     // Get all images of clothes in this outfit
     const images: Buffer<ArrayBufferLike>[] = []; // TODO: Not sorted yet, probably needs to be a 2D array: First layer represents sorted body labels, second layer clothes sorted by order index
 
@@ -97,7 +101,7 @@ export async function generateOutfitPreviewImage(outfit: Outfit): Promise<string
 
 
     // Generate collage
-    console.log(`Generating new outfit preview image for '${outfit.id}' with ${images.length} images...`);
+    console.log(`Generating new outfit preview image for '${outfit.title}' (${outfit.id}) with ${images.length} images...`);
 
     const collage = await generateImageCollage(images, 1024, 1024);
 
