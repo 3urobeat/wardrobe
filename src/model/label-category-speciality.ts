@@ -4,7 +4,7 @@
  * Created Date: 2026-01-17 17:38:27
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:01:53
+ * Last Modified: 2026-03-09 22:24:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -42,7 +42,7 @@ export type CategorySpecialityLabelValueMap<T extends CategorySpecialityID> = {
     [CategorySpecialityID.No_Speciality]: null;
     [CategorySpecialityID.Body_Part]:     CategorySpecialityBodyPartValue;
     [CategorySpecialityID.Color]:         `#${string}`;
-    [CategorySpecialityID.Season]:        { fromTemp: TemperatureKelvin, toTemp: TemperatureKelvin, fromTimestamp: number, toTimestamp: number };
+    [CategorySpecialityID.Season]:        { fromTemp: TemperatureKelvin | null, toTemp: TemperatureKelvin | null, fromTimestamp: number | null, toTimestamp: number | null }; // Null
 }[T]
 
 
@@ -80,7 +80,7 @@ export const CategorySpecialitySeason: CategorySpeciality = {
     id: CategorySpecialityID.Season,
     name: "Season",
     description: "Temperature Range",
-    value: { fromTemp: 0, toTemp: 0, fromTimestamp: 0, toTimestamp: 0 }
+    value: { fromTemp: null, toTemp: null, fromTimestamp: null, toTimestamp: null }
 } as const;
 
 export const CategorySpecialityMap = {

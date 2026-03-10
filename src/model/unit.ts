@@ -4,7 +4,7 @@
  * Created Date: 2026-03-01 22:01:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 18:46:57
+ * Last Modified: 2026-03-10 17:05:59
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -38,12 +38,16 @@ export type TemperatureKelvin = number; // I added this type alias to make raw i
 
 
 /**
- * Convert value from base unit
+ * Convert value from base unit. If value is null or NaN, null will be returned
  * @param value
  * @param toUnit
  * @returns Value converted to toUnit
  */
-export function tempKelvinTo(value: TemperatureKelvin, toUnit: Unit): number {
+export function tempKelvinTo(value: TemperatureKelvin | null, toUnit: Unit): number | null {
+    if (value == null || isNaN(value)) {
+        return null;
+    }
+
     switch (toUnit) {
         case Unit.KELVIN:
             break; // Raw value is already kelvin
@@ -56,18 +60,23 @@ export function tempKelvinTo(value: TemperatureKelvin, toUnit: Unit): number {
         default:
             throw("Unsupported unit");
     }
+
     return round(value, 2); // Round to two decimal places
 }
 // In the past I used an object to bind unit and value together which was kinda cool but it caused a lot of "overhead"
 
 
 /**
- * Convert value to base unit
+ * Convert value to base unit. If value is null or NaN, null will be returned
  * @param value
  * @param fromUnit
  * @returns Value converted to base unit
  */
-export function tempToKelvin(value: number, fromUnit: Unit): TemperatureKelvin {
+export function tempToKelvin(value: number | null, fromUnit: Unit): TemperatureKelvin | null {
+    if (value == null || isNaN(value)) {
+        return null;
+    }
+
     switch (fromUnit) {
         case Unit.KELVIN:
             break; // Raw value is already kelvin
@@ -80,6 +89,7 @@ export function tempToKelvin(value: number, fromUnit: Unit): TemperatureKelvin {
         default:
             throw("Unsupported unit");
     }
+
     return round(value, 2); // Round to two decimal places
 }
 

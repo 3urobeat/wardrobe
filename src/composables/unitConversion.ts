@@ -4,7 +4,7 @@
  * Created Date: 2026-03-04 10:39:01
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:01:29
+ * Last Modified: 2026-03-10 17:02:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -51,5 +51,5 @@ export function getConfTempUnitStr(): string {
  */
 export function confTempToStr(value: TemperatureKelvin, rounded?: boolean): string {
     const unit = getConfTempUnit();
-    return temperatureUnitToString(tempKelvinTo(value, unit), unit, rounded);
+    return temperatureUnitToString(tempKelvinTo(value, unit)!, unit, rounded);
 }
