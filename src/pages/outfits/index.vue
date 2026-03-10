@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-01 15:32:42
+ * Last Modified: 2026-03-09 19:05:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -85,6 +85,10 @@
             Nothing matches your search/filter...
         </label>
     </div>
+
+
+    <!-- Outfit Recommendation Popout -->
+    <OutfitRecommendationDialog></OutfitRecommendationDialog>
 </template>
 
 
