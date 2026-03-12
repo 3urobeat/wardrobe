@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 18:47:22
+ * Last Modified: 2026-03-12 20:07:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -59,7 +59,7 @@
 
                     <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1">
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="temperatureUnit">Temperature Unit:</label>
-                        <select id="temperatureUnit" class="custom-input-secondary w-1/2 h-6! px-2!" v-model="storedServerSettings.temperatureUnit"> <!-- TODO: Options are not centered? -->
+                        <select id="temperatureUnit" class="custom-input-secondary w-1/2 h-6! px-2!" v-model="localServerSettings.temperatureUnit"> <!-- TODO: Options are not centered? -->
                             <option :value="Unit.KELVIN">{{ UnitStrMap[Unit.KELVIN] }}</option>
                             <option :value="Unit.CELSIUS">{{ UnitStrMap[Unit.CELSIUS] }}</option>
                             <option :value="Unit.FAHRENHEIT">{{ UnitStrMap[Unit.FAHRENHEIT] }}</option>
@@ -78,16 +78,16 @@
 
                     <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1">
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="useGeolocation">Automatically get location?</label>
-                        <input id="useGeolocation" type="checkbox" class="size-4 self-center" v-model="storedServerSettings.location.useGeolocation">
+                        <input id="useGeolocation" type="checkbox" class="size-4 self-center" v-model="localServerSettings.location.useGeolocation">
 
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="locationLat">Force Latitude:</label>
-                        <input id="locationLat" type="number" class="custom-input-secondary w-1/2 h-6! px-2!" placeholder="52.520" v-model.trim="storedServerSettings.location.lat" :disabled="storedServerSettings.location.useGeolocation">
+                        <input id="locationLat" type="number" class="custom-input-secondary w-1/2 h-6! px-2!" placeholder="52.520" v-model.trim="localServerSettings.location.lat" :disabled="localServerSettings.location.useGeolocation">
 
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="locationLon">Force Longitude:</label>
-                        <input id="locationLon" type="number" class="custom-input-secondary w-1/2 h-6! px-2!" placeholder="13.405" v-model.trim="storedServerSettings.location.lon" :disabled="storedServerSettings.location.useGeolocation">
+                        <input id="locationLon" type="number" class="custom-input-secondary w-1/2 h-6! px-2!" placeholder="13.405" v-model.trim="localServerSettings.location.lon" :disabled="localServerSettings.location.useGeolocation">
 
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="weatherApiKey">OpenWeatherMap API Key:</label>
-                        <input id="weatherApiKey" type="password" class="custom-input-secondary w-full h-6! px-2!" placeholder="W8orAGjB6NCnefMVX7bdpesKXJokemVV" v-model.trim="storedServerSettings.weatherApiKey">
+                        <input id="weatherApiKey" type="password" class="custom-input-secondary w-full h-6! px-2!" placeholder="W8orAGjB6NCnefMVX7bdpesKXJokemVV" v-model.trim="localServerSettings.weatherApiKey">
                     </div>
                 </div>
 
@@ -165,6 +165,7 @@
 
     // Refs
     const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
+    let   localServerSettings:  Ref<ServerSettings> = useCloned(storedServerSettings, { manual: true }).cloned; // I'm not using useCloned's sync() as it just wouldn't work :shrug:
     const jobs:                 Ref<JobInfo[]>      = ref([]);
 
     const saveSelectedFilters:  Ref<boolean>        = ref(false);
@@ -192,7 +193,7 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(storedServerSettings.value)
+            body: JSON.stringify(localServerSettings.value)
         });
 
         const resBody = await res.json();
@@ -200,8 +201,12 @@
         // Indicate success/failure
         if (resBody.success) {
             responseIndicatorSuccess();
-
             emitChangesMadeEvent(false);
+
+            // Manually sync local clones to global cache, useCloned's sync() didn't work. Refresh clone of localServerSettings to avoid it gaining reactivity
+            storedServerSettings.value = localServerSettings.value;
+            localServerSettings        = useCloned(storedServerSettings, { manual: true }).cloned;
+
             emitSettingsSavedEvent(); // Notify listeners to e.g. refresh weather in globalTitleBar
         } else {
             responseIndicatorFailure();

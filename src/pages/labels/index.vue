@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 18:58:43
+ * Last Modified: 2026-03-12 21:37:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -159,7 +159,7 @@
     import { getLabelInitialized, getLabelOrderIndexBetween, getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
     import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category-speciality";
-    import { moveArrayElement, useSortable } from "@vueuse/integrations/useSortable";
+    import { moveArrayElement, useSortable, type UseSortableReturn } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
     import { UnitType } from "~/model/unit";
 
@@ -167,18 +167,30 @@
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()
     const storedLabels:     Ref<Label[]>    = useState("storedLabels");
     const storedCategories: Ref<Category[]> = useState("storedCategories");
-    let   localLabels:      Ref<Label[]>    = useCloned(storedLabels, { manual: true }).cloned;     // I'm not using useCloned's sync() as it just wouldn't work :shrug:
-    let   localCategories:  Ref<Category[]> = useCloned(storedCategories, { manual: true }).cloned;
 
-    // Prepare temporary list for drag & drop reorder functionality. Changes in this list must be synced to localLabels & localCategories!
-    // Key/Index is category id
-    const labelsPerCategory: Reactive<{ [key: string]: Label[] }> = reactive({}); // Nested data structure must use reactive to update correctly in template when dragged
+    let localLabels:       Ref<Label[]>;
+    let localCategories:   Ref<Category[]>;
+    let labelsPerCategory: Reactive<{ [key: string]: Label[] }> = reactive({}); // Nested data structure must use reactive to update correctly in template when dragged
+    let useSortables:      UseSortableReturn[] = [];
 
-    localCategories.value.forEach((thisCategory) => {
-        labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(localLabels.value, thisCategory.id));
+    function init() {
+        localLabels     = useCloned(storedLabels, { manual: true }).cloned;     // I'm not using useCloned's sync() as it just wouldn't work :shrug:
+        localCategories = useCloned(storedCategories, { manual: true }).cloned;
 
-        useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, handle: "#drag-handle", onUpdate: moveLabel }); // Handle allows dragging action only on item with that id
-    });
+        // Cleanup before reassigning
+        useSortables.forEach((e) => e.stop());
+
+        // Prepare temporary list for drag & drop reorder functionality. Changes in this list must be synced to localLabels & localCategories!
+        // Key/Index is category id
+        localCategories.value.forEach((thisCategory) => {
+            labelsPerCategory[thisCategory.id] = sortLabelsList(getLabelsOfCategory(localLabels.value, thisCategory.id));
+
+            useSortables.push(useSortable(`#labels-${thisCategory.id}`, labelsPerCategory[thisCategory.id]!, { animation: 150, handle: "#drag-handle", onUpdate: moveLabel })); // Handle allows dragging action only on item with that id
+        });
+    }
+
+    init();
+
 
     // Cache labels & categories that should be deleted
     let labelIDsToDelete:    string[] = [];
@@ -340,8 +352,12 @@
             emitChangesMadeEvent(false);
             labelIDsToDelete    = [];
             categoryIDsToDelete = [];
-            storedLabels.value     = localLabels.value;     // Manually sync local clones to global cache, useCloned's sync() didn't work
+
+
+            // Manually sync local clones to global cache, useCloned's sync() didn't work. Refresh clone of localServerSettings to avoid it gaining reactivity
+            storedLabels.value     = localLabels.value;
             storedCategories.value = localCategories.value;
+            init(); // TODO: Buggy reordering list
         } else {
             responseIndicatorFailure();
         }

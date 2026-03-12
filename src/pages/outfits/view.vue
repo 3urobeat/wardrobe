@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-01 18:02:06
+ * Last Modified: 2026-03-12 19:42:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -278,23 +278,25 @@
     let clothingRes = await useFetch("/api/get-all-clothes");
     storedClothes.value = clothingRes.data.value!; // TODO: Error handling
 
-    // Get outfit data if not new
-    if (outfitId != "new") {
-        const outfitRes = await useFetch("/api/get-outfit", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: outfitId
-            })
-        });
 
-        thisOutfit.value = outfitRes.data.value!; // TODO: Error handling
-    }
 
     // Load images for clothes // TODO: Lazy load
-    onMounted(() => {
+    onMounted(async () => {
+        // Get outfit data if not new
+        if (outfitId != "new") {
+            const outfitRes = await fetch("/api/get-outfit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: outfitId
+                })
+            });
+
+            thisOutfit.value = await outfitRes.json(); // TODO: Error handling
+        }
+
         storedClothes.value.forEach(async (e) => {
             clothingImages.value.push({
                 id: e.id,

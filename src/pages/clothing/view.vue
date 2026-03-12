@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:57:40
+ * Last Modified: 2026-03-12 19:46:09
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -179,21 +179,23 @@
 
 
     // Get clothing
-    if (clothingId != "new") {
-        const res = await useFetch("/api/get-clothing", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: clothingId
-            })
-        });
+    onMounted(async () => {
+        if (clothingId != "new") {
+            const res = await fetch("/api/get-clothing", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: clothingId
+                })
+            });
 
-        thisClothing.value = res.data.value!; // TODO: Error handling
+            thisClothing.value = await res.json(); // TODO: Error handling
 
-        thisClothingImgBlob.value = await getImageFromServer(thisClothing.value.imgPath, 512) || "";
-    }
+            thisClothingImgBlob.value = await getImageFromServer(thisClothing.value.imgPath, 512) || "";
+        }
+    });
 
 
     // Adds/Removes a label
@@ -240,6 +242,7 @@
                     labels: [ newLabel ]
                 })
             });
+            // TODO: Error handling
 
             storedLabels.value.push(newLabel);
 
