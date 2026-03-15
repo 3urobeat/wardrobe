@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 18:21:28
+ * Last Modified: 2026-03-15 19:40:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -26,7 +26,7 @@
 
     <div class="fixed bottom-7 right-7">
         <PickerDialog
-            toggleText="Get outfit recommendation"
+            :toggleText="$t('outfitRecommendationTooltip')"
         >
             <!-- Round button, fixed to page bottom right -->
             <template v-slot:toggle>
@@ -37,7 +37,7 @@
 
             <!-- Items area -->
             <template v-slot:items="slotProps">
-                <label class="p-1 text-nowrap" v-if="weatherAPIErrorMessage != null">{{ weatherAPIErrorMessage }}</label>
+                <label class="p-1 text-nowrap" v-if="weatherAPIErrorMessage != null">{{ $t('weatherLoadAPIError') }} {{ $t(weatherAPIErrorMessage) || weatherAPIErrorMessage }}</label>
 
                 <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-auto"> <!-- TODO: overflow clips shadow -->
                     <NuxtLink
@@ -49,7 +49,7 @@
                         <img
                             class="w-fit h-2/3 mb-1 self-center"
                             :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
-                            :alt="'Image for ' + thisOutfit.title"
+                            :alt="$t('imageFallbackText', { name: thisOutfit.title })"
                         >
                         <label class="self-start text-sm font-semibold ml-0.5">{{ thisOutfit.title }}</label>
 
@@ -65,7 +65,7 @@
                         </div>
                     </NuxtLink>
 
-                    <label class="p-1 text-nowrap" v-if="recommendedOutfits.length == 0">No outfits tagged with 'Season' label matching current weather / date found.</label>
+                    <label class="p-1 text-nowrap" v-if="recommendedOutfits.length == 0">{{ $t("outfitRecommendationEmpty") }}</label>
                 </div>
             </template>
         </PickerDialog>

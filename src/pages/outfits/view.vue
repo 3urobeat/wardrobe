@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-12 19:42:35
+ * Last Modified: 2026-03-15 21:26:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -29,7 +29,7 @@
     <TitleBarBasic backRedirectTo="/outfits" v-if="!editModeEnabled">
         <NuxtLink :to="'/outfits/edit?id=' + (thisOutfit ? thisOutfit.id : 'new')" class="custom-button-primary">
             <PhPencil class="mr-2 size-5"></PhPencil>
-            Edit
+            {{ $t('edit') }}
         </NuxtLink>
     </TitleBarBasic>
 
@@ -38,13 +38,13 @@
         <template v-slot:secondary v-if="outfitId != 'new'">
             <button class="custom-button-primary" @click="deleteOutfit">
                 <PhTrash class="mr-2 size-5 text-red-600"></PhTrash>
-                Delete
+                {{ $t('delete') }}
             </button>
         </template>
 
         <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-            Save
+            {{ $t('save') }}
         </button>
     </TitleBarBasic>
 
@@ -58,7 +58,7 @@
             <!-- Outfit title -->
             <div class="w-1/3 shrink-0">
                 <p     v-if="!editModeEnabled" class="custom-label-primary text-nowrap w-full">{{ thisOutfit.title }}</p>
-                <input v-if="editModeEnabled"  class="custom-input-secondary w-full" placeholder="Name" v-model.trim="thisOutfit.title" />
+                <input v-if="editModeEnabled"  class="custom-input-secondary w-full" :placeholder="$t('name')" v-model.trim="thisOutfit.title" />
             </div>
 
             <!-- Label selector bar with expanding popup -->
@@ -87,7 +87,7 @@
 
                 <!-- Labels selector popout -->
                 <PickerDialog
-                    toggleText="Open labels selector"
+                    :toggleText="$t('outfitLabelsSelectorTooltip')"
                     hideSearch
                 >
                     <template v-slot:toggle>
@@ -160,13 +160,13 @@
                                     <button
                                         class="absolute z-20 custom-button-icon-only"
                                         @click="removeClothing(thisClothing.id)"
-                                        title="Remove Item"
+                                        :title="$t('removeItem')"
                                     >               <!-- Give this button a higher z-level than the close-popover-dummy to be able to delete clothes while the picker stays open -->
                                         <PhX class="size-5 text-red-500"></PhX>
                                     </button>
                                 </div>
 
-                                <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="'Image for ' + thisClothing.title">
+                                <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob" :alt="$t('imageFallbackText', { name: thisClothing.title })">
                                 <label class="self-start font-semibold mx-1">{{ thisClothing.title }}</label>
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                         <!-- Add clothing to label button when in edit mode -->
                         <div class="self-center m-2" v-if="editModeEnabled"> <!-- TODO: Does this picker for every label increase resource usage by a lot? -->
                             <PickerDialog
-                                toggleText="Add Item"
+                                :toggleText="$t('addItem')"
                             >
                                 <!-- This is the element that will be displayed in the open/close button -->
                                 <template v-slot:toggle>
@@ -193,7 +193,7 @@
                                             <img
                                                 class="w-fit h-2/3 mb-1 self-center"
                                                 :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
-                                                :alt="'Image for ' + thisClothing.title"
+                                                :alt="$t('imageFallbackText', { name: thisClothing.title })"
                                             >
                                             <label class="self-start text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
 
@@ -209,7 +209,7 @@
                                             </div>
                                         </button>
 
-                                        <label class="p-1 text-nowrap" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">No items to show.</label>
+                                        <label class="p-1 text-nowrap" v-if="getClothesToShowInPopout(thisLabel, slotProps.searchStr).length == 0">{{ $t('noItemsToShow') }}</label>
                                     </div>
                                 </template>
                             </PickerDialog>
@@ -222,7 +222,7 @@
                     <!-- No items available text (DB empty) -->
                     <label class="custom-label-primary flex items-center w-fit">
                         <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
-                        It looks like there is no label category marked with speciality 'Body Part' yet!
+                        {{ $t("outfitPageNoBodyPartSpeciality") }}
                     </label>
                 </div>
             </div>
@@ -361,7 +361,7 @@
     // Sends delete request to the database
     async function deleteOutfit() {
 
-        const confirmed = confirm(`Are you sure you want to delete '${thisOutfit.value.title}'?\nThis action cannot be undone!`);
+        const confirmed = confirm($t('deleteConfirmationPrompt', { name: thisOutfit.value.title }));
 
         // Send request to API if user confirmed
         if (confirmed) {

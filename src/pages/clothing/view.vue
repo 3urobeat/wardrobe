@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-12 19:46:09
+ * Last Modified: 2026-03-15 21:25:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -29,7 +29,7 @@
     <TitleBarBasic backRedirectTo="/" v-if="!editModeEnabled">
         <NuxtLink :to="'/clothing/edit?id=' + clothingId" class="custom-button-primary">
             <PhPencil class="mr-2 size-5"></PhPencil>
-            Edit
+            {{ $t("edit") }}
         </NuxtLink>
     </TitleBarBasic>
 
@@ -38,13 +38,13 @@
         <template v-slot:secondary v-if="clothingId != 'new'">
             <button class="custom-button-primary" @click="deleteClothing">
                 <PhTrash class="mr-2 size-5 text-red-600"></PhTrash>
-                Delete
+                {{ $t("delete") }}
             </button>
         </template>
 
         <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-            Save
+            {{ $t("save") }}
         </button>
     </TitleBarBasic>
 
@@ -87,7 +87,7 @@
                 </p>
                 <input
                     class="custom-input-secondary w-full sm:w-1/2 self-center sm:self-start"
-                    placeholder="Name"
+                    :placeholder="$t('name')"
                     v-model.trim="thisClothing.title"
                     v-if="editModeEnabled"
                 />
@@ -101,7 +101,7 @@
                 </p>
                 <textarea
                     class="custom-input-secondary w-full h-20! shrink-0 py-2!"
-                    placeholder="Description"
+                    :placeholder="$t('description')"
                     v-model.trim="thisClothing.description"
                     v-if="editModeEnabled"
                 />
@@ -220,7 +220,7 @@
 
     // Label quick add function
     async function quickAddLabel(thisCategory: Category) {
-        const name = prompt("Quick Add Label: Enter a name");
+        const name = prompt("clothingQuickAddLabelNamePrompt");
 
         // If prompt was submitted with content
         if (name) {
@@ -269,7 +269,7 @@
     // Sends delete request to the database
     async function deleteClothing() {
 
-        const confirmed = confirm(`Are you sure you want to delete '${thisClothing.value.title}'?\nThis action cannot be undone!`);
+        const confirmed = confirm($t('deleteConfirmationPrompt', { name: thisClothing.value.title }));
 
         // Send request to API if user confirmed
         if (confirmed) {

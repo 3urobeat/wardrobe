@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 21:04:15
+ * Last Modified: 2026-03-15 21:29:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -50,7 +50,7 @@
                 <div class="flex justify-end gap-x-4">
                     <input
                         class="w-full custom-input-primary"
-                        placeholder="Search"
+                        :placeholder="$t('search')"
                         v-model.trim="searchStr"
                         type="search"
                         v-if="!hideSearch"

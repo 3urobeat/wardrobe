@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-12 21:37:56
+ * Last Modified: 2026-03-15 21:57:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -21,7 +21,7 @@
     <TitleBarBasic>
         <button class="custom-button-primary" @click="saveChanges">
             <PhCheck class="mr-2 size-5 text-green-600"></PhCheck>
-            Save
+            {{ $t('save') }}
         </button>
     </TitleBarBasic>
 
@@ -37,18 +37,18 @@
                 <div class="flex gap-6">
                     <input
                         class="custom-input-primary py-0.5! h-fit! w-1/3 sm:w-full transition-all"
-                        placeholder="Category Name"
+                        :placeholder="$t('categoryName')"
                         v-model.trim="thisCategory.name"
                     />
 
                     <div class="flex custom-input-primary h-fit! py-0.75! px-1!" @change="updateCategorySpeciality(thisCategory)">
                         <select class="px-1" v-model="thisCategory.specialityID">
-                            <option v-for="thisSpeciality in CategorySpecialities" :value="thisSpeciality.id">{{ thisSpeciality.name }}</option>
+                            <option v-for="thisSpeciality in CategorySpecialities" :value="thisSpeciality.id">{{ $t(thisSpeciality.name) }}</option>
                         </select>
                     </div>
                 </div>
 
-                <button class="custom-button-icon-only" @click="deleteCategory(thisCategory)" title="Delete Label">
+                <button class="custom-button-icon-only" @click="deleteCategory(thisCategory)" :title="$t('deleteCategory')">
                     <PhX class="size-5 text-red-500"></PhX>
                 </button>
             </div>
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="flex w-full justify-end">
-                                <button class="custom-button-icon-only p-0.75!" @click="deleteLabel(thisLabel)" title="Delete Label">
+                                <button class="custom-button-icon-only p-0.75!" @click="deleteLabel(thisLabel)" :title="$t('deleteLabel')">
                                     <PhX class="size-5 text-red-500"></PhX>
                                 </button>
                             </div>
@@ -81,7 +81,7 @@
                         <!-- Label content -->
                         <input
                             class="custom-input-primary w-full my-2"
-                            placeholder="Name"
+                            :placeholder="$t('name')"
                             v-model.trim="thisLabel.name"
                         />
 
@@ -92,15 +92,15 @@
                             <!-- Category Speciality Value Input --> <!-- TODO: I *also* dislike this entire block. Moving to a component would be better but complicate value passing & updating -->
                             <div
                                 v-if="thisCategory.specialityID && CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.value != undefined"
-                                title="Configure Label Speciality"
+                                :title="$t('labelsConfigureSpeciality')"
                             >
                                 <select v-if="thisCategory.specialityID == CategorySpecialityID.Body_Part" class="custom-input-primary w-32 h-fit! px-1.5!" v-model="thisLabel.specialityValue">
                                     <!-- <option value=undefined disabled selected hidden>{{ CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description }}</option> -->
-                                    <option v-for="[key, value] of Object.entries(CategorySpecialityBodyPartValue)" :value="key">{{ value }}</option>
+                                    <option v-for="[key, value] of Object.entries(CategorySpecialityBodyPartValue)" :value="key">{{ $t(value.toLowerCase()) }}</option>
                                 </select>
-                                <input v-else-if="thisCategory.specialityID == CategorySpecialityID.Color" class="w-7 h-7 rounded-4xl" type="color" :placeholder="CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description" v-model="thisLabel.specialityValue">
+                                <input v-else-if="thisCategory.specialityID == CategorySpecialityID.Color" class="w-7 h-7 rounded-4xl" type="color" :placeholder="$t(CategorySpecialities.find((e) => e.id == thisCategory.specialityID)!.description)" v-model="thisLabel.specialityValue">
                                 <div v-else-if="thisCategory.specialityID == CategorySpecialityID.Season">
-                                    <PickerDialog toggleText="Configure Label Speciality" hide-search>
+                                    <PickerDialog :toggleText="$t('labelsConfigureSpeciality')" hide-search>
                                         <!-- This is the element that will be displayed in the open/close button -->
                                         <template v-slot:toggle>
                                             <PhSlidersHorizontal class="custom-button-icon-only-secondary size-7 fill-text-light dark:fill-text-dark"></PhSlidersHorizontal>
@@ -109,21 +109,22 @@
                                         <!-- Items area -->
                                         <template v-slot:items>
                                             <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 items-center w-80">
-                                                <label for="specialSeasonFromTemp">From Temperature:</label>
+                                                <label for="specialSeasonFromTemp">{{ $t('fromTemp') }}</label>
                                                 <div class="flex items-center">
                                                     <ConvertedUnit id="specialSeasonFromTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp" />
                                                     <label>{{ getConfTempUnitStr() }}</label>
                                                 </div>
-                                                <label for="specialSeasonToTemp">To Temperature:</label>
+                                                <label for="specialSeasonToTemp">{{ $t('toTemp') }}</label>
                                                 <div class="flex items-center">
                                                     <ConvertedUnit id="specialSeasonToTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp" />
                                                     <label>{{ getConfTempUnitStr() }}</label>
                                                 </div>
-                                                <label for="specialSeasonFromTime">From Date:</label>
+                                                <label for="specialSeasonFromTime">{{ $t('fromDate') }}</label>
                                                 <input id="specialSeasonFromTime" type="date" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp">
-                                                <label for="specialSeasonToTime">To Date:</label>
+                                                <label for="specialSeasonToTime">{{ $t('toDate') }}</label>
                                                 <input id="specialSeasonToTime" type="date" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp">
                                             </div>
+                                            <p class="text-text-secondary-light dark:text-text-secondary-dark mt-2 text-xs">{{ $t("labelsSpecialitySeasonTempDateTooltip") }}</p>
                                         </template>
                                     </PickerDialog>
                                 </div>
@@ -135,7 +136,7 @@
 
                 <!-- Add label button -->
                 <div class="flex m-2 items-center"> <!-- TODO: Auto scroll label container to the end? -->
-                    <button class="custom-button-icon-only" @click="addLabel(thisCategory)" title="Add Label">
+                    <button class="custom-button-icon-only" @click="addLabel(thisCategory)" :title="$t('addLabel')">
                         <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
                     </button>
                 </div>
@@ -144,7 +145,7 @@
         </div>
 
         <!-- Add label category button. "p-2!" overwrites custom-button-icon-only's p-1 to make button bigger -->
-        <button class="custom-button-icon-only p-2!" @click="addCategory()" title="Add Category">
+        <button class="custom-button-icon-only p-2!" @click="addCategory()" :title="$t('addCategory')">
             <PhPlus class="size-5 fill-text-light dark:fill-text-dark"></PhPlus>
         </button>
     </div>
@@ -216,7 +217,7 @@
 
     // Delete a label
     function deleteLabel(selectedLabel: Label) {
-        const confirmed = confirm(`Are you sure you want to mark '${selectedLabel.name}' for deletion?\nThis action cannot be undone once you press save!`);
+        const confirmed = confirm($t('labelsDeleteLabelConfirmationPrompt', { name: selectedLabel.name }));
 
         if (confirmed) {
             labelIDsToDelete.push(selectedLabel.id);
@@ -276,7 +277,7 @@
 
     // Delete a category
     function deleteCategory(selectedCategory: Category) {
-        const confirmed = confirm(`Are you sure you want to mark '${selectedCategory.name}' and ALL OF ITS LABELS(!) for deletion?\nThis action cannot be undone once you press save!`);
+        const confirmed = confirm($t('labelsDeleteCategoryConfirmationPrompt', { name: selectedCategory.name }));
 
         if (confirmed) {
             categoryIDsToDelete.push(selectedCategory.id);

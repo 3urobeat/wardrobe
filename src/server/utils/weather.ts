@@ -4,7 +4,7 @@
  * Created Date: 2026-02-12 17:29:48
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 16:33:10
+ * Last Modified: 2026-03-15 19:40:03
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -36,7 +36,7 @@ async function getCurrentWeatherFromApi(lat: number, lon: number): Promise<Weath
     const token = (await getServerSettings()).weatherApiKey;
 
     if (!token) {
-        throw("No API key set! Please configure one in settings."); // TODO: Control flow via exception is meh
+        throw("weatherNoApiKeySet"); // Gets replaced in front end by i18n
     }
 
     const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&appid=${token}`, {
@@ -46,7 +46,7 @@ async function getCurrentWeatherFromApi(lat: number, lon: number): Promise<Weath
     const resBody = await res.json();
 
     if (res.status != 200 || resBody.cod != 200) {
-        throw("Couldn't get weather data from API: " + (resBody.message || "Unknown Error"));
+        throw(" " + (resBody.message || "Unknown Error"));
     }
 
     return resBody;

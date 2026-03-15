@@ -4,7 +4,7 @@
  * Created Date: 2026-01-17 17:38:27
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 22:24:06
+ * Last Modified: 2026-03-15 21:54:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -57,29 +57,29 @@ export type CategorySpeciality = {
 // Default initialisations
 export const CategorySpecialityNoSpeciality: CategorySpeciality = {
     id: CategorySpecialityID.No_Speciality,
-    name: "No speciality",
+    name: "categorySpecialityNoneName",
     description: "",
     value: null
 } as const;
 
 export const CategorySpecialityBodyPart: CategorySpeciality = {
     id: CategorySpecialityID.Body_Part,
-    name: "Body Part",
-    description: "Location on Body",
+    name: "categorySpecialityBodyPartName",
+    description: "categorySpecialityBodyPartDescription",
     value: CategorySpecialityBodyPartValue.Head
 } as const;
 
 export const CategorySpecialityColor: CategorySpeciality = {
     id: CategorySpecialityID.Color,
-    name: "Color",
-    description: "Hex Color Code",
+    name: "categorySpecialityColorName",
+    description: "categorySpecialityColorDescription",
     value: "#000000",
 } as const;
 
 export const CategorySpecialitySeason: CategorySpeciality = {
     id: CategorySpecialityID.Season,
-    name: "Season",
-    description: "Temperature Range",
+    name: "categorySpecialitySeasonName",
+    description: "categorySpecialitySeasonDescription",
     value: { fromTemp: null, toTemp: null, fromTimestamp: null, toTimestamp: null }
 } as const;
 

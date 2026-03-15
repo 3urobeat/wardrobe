@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:05:05
+ * Last Modified: 2026-03-15 19:02:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -23,8 +23,8 @@
         ref="titleBarFull"
     >
         <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
-        Add
-        <text class="hidden sm:block ml-1">Outfit</text>
+        {{ $t('add') }}
+        <text class="hidden sm:block ml-1">{{ $t('outfit') }}</text>
     </TitleBarFull>
 
 
@@ -45,7 +45,7 @@
                 <img
                     class="w-fit h-5/7 mb-1 md:mb-2 self-center"
                     :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
-                    :alt="'Image for ' + thisOutfit.title"
+                    :alt="$t('imageFallbackText', { name: thisOutfit.title })"
                 >
 
                 <div>
@@ -76,13 +76,13 @@
         <!-- No items available text (DB empty) -->
         <label class="custom-label-primary flex items-center w-fit" v-if="storedOutfits.length == 0">
             <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
-            It's empty here. Would you like to create an outfit?
+            {{ $t('outfitPageEmpty') }}
         </label>
 
         <!-- Nothing to show text (Filter/Search matches no items) -->
         <label class="custom-label-primary flex items-center w-fit" v-else-if="outfitsToShow.length == 0">
             <PhMagnifyingGlass class="shrink-0 mr-2"></PhMagnifyingGlass>
-            Nothing matches your search/filter...
+            {{ $t('filterNoMatches') }}
         </label>
     </div>
 

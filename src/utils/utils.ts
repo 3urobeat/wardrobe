@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 18:48:09
+ * Last Modified: 2026-03-15 19:56:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -69,7 +69,7 @@ export async function geolocateClient(): Promise<[ lat: number, lon: number ]> {
     const resBody = await res.json();
 
     if (res.status != 200) {
-        throw((resBody.message || "Unknown Error"));
+        throw((resBody.message || $t('unknownError')));
     }
 
     return [ resBody.lat, resBody.lon ];
@@ -99,7 +99,7 @@ export async function getWeatherFromServer() {
     if (storedServerSettings.value.location.useGeolocation) {
         [ lat, lon ] = await geolocateClient()
             .catch((err) => {
-                response.error = "Geolocation failed: " + err + " - You may set a fixed latitude / longitude value in settings.";
+                response.error = $t("weatherGeolocationFail", { errorText: err });
                 return [ undefined, undefined ];
             });
     } else {
@@ -107,7 +107,7 @@ export async function getWeatherFromServer() {
         lon = storedServerSettings.value.location.lon;
 
         if (lat == undefined || lon == undefined) {
-            response.error = "Geolocation is disabled but no latitude / longitude is set in settings!";
+            response.error = $t("weatherGeolocationDisabledNoLatLonSet");
         }
     }
 
@@ -149,4 +149,29 @@ export async function getWeatherFromServer() {
  */
 export function round(value: number, decimals: number): number {
     return Number(Math.round(value+"e"+decimals)+"e-"+decimals);
+}
+
+
+/**
+ * Formats ms value to human readable value
+ * @param time Number in milliseconds to convert
+ * @returns Formatted time as e.g. "x hours"
+ */
+export function formatTime(time: number) {
+    let until = time / 1000;
+    let untilUnit = "seconds";
+
+    if (until > 60) {
+        until = until / 60; untilUnit = "minutes";
+
+        if (until > 60) {
+            until = until / 60; untilUnit = "hours";
+
+            if (until > 24) {
+                until = until / 24; untilUnit = "days";
+            }
+        }
+    }
+
+    return `${Math.round(until)} ${untilUnit}`;
 }

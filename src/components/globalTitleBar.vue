@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 18:49:23
+ * Last Modified: 2026-03-15 21:29:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -33,7 +33,7 @@
 
             <!-- User's current weather -->
             <PickerDialog
-                :toggleText="currentWeather?.weather?.at(0)?.description || 'Couldn\'t load weather!'"
+                :toggleText="currentWeather?.weather?.at(0)?.description || $t('weatherLoadFail')"
                 hideSearch
             >
                 <template v-slot:toggle>
@@ -61,16 +61,16 @@
 
                 <template v-slot:items>
                     <div v-if="currentWeather" class="w-120 break-normal gap-x-2 ml-1">
-                        <label class="custom-label-secondary py-0! px-2! w-fit">Weather for {{ currentWeather.name }}:</label> <br>
+                        <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("weatherForLocation", { location: currentWeather.name }) }}</label> <br>
                         <br>
                         {{ currentWeather.weather[0]?.main }} ({{ currentWeather.weather[0]?.description }}) <br>
-                        {{ formatTemp(currentWeather.main.temp) }} (feels like {{ formatTemp(currentWeather.main.feels_like) }}) <br>
+                        {{ formatTemp(currentWeather.main.temp) }} ({{ $t("weatherTempFeelsLike") }} {{ formatTemp(currentWeather.main.feels_like) }}) <br>
                         <br>
-                        <label class="custom-label-secondary py-0! px-2! w-fit">Last refresh:</label> {{ formatTimestamp(currentWeather.dt * 1000) }} <br>
-                        <label class="custom-label-secondary py-0! px-2! w-fit">Powered by</label> openweathermap.org
+                        <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("lastRefresh") }}</label> {{ formatTimestamp(currentWeather.dt * 1000) }} <br>
+                        <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("poweredBy") }}</label> openweathermap.org
                     </div>
                     <div v-else class="w-120 break-normal">
-                        {{ weatherAPIErrorMessage }}
+                        {{ $t('weatherLoadAPIError') }} {{ $t(weatherAPIErrorMessage!) || weatherAPIErrorMessage }}
                     </div>
                 </template>
             </PickerDialog>
@@ -89,7 +89,7 @@
                     ref="globalSearchInput"
                     class="w-0 outline-0 transition-all"
                     :class="globalSearchStr != null ? 'w-25 sm:w-40 md:w-50 ml-2' : 'invisible w-0'"
-                    placeholder="Search"
+                    :placeholder="$t('search')"
                     type="search"
                     v-model.trim="globalSearchStr"
                 />

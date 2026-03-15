@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-14 19:34:20
+ * Last Modified: 2026-03-15 17:59:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -27,10 +27,10 @@
             <!-- Sort dropdown -->
             <div class="flex min-w-18 sm:min-w-32 justify-end rounded-xl shadow-md select-none bg-bg-field-light dark:bg-bg-field-dark">
                 <select class="w-full px-2 m-0.5" v-model="selectedSort">
-                    <option :value="sortModes.dateDesc">Date (Newest first)</option>
-                    <option :value="sortModes.dateAsc">Date (Oldest first)</option>
-                    <option :value="sortModes.nameDesc">Name (A-Z)</option>
-                    <option :value="sortModes.nameAsc">Name (Z-A)</option>
+                    <option :value="sortModes.dateDesc">{{ $t('sortByDateDesc') }}</option>
+                    <option :value="sortModes.dateAsc">{{ $t('sortByDateAsc') }}</option>
+                    <option :value="sortModes.nameDesc">{{ $t('sortByNameDesc') }}</option>
+                    <option :value="sortModes.nameAsc">{{ $t('sortByNameAsc') }}</option>
                 </select>
             </div>
 

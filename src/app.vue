@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 19:26:47
+ * Last Modified: 2026-03-15 21:11:59
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -40,7 +40,7 @@
             <NuxtLink to="/" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index' || route.name === 'clothing'">|</span>
                 <div class="flex mx-4 items-center justify-center w-full">
-                    <PhHouse class="mr-2"></PhHouse> Browse
+                    <PhHouse class="mr-2"></PhHouse> {{ $t("browse") }}
                 </div>
             </NuxtLink>
 
@@ -49,19 +49,19 @@
             <NuxtLink to="/outfits" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'outfits'">|</span>
                 <div class="flex mx-4 items-center justify-center w-full">
-                    <PhCoatHanger class="mr-2"></PhCoatHanger> Outfits
+                    <PhCoatHanger class="mr-2"></PhCoatHanger> {{ $t("outfits") }}
                 </div>
             </NuxtLink>
             <NuxtLink to="/labels" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'labels'">|</span>
                 <div class="flex mx-4 items-center justify-center w-full">
-                    <PhTag class="mr-2"></PhTag> Labels
+                    <PhTag class="mr-2"></PhTag> {{ $t("labels") }}
                 </div>
             </NuxtLink>
             <NuxtLink to="/settings" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'settings'">|</span>
                 <div class="flex mx-4 items-center justify-center w-full">
-                    <PhGear class="mr-2"></PhGear> Settings
+                    <PhGear class="mr-2"></PhGear> {{ $t("settings") }}
                 </div>
             </NuxtLink>
         </div>
@@ -75,9 +75,9 @@
     >
         <div class="flex flex-col text-sm opacity-50">
             <div :class="onlineVersion && onlineVersion != packagejson.version ? '' : 'hidden'" class="mb-4 px-1 py-0.5 bg-bg-embed-light dark:bg-bg-embed-dark outline-2 outline-border-secondary-light dark:outline-border-secondary-dark rounded-lg">
-                <p class="font-semibold">Update available!</p>
-                <p>New version: <span class="text-green-500 font-extrabold">{{ onlineVersion }}</span></p>
-                Read the patch notes <a class="underline hover:text-gray-500" :href="'https://github.com/3urobeat/wardrobe/releases/tag/' + onlineVersion" target="_blank">here!</a>
+                <p class="font-semibold">{{ $t("navbarUpdateAvailable") }}</p>
+                <p>{{ $t("navbarNewVersion") }} <span class="text-green-500 font-extrabold">{{ onlineVersion }}</span></p>
+                {{ $t("navbarPatchNotesText") }} <a class="underline hover:text-gray-500" :href="'https://github.com/3urobeat/wardrobe/releases/tag/' + onlineVersion" target="_blank">{{ $t("navbarPatchNotesTextLink") }}</a>
             </div>
 
             wardrobe v{{ packagejson.version }}
@@ -89,11 +89,11 @@
                     <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"/>
                 </svg>
 
-                <span class="text-white rounded-lg text-xm" href="https://github.com/3urobeat/wardrobe" target="_blank">Source Code</span>
+                <span class="text-white rounded-lg text-xm" href="https://github.com/3urobeat/wardrobe" target="_blank">{{ $t("navbarSourceCodeLink") }}</span>
 
             </a>
 
-            <p>Licensed under <a class="underline hover:text-gray-500" href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPLv3</a></p>
+            <p>{{ $t("navbarLicensedUnder") }} <a class="underline hover:text-gray-500" href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPLv3</a></p>
             <p>Copyright (c) 2026 <a class="underline hover:text-gray-500" href="https://github.com/3urobeat" target="_blank">3urobeat</a></p>
         </div>
     </footer>

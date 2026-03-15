@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-10 20:21:25
+ * Last Modified: 2026-03-15 18:37:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -23,8 +23,8 @@
         ref="titleBarFull"
     >
         <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
-        Add
-        <text class="hidden sm:block ml-1">Clothing</text>
+        {{ $t("add") }}
+        <text class="hidden sm:block ml-1">{{ $t("clothing") }}</text>
     </TitleBarFull>
 
     <div :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"> <!-- Push content down on mobile when title bar expands to show filter bar -->
@@ -43,7 +43,7 @@
                 <img
                     class="w-fit h-5/7 mb-1 md:mb-2 self-center"
                     :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
-                    :alt="'Image for ' + thisClothing.title"
+                    :alt="$t('imageFallbackText', { name: thisClothing.title })"
                 >
 
                 <div>
@@ -72,13 +72,13 @@
         <!-- No items available text (DB empty) -->
         <label class="custom-label-primary flex items-center w-fit" v-if="storedClothing.length == 0">
             <PhBinoculars class="shrink-0 mr-2"></PhBinoculars>
-            It's empty here. Would you like to add a piece of clothing?
+            {{ $t("clothingPageEmpty") }}
         </label>
 
         <!-- Nothing to show text (Filter/Search matches no items) -->
         <label class="custom-label-primary flex items-center w-fit" v-else-if="clothesToShow.length == 0">
             <PhMagnifyingGlass class="shrink-0 mr-2"></PhMagnifyingGlass>
-            Nothing matches your search/filter...
+            {{ $t("filterNoMatches") }}
         </label>
     </div>
 </template>

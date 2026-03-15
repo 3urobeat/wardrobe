@@ -4,7 +4,7 @@
  * Created Date: 2026-03-04 10:39:01
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 17:02:16
+ * Last Modified: 2026-03-15 20:18:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -52,4 +52,49 @@ export function getConfTempUnitStr(): string {
 export function confTempToStr(value: TemperatureKelvin, rounded?: boolean): string {
     const unit = getConfTempUnit();
     return temperatureUnitToString(tempKelvinTo(value, unit)!, unit, rounded);
+}
+
+
+
+
+/*
+    Localization stuff for time utils
+*/
+
+
+// Stupid wrapper for formatTime to return localized string
+export function formatTimeLocalized(time: number) {
+    formatTime(time)
+        .replace("seconds", useI18n().t("seconds"))
+        .replace("minutes", useI18n().t("minutes"))
+        .replace("hours", useI18n().t("hours"))
+        .replace("days", useI18n().t("days"));
+}
+
+
+/**
+ * Formats time to x hours ago if <24 hours, otherwise formats to ISO8601
+ * @param timestamp The timestamp to convert
+ * @param alwaysShowTimestamp Controls whether to always show the ISO8601 timestamp, even if <24h ago
+ * @returns Formatted time, either in "x hours ago" or ISO8601 format
+ */
+export function formatTimestamp(timestamp: number, alwaysShowTimestamp?: boolean) {
+    let until = Math.abs((Date.now() - timestamp) / 1000);
+    let untilUnit = useI18n().t("seconds");
+
+    if (until < 86400 && !alwaysShowTimestamp) { // 24h in sec
+        if (until > 60) {
+            until = until / 60; untilUnit = useI18n().t("minutes");
+
+            if (until > 60) {
+                until = until / 60; untilUnit = useI18n().t("hours");
+            }
+        }
+
+        return useI18n().t("timeAgo", { time: `${Math.round(until)} ${untilUnit}` }); // TODO: Support future "in" instead of only "ago"? lol
+    } else {
+        const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+
+        return ((new Date(timestamp - timezoneOffset)).toISOString().replace(/T/, " ").replace(/\..+/, ""));
+    }
 }

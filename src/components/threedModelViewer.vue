@@ -5,7 +5,7 @@
  * Created Date: 2026-01-31 17:03:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:57:14
+ * Last Modified: 2026-03-15 17:57:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@
 
         <!-- Auto Spin toggle -->
         <button class="absolute right-0 top-0 m-4 custom-button-icon-only" :class="autoRotationEnabled ? 'bg-green-500/50!' : ''"
-            title="Toggle auto rotation" @click="autoRotationEnabled = !autoRotationEnabled"
+            :title="$t('threedModelViewerToggleAutoRotation')" @click="autoRotationEnabled = !autoRotationEnabled"
         >
             <PhArrowCounterClockwise class="ml-0.25 size-5"></PhArrowCounterClockwise>
         </button>
