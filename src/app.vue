@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 19:05:46
+ * Last Modified: 2026-03-16 21:53:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -34,13 +34,13 @@
         class="fixed top-15 z-20 w-52 min-w-52 min-h-screen backdrop-blur-md lg:opacity-100 dark:text-text-dark border-x border-x-border-primary-light dark:border-x-border-primary-dark border-l-0 select-none duration-500 transition-[width,opacity,visibility]"
     >
 
-        <div class="absolute left-9 top-2">
+        <div class="absolute left-1/2 transform -translate-x-1/2 top-2 w-34">
             <div class="my-3"></div> <!-- Add some space above everything-->
 
             <NuxtLink to="/" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index' || route.name === 'clothing'">|</span>
-                <div class="flex mx-4 items-center justify-center w-full">
-                    <PhHouse class="mr-2"></PhHouse> {{ $t("browse") }}
+                <div class="flex mx-4 items-center w-full">
+                    <PhHouse class="mr-2 shrink-0"></PhHouse> {{ $t("browse") }}
                 </div>
             </NuxtLink>
 
@@ -48,20 +48,20 @@
 
             <NuxtLink to="/outfits" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'outfits'">|</span>
-                <div class="flex mx-4 items-center justify-center w-full">
-                    <PhCoatHanger class="mr-2"></PhCoatHanger> {{ $t("outfits") }}
+                <div class="flex mx-4 items-center w-full">
+                    <PhCoatHanger class="mr-2 shrink-0"></PhCoatHanger> {{ $t("outfits") }}
                 </div>
             </NuxtLink>
             <NuxtLink to="/labels" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'labels'">|</span>
-                <div class="flex mx-4 items-center justify-center w-full">
-                    <PhTag class="mr-2"></PhTag> {{ $t("labels") }}
+                <div class="flex mx-4 items-center w-full">
+                    <PhTag class="mr-2 shrink-0"></PhTag> {{ $t("labels") }}
                 </div>
             </NuxtLink>
             <NuxtLink to="/settings" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
                 <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'settings'">|</span>
-                <div class="flex mx-4 items-center justify-center w-full">
-                    <PhGear class="mr-2"></PhGear> {{ $t("settings") }}
+                <div class="flex mx-4 items-center w-full">
+                    <PhGear class="mr-2 shrink-0"></PhGear> {{ $t("settings") }}
                 </div>
             </NuxtLink>
         </div>
