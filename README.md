@@ -65,7 +65,7 @@ docker run -p <host_port>:3000 -v wardrobe-data:/usr/src/wardrobe/data 3urobeat/
 
   ```bash
   # Clone the git repository:
-  git clone https://github.com/3urobeat/wardrobe
+  git clone https://github.com/wardrobe-hq/wardrobe
   cd wardrobe
 
   # Install dependencies:

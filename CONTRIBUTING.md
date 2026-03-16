@@ -3,7 +3,7 @@
 You would like to contribute to the project?  
 Great! No matter if it's fixing a few typos or adding a whole feature - every contribution is welcome.  
 
-You can see a list of all features that still need to be worked on, are in progress or are finished in the repo's [projects](https://github.com/3urobeat/wardrobe/projects) section.  
+You can see a list of all features that still need to be worked on, are in progress or are finished in the repo's [projects](https://github.com/wardrobe-hq/wardrobe/projects) section.  
 
 &nbsp;
 
@@ -17,10 +17,10 @@ You can see a list of all features that still need to be worked on, are in progr
 
 ## Reporting an Issue
 Found a bug/error?  
-Please report it by creating an [issue](https://github.com/3urobeat/wardrobe/issues/new/choose). I'll respond as soon as possible.  
+Please report it by creating an [issue](https://github.com/wardrobe-hq/wardrobe/issues/new/choose). I'll respond as soon as possible.  
 If you've got a feature request instead, you can choose the "Feature request" template.
   
-If you have any questions, please open a [Q&A discussion](https://github.com/3urobeat/wardrobe/discussions/new?category=q-a) instead!
+If you have any questions, please open a [Q&A discussion](https://github.com/wardrobe-hq/wardrobe/discussions/new?category=q-a) instead!
 
 &nbsp;
 
@@ -37,7 +37,7 @@ You can now create your own branch using `git checkout -b "branchname"`, make ch
 It makes sense to give the branch a sensible name based on what your changes will be, but no pressure.
 
 Once you have made your changes and verified they are working as expected, you need to open a Pull Request to get them merged into this repository.  
-[Click here](https://github.com/3urobeat/wardrobe/compare/), click on "Compare across forks" at the top and select `base: master` on the left side.  
+[Click here](https://github.com/wardrobe-hq/wardrobe/compare/), click on "Compare across forks" at the top and select `base: master` on the left side.  
 Then, choose your fork on the right at `head repository:`, your branch at `compare:` and click on "Create Pull Request".
 
 Give your pull request a fitting title which describes your changes in a few words and put a more in depth explanation below in the description.  

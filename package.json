@@ -5,7 +5,7 @@
   "author": "3urobeat",
   "license": "AGPL-3.0",
   "homepage": "https://github.com/3urobeat",
-  "repository": "https://github.com/3urobeat/wardrobe",
+  "repository": "https://github.com/wardrobe-hq/wardrobe",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --host 0.0.0.0",
@@ -32,7 +32,7 @@
     "selfhosted"
   ],
   "bugs": {
-    "url": "https://github.com/3urobeat/wardrobe/issues"
+    "url": "https://github.com/wardrobe-hq/wardrobe/issues"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^10.2.3",
