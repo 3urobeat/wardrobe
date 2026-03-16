@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 19:02:08
+ * Last Modified: 2026-03-16 19:47:00
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -24,7 +24,7 @@
     >
         <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
         {{ $t('add') }}
-        <text class="hidden sm:block ml-1">{{ $t('outfit') }}</text>
+        <!-- <text class="hidden sm:block ml-1">{{ $t('outfit') }}</text> --> <!-- Cool idea but creates headaches with non-English languages -->
     </TitleBarFull>
 
 

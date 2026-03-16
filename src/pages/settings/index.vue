@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 18:56:53
+ * Last Modified: 2026-03-16 19:52:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -53,6 +53,7 @@
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="temperatureUnit">{{ $t('language') }}:</label>
                         <select id="language" class="custom-input-secondary h-6! px-2!" v-model="selectedLanguage"> <!-- TODO: Options are not centered? -->
                             <option value="en">🇬🇧 English</option>
+                            <option value="de">🇩🇪 Deutsch</option> <!-- Hard-coded languages, meh -->
                         </select>
                     </div>
                 </div>

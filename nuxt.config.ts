@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 17:37:49
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 21:27:47
+ * Last Modified: 2026-03-15 22:19:47
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -83,6 +83,7 @@ export default defineNuxtConfig({
     i18n: {
         locales: [
             { code: "en", language: "en-US", file: "en.json" },
+            { code: "de", language: "de-DE", file: "de.json" },
         ],
         // When enabled, this adds a lang prefix to every route name. This causes errors due to the re-route above and breaks my route detection though, so we disable it.
         strategy: "no_prefix",

@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 18:37:21
+ * Last Modified: 2026-03-16 19:47:06
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -24,7 +24,7 @@
     >
         <PhPlus class="mr-2 size-5 text-green-600"></PhPlus>
         {{ $t("add") }}
-        <text class="hidden sm:block ml-1">{{ $t("clothing") }}</text>
+        <!-- <text class="hidden sm:block ml-1">{{ $t("clothing") }}</text> --> <!-- Cool idea but creates headaches with non-English languages -->
     </TitleBarFull>
 
     <div :class="titleBarFull.selectedFilters?.length > 0 ? 'py-27 md:py-20' : 'py-20'"> <!-- Push content down on mobile when title bar expands to show filter bar -->

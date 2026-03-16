@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 21:29:15
+ * Last Modified: 2026-03-16 19:43:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -57,7 +57,7 @@
                     />
 
                     <button class="custom-input-primary" @click="isOpen = !isOpen">
-                        Close
+                        {{ $t("close") }}
                     </button>
                 </div>
 
