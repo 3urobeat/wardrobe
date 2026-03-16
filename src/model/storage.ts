@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 19:03:34
+ * Last Modified: 2026-03-16 18:58:31
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -37,6 +37,7 @@ export type UXSettings = {
     saveSelectedFilters: boolean // TODO
 
 }
+// Selected language is not included here because nuxt i18n plugin handles it
 
 export const defaultUXSettings: UXSettings = {
     darkModeEnabled: null,

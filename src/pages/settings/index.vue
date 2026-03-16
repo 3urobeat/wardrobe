@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 20:15:58
+ * Last Modified: 2026-03-16 18:56:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -32,10 +32,31 @@
             <div class="custom-label-primary w-fit h-fit py-0! px-2! m-2">
                 {{ $t('settingsUserSettings') }}
             </div>
-            <div class="grid grid-cols-2 gap-2 w-fit ml-2 p-2">
-                <!-- TODO
-                <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="saveSelectedFilters">Save Selected Filters?</label>
-                <input id="saveSelectedFilters" type="checkbox" class="size-4 self-center" :checked="saveSelectedFilters"> -->
+
+            <!-- Setting cards -->
+            <div class="flex h-44 mx-2">
+
+                <!-- General -->
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                    <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
+                        <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                            <PhGear class="text-text-light dark:text-text-dark"></PhGear>
+                        </div>
+                        <label class="custom-label-primary py-0! px-2!">{{ $t('general') }}</label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 mx-1">
+                        <!-- TODO
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="saveSelectedFilters">Save Selected Filters?</label>
+                        <input id="saveSelectedFilters" type="checkbox" class="size-4 self-center" :checked="storedUxSettings.saveSelectedFilters"> -->
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="temperatureUnit">{{ $t('language') }}:</label>
+                        <select id="language" class="custom-input-secondary h-6! px-2!" v-model="selectedLanguage"> <!-- TODO: Options are not centered? -->
+                            <option value="en">🇬🇧 English</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -57,7 +78,7 @@
                         <label class="custom-label-primary py-0! px-2!">{{ $t('general') }}</label>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1">
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 mx-1">
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="temperatureUnit">{{ $t('settingsTemperatureUnit') }}</label>
                         <select id="temperatureUnit" class="custom-input-secondary w-1/2 h-6! px-2!" v-model="localServerSettings.temperatureUnit"> <!-- TODO: Options are not centered? -->
                             <option :value="Unit.KELVIN">{{ UnitStrMap[Unit.KELVIN] }}</option>
@@ -76,7 +97,7 @@
                         <label class="custom-label-primary py-0! px-2!">{{ $t('weather') }}</label>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1">
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 mx-1">
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit" for="useGeolocation">{{ $t('settingsLocationAutomatic') }}</label>
                         <input id="useGeolocation" type="checkbox" class="size-4 self-center" v-model="localServerSettings.location.useGeolocation">
 
@@ -155,19 +176,21 @@
 <script setup lang="ts">
     import { PhArrowClockwise, PhCheck, PhCloud, PhGear, PhHourglassMedium } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
-    import type { ServerSettings } from "~/model/storage";
+    import { defaultUXSettings, type ServerSettings, type UXSettings } from "~/model/storage";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
     import { CoreJobPendingDummy, type JobInfo } from "~/model/job";
     import { Unit, UnitStrMap } from "~/model/unit";
     import { formatTimeLocalized } from "~/composables/unitConversion";
 
+    const i18n = useI18n();
 
     // Refs
     const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
     let   localServerSettings:  Ref<ServerSettings> = useCloned(storedServerSettings, { manual: true }).cloned; // I'm not using useCloned's sync() as it just wouldn't work :shrug:
     const jobs:                 Ref<JobInfo[]>      = ref([]);
 
-    const saveSelectedFilters:  Ref<boolean>        = ref(false);
+    let   storedUxSettings:     UXSettings          = defaultUXSettings;
+    let   selectedLanguage:     string              = i18n.locale.value; // Separated from UXSettings because nuxt i18n module handles it
 
 
     // Load data
@@ -176,15 +199,17 @@
 
     // Client side only
     onBeforeMount(() => {
-        saveSelectedFilters.value = getUXSettings().saveSelectedFilters;
+        storedUxSettings = getUXSettings();
     });
 
 
     // Saves user & server settings
     async function saveChanges() {
 
-        // Save user settings to cookie
-        setUXSetting("saveSelectedFilters", saveSelectedFilters.value);
+        // Save user settings to localStorage
+        setUXSetting("saveSelectedFilters", storedUxSettings.saveSelectedFilters);
+
+        i18n.setLocale(selectedLanguage as never); // I won't be able to fulfill this parameter constraint when using a variable...
 
         // Send server settings to backend to be saved in database
         const res = await fetch("/api/set-settings", {

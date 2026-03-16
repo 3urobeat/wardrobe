@@ -8,6 +8,9 @@
     "name": "Name",
     "description": "Description",
     "general": "General",
+    "search": "Search",
+    "weather": "Weather",
+    "language": "Language",
     "unknownError": "Unknown Error",
 
     "browse": "Browse",
@@ -16,8 +19,6 @@
     "settings": "Settings",
     "clothing": "Clothing",
     "outfit": "Outfit",
-    "search": "Search",
-    "weather": "Weather",
 
     "seconds": "seconds",
     "minutes": "minutes",
