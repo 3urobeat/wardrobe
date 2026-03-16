@@ -4,7 +4,7 @@
  * Created Date: 2026-02-04 16:25:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-14 19:34:23
+ * Last Modified: 2026-03-16 19:02:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -68,14 +68,24 @@ function setLocalStorage(name: string, value: string | object, isObject?: boolea
  * @returns Returns UXSettings
  */
 export function getUXSettings(): UXSettings {
-    const res = parseLocalStorage(UXSettingsName, true);
+    const raw = parseLocalStorage(UXSettingsName, true);
 
-    if (!res) {
+    if (!raw) {
         console.log("Using default UX settings...");
         return defaultUXSettings;
     }
 
-    return res as UXSettings;
+    const curSet = raw as UXSettings;
+
+    // Make sure all keys are initialized
+    Object.keys(defaultUXSettings).forEach((key) => {
+        if (curSet[key as keyof UXSettings] == undefined) {
+            console.warn(`Stored UX settings are missing key '${key}', filling it with value from default settings...`);
+            (curSet[key as keyof UXSettings] as unknown as keyof UXSettings) = defaultUXSettings[key as keyof UXSettings] as unknown as keyof UXSettings; // lmao (see Deathraven Discord DM at 2026-03-16)
+        }
+    });
+
+    return curSet;
 }
 // TODO: Duplicated in public/global.js
 
@@ -85,15 +95,15 @@ export function getUXSettings(): UXSettings {
  * @param key Key to update
  * @param value Value to set
  */
-export function setUXSetting(key: keyof UXSettings, value: any) {
+export function setUXSetting(key: keyof UXSettings, value: unknown) {
 
     // Get current object
     const element = getUXSettings();
 
-    console.log(element, key, value)
+    console.debug("[DEBUG] Changing UX setting '%s' from '%s' to '%s'", key, element[key], value); // Some printf vibes
 
-    element[key] = value;
-
+    // Set new value
+    (element[key] as unknown) = value;
     setLocalStorage(UXSettingsName, element, true);
 
 }
