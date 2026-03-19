@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 21:53:21
+ * Last Modified: 2026-03-19 19:40:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -37,32 +37,36 @@
         <div class="absolute left-1/2 transform -translate-x-1/2 top-2 w-34">
             <div class="my-3"></div> <!-- Add some space above everything-->
 
-            <NuxtLink to="/" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index' || route.name === 'clothing'">|</span>
-                <div class="flex mx-4 items-center w-full">
-                    <PhHouse class="mr-2 shrink-0"></PhHouse> {{ $t("browse") }}
-                </div>
+            <NuxtLink to="/" class="group flex px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                <span class="fixed self-center mb-1 text-xl font-bold text-green-600" v-show="route.name === 'index' || route.name === 'clothing'">|</span>
+
+                <TextOverflowAutoScroll class="ml-4">
+                    <PhHouse class="mr-2" /> {{ $t("browse") }}
+                </TextOverflowAutoScroll>
             </NuxtLink>
 
             <div class="my-2 h-0.5 bg-border-secondary-light dark:bg-border-secondary-dark opacity-50"></div> <!-- Divider to give Browse more presence -->
 
-            <NuxtLink to="/outfits" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'outfits'">|</span>
-                <div class="flex mx-4 items-center w-full">
-                    <PhCoatHanger class="mr-2 shrink-0"></PhCoatHanger> {{ $t("outfits") }}
-                </div>
+            <NuxtLink to="/outfits" class="group flex px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                <span class="fixed self-center mb-1 text-xl font-bold text-green-600" v-show="route.name === 'outfits'">|</span>
+
+                <TextOverflowAutoScroll class="ml-4">
+                    <PhCoatHanger class="mr-2" /> {{ $t("outfits") }}
+                </TextOverflowAutoScroll>
             </NuxtLink>
-            <NuxtLink to="/labels" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'labels'">|</span>
-                <div class="flex mx-4 items-center w-full">
-                    <PhTag class="mr-2 shrink-0"></PhTag> {{ $t("labels") }}
-                </div>
+            <NuxtLink to="/labels" class="group flex px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                <span class="fixed self-center mb-1 text-xl font-bold text-green-600" v-show="route.name === 'labels'">|</span>
+
+                <TextOverflowAutoScroll class="ml-4">
+                    <PhTag class="mr-2" /> {{ $t("labels") }}
+                </TextOverflowAutoScroll>
             </NuxtLink>
-            <NuxtLink to="/settings" class="flex items-center px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
-                <span class="fixed mb-1 text-xl font-bold text-green-600" v-show="route.name === 'settings'">|</span>
-                <div class="flex mx-4 items-center w-full">
-                    <PhGear class="mr-2 shrink-0"></PhGear> {{ $t("settings") }}
-                </div>
+            <NuxtLink to="/settings" class="group flex px-2 py-1 mb-1 rounded-md hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all">
+                <span class="fixed self-center mb-1 text-xl font-bold text-green-600" v-show="route.name === 'settings'">|</span>
+
+                <TextOverflowAutoScroll class="ml-4">
+                    <PhGear class="mr-2" /> {{ $t("settings") }}
+                </TextOverflowAutoScroll>
             </NuxtLink>
         </div>
 
@@ -128,6 +132,7 @@
     import type { Category } from "./model/label-category";
     import type { PageProperties } from "./model/page";
     import { defaultServerSettings, type ServerSettings } from "./model/storage";
+    import TextOverflowAutoScroll from "./components/textOverflowAutoScroll.vue";
 
     const route       = useRoute();
     let   changesMade = false;
