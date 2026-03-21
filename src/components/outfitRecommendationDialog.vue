@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 19:40:01
+ * Last Modified: 2026-03-21 23:28:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -130,8 +130,12 @@
 
                 let matchesWeather = (!weatherAPIErrorMessage && value.fromTemp! <= currentWeather?.main.temp! && value.toTemp! >= currentWeather?.main.temp!); // TODO: Only looks at current temp, not at day forecast
 
-                // TODO: Remove year from timestamp!
-                let matchesDate    = (value.fromTimestamp! <= Date.now() && value.toTimestamp! >= Date.now());
+                let matchesDate;
+                if (value.fromTimestamp != null && value.toTimestamp != null) {
+                    matchesDate = isNowBetweenDatesIgnoringYear(value.fromTimestamp!, value.toTimestamp!);
+                }
+
+                console.debug(`[DEBUG] getOutfitsToShowInPopout:`, e.name, (value.fromTemp != null && value.toTemp != null), (value.fromTimestamp != null && value.toTimestamp != null), matchesWeather, matchesDate);
 
                 // Temperature AND Weather constraint set?
                 if (value.fromTemp != null && value.toTemp != null && value.fromTimestamp != null && value.toTimestamp != null) {

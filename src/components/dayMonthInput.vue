@@ -5,7 +5,7 @@
  * Created Date: 2026-03-20 22:08:57
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-21 21:05:42
+ * Last Modified: 2026-03-21 22:00:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -45,6 +45,8 @@
 
 
 <script setup lang="ts">
+    import { YEARLESS_DATE_YEAR } from '~/utils/utils';
+
 
     // Define Props to be accepted by this component
     const props = defineProps({
@@ -68,7 +70,7 @@
 
     if (props.modelValue != null) {
         date.value = new Date((props.modelValue as number));
-        date.value.setUTCFullYear(2024);               // Use a lap year so Feb 29 is always an option
+        date.value.setUTCFullYear(YEARLESS_DATE_YEAR);
         daysInThisMonth.value = getDaysPerMonth(date.value.getMonth());
     }
 
@@ -76,7 +78,7 @@
     // Calculate days in the selected month
     function getDaysPerMonth(month: number): number {
         // Use a lap year so Feb 29 is always an option. Date(year, monthIndex + 1, 0) returns the last day of the current month
-        return new Date(2024, month + 1, 0).getDate();
+        return new Date(YEARLESS_DATE_YEAR, month + 1, 0).getDate();
     };
 
     // Preprocess: Incoming value inits date, incoming null unsets date. Returns boolean indicating whether parent function should continue
@@ -84,7 +86,7 @@
         if (val != null && val != "") { // null option will be an empty string
             if (date.value == null) {
                 date.value = new Date(0);
-                date.value.setUTCFullYear(2024, 0, 1); // Use a lap year so Feb 29 is always an option
+                date.value.setUTCFullYear(YEARLESS_DATE_YEAR, 0, 1);
             }
             return true;
         } else {

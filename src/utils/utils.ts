@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 19:56:39
+ * Last Modified: 2026-03-21 23:25:50
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -174,4 +174,44 @@ export function formatTime(time: number) {
     }
 
     return `${Math.round(until)} ${untilUnit}`;
+}
+
+
+// Year used for dates where year is being ignored (I swear this makes sense)
+export const YEARLESS_DATE_YEAR = 2024; // Use a lap year so Feb 29 is always an option
+
+/**
+ * Inits a yearless and timeless date object from a timestamp
+ * @param timestamp Optional: Timestamp to parse. If undefined, current time is used
+ * @returns Returns constructed Date object
+ */
+export function initYearlessDate(timestamp?: number): Date {
+    const date = timestamp != undefined ? new Date(timestamp) : new Date();
+
+    date.setUTCFullYear(YEARLESS_DATE_YEAR);
+    date.setUTCHours(0, 0, 0, 0); // Intentionally not using UTC here to remove timezone
+
+    return date;
+}
+
+/**
+ * Is current timestamp between (<= & >=) from & to while ignoring year?
+ * @param from From: If greater than to, the previous year will be used internally
+ * @param to ...
+ * @returns Boolean indicating whether now is between from & to
+ */
+export function isNowBetweenDatesIgnoringYear(from: number, to: number): boolean {
+
+    // Parse dates and bring them all onto the same year to effectively ignore it
+    const fromDate = initYearlessDate(from);
+    const toDate   = initYearlessDate(to);
+    const nowDate  = initYearlessDate();
+
+    // Handle special case where from > to
+    fromDate.setUTCFullYear(YEARLESS_DATE_YEAR - (from > to ? 1 : 0));
+
+    // console.debug("[DEBUG] isNowBetweenDatesIgnoringYear: ", fromDate, toDate, nowDate);
+
+    return (fromDate.getTime() <= nowDate.getTime()) && (toDate.getTime() >= nowDate.getTime());
+
 }
