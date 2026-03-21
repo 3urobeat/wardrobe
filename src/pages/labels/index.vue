@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 21:57:22
+ * Last Modified: 2026-03-21 14:49:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -120,9 +120,9 @@
                                                     <label>{{ getConfTempUnitStr() }}</label>
                                                 </div>
                                                 <label for="specialSeasonFromTime">{{ $t('fromDate') }}</label>
-                                                <input id="specialSeasonFromTime" type="date" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp">
+                                                <DayMonthInput id="specialSeasonFromTime" type="date" class="custom-input-primary w-fit h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp" />
                                                 <label for="specialSeasonToTime">{{ $t('toDate') }}</label>
-                                                <input id="specialSeasonToTime" type="date" class="custom-input-primary w-32 h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp">
+                                                <DayMonthInput id="specialSeasonToTime" type="date" class="custom-input-primary w-fit h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp" />
                                             </div>
                                             <p class="text-text-secondary-light dark:text-text-secondary-dark mt-2 text-xs">{{ $t("labelsSpecialitySeasonTempDateTooltip") }}</p>
                                         </template>
@@ -163,6 +163,7 @@
     import { moveArrayElement, useSortable, type UseSortableReturn } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
     import { UnitType } from "~/model/unit";
+    import DayMonthInput from "~/components/dayMonthInput.vue";
 
 
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()

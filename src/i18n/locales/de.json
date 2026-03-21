@@ -26,6 +26,7 @@
     "hours": "Stunden",
     "days": "Tage",
     "timeAgo": "vor {time}",
+    "months": ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
 
 
     "_dummy2": "-------------- Shared Generic Text --------------",
