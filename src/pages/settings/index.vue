@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 11:39:41
+ * Last Modified: 2026-03-22 13:27:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -34,10 +34,10 @@
             </div>
 
             <!-- Setting cards -->
-            <div class="flex h-44 mx-2">
+            <div class="flex h-44 mx-2 overflow-x-auto">
 
                 <!-- General -->
-                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto">
                     <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
                         <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
                             <PhGear class="text-text-light dark:text-text-dark"></PhGear>
@@ -68,10 +68,10 @@
             </div>
 
             <!-- Setting cards -->
-            <div class="flex h-44 mx-2">
+            <div class="flex h-44 mx-2 overflow-x-auto">
 
                 <!-- General -->
-                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto">
                     <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
                         <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
                             <PhGear class="text-text-light dark:text-text-dark"></PhGear>
@@ -90,7 +90,7 @@
                 </div>
 
                 <!-- Weather Settings -->
-                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark">
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto">
                     <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
                         <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
                             <PhCloud class="text-text-light dark:text-text-dark"></PhCloud>
@@ -123,9 +123,9 @@
             </div>
 
             <!-- Job cards -->
-            <div class="flex h-44 mx-2">
+            <div class="flex h-44 mx-2 overflow-x-auto">
                 <div
-                    class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark"
+                    class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto"
                     v-for="thisJobInfo in jobs"
                     :key="thisJobInfo.name"
                 >
