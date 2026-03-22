@@ -11,6 +11,7 @@
     "general": "Generell",
     "search": "Suche",
     "weather": "Wetter",
+    "temperature": "Temperatur",
     "language": "Sprache",
     "unknownError": "Unbekannter Fehler",
 
@@ -114,5 +115,12 @@
     "settingsWeatherApiKey": "OpenWeatherMap API Schlüssel:",
     "settingsServerJobs": "Serveraufgaben",
     "settingsServerJobsRegistrationPendingText": "Server wurde gerade gestartet und\ndie Registrierung von Kernaufgaben steht\nnoch aus. Bitte warte einen Moment.",
-    "settingsServerInfo": "Serverinformationen"
+    "settingsServerInfo": "Serverinformationen",
+    "system": "System",
+    "storage": "Speicher",
+    "cpu": "CPU",
+    "memUsage": "RAM-Nutzung",
+    "storageUsage": "Speichernutzung",
+    "systemTime": "Systemzeit",
+    "uptime": "Betriebszeit"
 }

@@ -149,7 +149,7 @@
 
                         <!-- Job info -->
                         <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1" v-for="[key, value] of Object.entries(thisJobInfo)">
-                            <label v-if="key != 'name'" class="custom-label-secondary py-0! px-2! w-fit">{{ key }}:</label>
+                            <label v-if="key != 'name'" class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ key }}:</label>
 
                             <label v-if=     "key == 'interval'">{{ formatTimeLocalized(value as number) }}</label>
                             <input v-else-if="key == 'runOnRegistration'" type="checkbox" class="size-4 self-center" :checked="value as boolean" disabled>
@@ -161,11 +161,118 @@
         </div>
 
         <!-- Server Info section -->
-        <div class="flex w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
+        <div class="flex-col w-full h-60 p-2 rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark transition-all">
             <div class="custom-label-primary w-fit h-fit py-0! px-2! m-2">
                 {{ $t('settingsServerInfo') }}
             </div>
-            <div>
+
+            <!-- Setting cards -->
+            <div class="flex h-44 mx-2 overflow-x-auto">
+
+                <!-- General -->
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto">
+                    <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
+                        <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                            <PhGear class="text-text-light dark:text-text-dark" />
+                        </div>
+                        <label class="custom-label-primary py-0! px-2!">{{ $t('general') }}</label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 mx-1">
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Wardrobe:</label>
+                        <label>v{{ packageJson.version }}</label>
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Node:</label>
+                        <label>{{ serverStatistics?.runtime.nodeVersion }}</label>
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Nuxt:</label>
+                        <label>v{{ packageJson.dependencies.nuxt.replace("\^", "") }}</label>
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Vue:</label>
+                        <label>v{{ packageJson.dependencies.vue.replace("\^", "") }}</label>
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Tailwind:</label>
+                        <label>v{{ packageJson.dependencies.tailwindcss.replace("\^", "") }}</label>
+
+                    </div>
+                </div>
+
+                <!-- System -->
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto">
+                    <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
+                        <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                            <PhCpu class="text-text-light dark:text-text-dark" />
+                        </div>
+                        <label class="custom-label-primary py-0! px-2!">{{ $t('system') }}</label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 mx-1">
+
+                        <!-- <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('cpuModel') }}:</label>
+                        <label>{{ serverStatistics?.system.cpuModel }}</label> -->
+                        <!-- TODO: Currently breaks styling due to long text, wait for https://github.com/users/wardrobe-hq/projects/1/views/1?pane=issue&itemId=165862198 -->
+
+                        <ClientOnly>
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('cpu') }}:</label>
+                            <label>{{ round(serverStatistics?.system.cpuUsage || 0, 2) }} %, {{ round(serverStatistics?.system.cpuSpeed || 0, 2) }} GHz</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('temperature') }}:</label>
+                            <label>{{ formatTemp(serverStatistics?.system.cpuTemp) }}</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('memUsage') }}:</label>
+                            <label>{{ round((serverStatistics?.system.memUsage || 0) / 1000000000, 2) }} GB / {{ round((serverStatistics?.system.memTotal || 0) / 1000000000, 2) }} GB</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('storage') }}:</label>
+                            <label>{{ round((serverStatistics?.system.storageUsage || 0) / 1000000000, 2) }} GB / {{ round((serverStatistics?.system.storageTotal || 0) / 1000000000, 2) }} GB</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('uptime') }}:</label>
+                            <label>{{ $t("timeSince", { time: formatTimestamp(serverStatistics?.system.uptime || 0) }) }}</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('systemTime') }}:</label>
+                            <label>{{ formatTimestamp(serverStatistics?.system.serverTime || 0, "always") }}</label>
+                        </ClientOnly>
+
+                    </div>
+                </div>
+
+                <!-- Wardrobe -->
+                <div class="shrink-0 px-2 m-2 rounded-xl shadow-md bg-bg-field-light dark:bg-bg-field-dark overflow-y-auto">
+                    <div class="flex gap-x-2 mt-2 mb-3 ml-2 h-6">
+                        <div class="custom-label-icon-only"> <!-- This extra div just for the icon to scale correctly is stupid -->
+                            <PhCoatHanger class="text-text-light dark:text-text-dark" />
+                        </div>
+                        <label class="custom-label-primary py-0! px-2!">Wardrobe</label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 mx-1">
+
+                        <ClientOnly>
+                            <!-- TODO: Database amount statistics from global cache -->
+                            <!-- <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('clothes') }}:</label>
+                            <label></label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('outfits') }}:</label>
+                            <label></label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('labels') }}:</label>
+                            <label></label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('images') }}:</label>
+                            <label></label> -->
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('storageUsage') }}:</label>
+                            <label>{{ round((serverStatistics?.app.appStorageUsage || 0) / 1000000, 2) }} MB</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('memUsage') }}:</label>
+                            <label>{{ round((serverStatistics?.app.appMemUsage || 0) / 1000000, 2) }} MB</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('uptime') }}:</label>
+                            <label>{{ $t("timeSince", { time: formatTimestamp(serverStatistics?.app.appUptime || 0) }) }}</label>
+                        </ClientOnly>
+
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -175,13 +282,15 @@
 
 
 <script setup lang="ts">
-    import { PhArrowClockwise, PhCheck, PhCloud, PhGear, PhHourglassMedium } from "@phosphor-icons/vue";
+    import { PhArrowClockwise, PhCheck, PhCloud, PhCoatHanger, PhCpu, PhGear, PhHourglassMedium } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import { defaultUXSettings, type ServerSettings, type UXSettings } from "~/model/storage";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
     import { CoreJobPendingDummy, type JobInfo } from "~/model/job";
-    import { Unit, UnitStrMap } from "~/model/unit";
+    import { Unit, UnitStrMap, type TemperatureKelvin } from "~/model/unit";
     import { formatTimeLocalized } from "~/composables/unitConversion";
+    import type { ServerStatistics } from "~/model/statistics";
+    import packageJson from "~/../package.json";
 
     const i18n = useI18n();
 
@@ -193,6 +302,8 @@
     let   storedUxSettings:     UXSettings          = defaultUXSettings;
     let   selectedLanguage:     string              = i18n.locale.value; // Separated from UXSettings because nuxt i18n module handles it
 
+    let   serverStatistics:     Ref<ServerStatistics | undefined> = ref();
+
 
     // Load data
     const jobRes = await useFetch("/api/get-registered-jobs-info");
@@ -202,6 +313,27 @@
     onBeforeMount(() => {
         storedUxSettings = getUXSettings();
     });
+
+    onMounted(async () => {
+        const serverStatsRes = await fetch("/api/get-server-stats", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        serverStatistics.value = await serverStatsRes.json(); // TODO: Error handling
+    });
+
+
+    // Formats temp in kelvin to human readable string. Middleman function to display "? unit" on undefined
+    function formatTemp(temp: TemperatureKelvin | undefined): string {
+        if (!temp) {
+            return `? ${getConfTempUnitStr()}`; // Data not loaded (yet)
+        }
+
+        return confTempToStr(temp, true);
+    }
 
 
     // Saves user & server settings
