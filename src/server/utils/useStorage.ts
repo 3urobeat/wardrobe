@@ -4,7 +4,7 @@
  * Created Date: 2026-03-22 12:21:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 12:39:45
+ * Last Modified: 2026-03-22 13:12:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -17,6 +17,10 @@
 
 import path from "path";
 import { readdir, stat } from "fs/promises";
+import util from 'node:util';
+import child_process from 'node:child_process';
+
+const exec = util.promisify(child_process.exec);
 
 
 // Thanks: https://stackoverflow.com/a/69418940
@@ -31,6 +35,7 @@ async function getDirSize(dir: string): Promise<number> {
 
 /**
  * Returns size of database storage in Bytes
+ * @returns Size in Bytes
  */
 export async function getDBStorageSize(): Promise<number> {
     return await getDirSize("data/database");
@@ -39,7 +44,18 @@ export async function getDBStorageSize(): Promise<number> {
 
 /**
  * Returns size of image storage in Bytes
+ * @returns Size in Bytes
  */
 export async function getImageStorageSize(): Promise<number> {
     return (await getDirSize("data/images/outfit")) + (await getDirSize("data/images/clothing"));
+}
+
+
+/**
+ * Returns fs mount point of storage pool
+ * @returns Mount point of storage pool
+ */
+export async function getStorageMount(): Promise<string> {
+    const { stdout, stderr } = await exec("stat -c %m -- 'data/'");
+    return stdout.trim(); // TODO: Error handling
 }
