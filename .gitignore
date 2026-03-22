@@ -28,3 +28,6 @@ logs
 wardrobe.code-workspace
 data/*
 !data/defaults/
+
+resources/img
+!resources/img/showcase.png

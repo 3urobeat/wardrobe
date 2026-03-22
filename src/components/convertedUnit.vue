@@ -5,7 +5,7 @@
  * Created Date: 2026-03-09 16:46:49
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-09 18:47:28
+ * Last Modified: 2026-03-20 22:35:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -60,6 +60,6 @@
     });
 
     // Define Events emitted by this component
-    defineEmits(['update:modelValue'])
+    defineEmits(['update:modelValue']);
 
 </script>
