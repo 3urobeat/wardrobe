@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-19 19:40:26
+ * Last Modified: 2026-03-22 14:49:48
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -211,7 +211,7 @@
     // Checks for an available update and displays a notification in the navbar
     async function checkForUpdate() {
         try {
-            let output = await fetch("https://raw.githubusercontent.com/3urobeat/wardrobe/main/package.json");
+            let output = await fetch("https://raw.githubusercontent.com/wardrobe-hq/wardrobe/main/package.json");
             let parsed = await output.json();
 
             console.log("checkForUpdate: Version found online: " + parsed.version);

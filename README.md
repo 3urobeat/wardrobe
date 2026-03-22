@@ -73,6 +73,7 @@ docker run -p <host_port>:3000 -v wardrobe-data:/usr/src/wardrobe/data 3urobeat/
 
   # Build the project:
   npm run build
+  cp -r ./data/defaults/* ./data
 
   # Start the service:
   PORT=<host_port> npm run start

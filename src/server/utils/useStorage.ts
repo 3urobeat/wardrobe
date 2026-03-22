@@ -4,7 +4,7 @@
  * Created Date: 2026-03-22 12:21:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 13:12:35
+ * Last Modified: 2026-03-22 15:01:11
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,15 @@ const exec = util.promisify(child_process.exec);
 
 // Thanks: https://stackoverflow.com/a/69418940
 async function getDirSize(dir: string): Promise<number> {
-    const files = await readdir(dir);
+    let files;
+
+    try {
+        files = await readdir(dir);
+    } catch (err) {
+        console.error(`getDirSize: Failed to access dir '${dir}': ${err}`);
+        return 0;
+    }
+
     const stats = files.map((file) => stat(path.join(dir, file)));
 
     return (await Promise.all(stats)).reduce((accumulator, { size }) => accumulator + size, 0);
