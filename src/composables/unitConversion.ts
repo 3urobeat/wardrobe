@@ -4,7 +4,7 @@
  * Created Date: 2026-03-04 10:39:01
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 20:18:08
+ * Last Modified: 2026-03-22 11:23:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -64,7 +64,7 @@ export function confTempToStr(value: TemperatureKelvin, rounded?: boolean): stri
 
 // Stupid wrapper for formatTime to return localized string
 export function formatTimeLocalized(time: number) {
-    formatTime(time)
+    return formatTime(time)
         .replace("seconds", useI18n().t("seconds"))
         .replace("minutes", useI18n().t("minutes"))
         .replace("hours", useI18n().t("hours"))
@@ -75,14 +75,14 @@ export function formatTimeLocalized(time: number) {
 /**
  * Formats time to x hours ago if <24 hours, otherwise formats to ISO8601
  * @param timestamp The timestamp to convert
- * @param alwaysShowTimestamp Controls whether to always show the ISO8601 timestamp, even if <24h ago
- * @returns Formatted time, either in "x hours ago" or ISO8601 format
+ * @param alwaysShowTimestamp Optional: Controls whether to always/never show the ISO8601 timestamp, even if <24h ago
+ * @returns Formatted time, either in "x hours" or ISO8601 format
  */
-export function formatTimestamp(timestamp: number, alwaysShowTimestamp?: boolean) {
+export function formatTimestamp(timestamp: number, alwaysShowTimestamp?: "always" | "never") {
     let until = Math.abs((Date.now() - timestamp) / 1000);
     let untilUnit = useI18n().t("seconds");
 
-    if (until < 86400 && !alwaysShowTimestamp) { // 24h in sec
+    if (until < 86400 && (!alwaysShowTimestamp || alwaysShowTimestamp == "never")) { // 24h in sec
         if (until > 60) {
             until = until / 60; untilUnit = useI18n().t("minutes");
 
@@ -91,7 +91,7 @@ export function formatTimestamp(timestamp: number, alwaysShowTimestamp?: boolean
             }
         }
 
-        return useI18n().t("timeAgo", { time: `${Math.round(until)} ${untilUnit}` }); // TODO: Support future "in" instead of only "ago"? lol
+        return `${Math.round(until)} ${untilUnit}`;
     } else {
         const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
 

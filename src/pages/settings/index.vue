@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 19:52:18
+ * Last Modified: 2026-03-22 11:39:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -153,7 +153,7 @@
 
                             <label v-if=     "key == 'interval'">{{ formatTimeLocalized(value as number) }}</label>
                             <input v-else-if="key == 'runOnRegistration'" type="checkbox" class="size-4 self-center" :checked="value as boolean" disabled>
-                            <label v-else-if="key == '_lastExecTimestamp' || key == '_registeredAt'">{{ formatTimestamp(value as number) }}</label>
+                            <label v-else-if="key == '_lastExecTimestamp' || key == '_registeredAt'">{{ $t("timeAgo", { time: formatTimestamp(value as number) }) }}</label>
                         </div>
                     </div>
                 </div>

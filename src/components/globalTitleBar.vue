@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 21:29:12
+ * Last Modified: 2026-03-22 11:21:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -66,7 +66,7 @@
                         {{ currentWeather.weather[0]?.main }} ({{ currentWeather.weather[0]?.description }}) <br>
                         {{ formatTemp(currentWeather.main.temp) }} ({{ $t("weatherTempFeelsLike") }} {{ formatTemp(currentWeather.main.feels_like) }}) <br>
                         <br>
-                        <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("lastRefresh") }}</label> {{ formatTimestamp(currentWeather.dt * 1000) }} <br>
+                        <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("lastRefresh") }}</label> {{ $t("timeAgo", { time: formatTimestamp(currentWeather.dt * 1000) }) }} <br>
                         <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("poweredBy") }}</label> openweathermap.org
                     </div>
                     <div v-else class="w-120 break-normal">

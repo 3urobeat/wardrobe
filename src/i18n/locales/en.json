@@ -26,6 +26,7 @@
     "hours": "hours",
     "days": "days",
     "timeAgo": "{time} ago",
+    "timeSince": "since {time}",
     "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 
 
