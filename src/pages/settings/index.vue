@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 13:27:13
+ * Last Modified: 2026-03-22 13:41:25
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -54,6 +54,7 @@
                         <select id="language" class="custom-input-secondary h-6! px-2!" v-model="selectedLanguage"> <!-- TODO: Options are not centered? -->
                             <option value="en">🇬🇧 English</option>
                             <option value="de">🇩🇪 Deutsch</option> <!-- Hard-coded languages, meh -->
+                            <DevOnly><option value="debug">Debug</option></DevOnly>
                         </select>
                     </div>
                 </div>
