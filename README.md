@@ -92,6 +92,13 @@ docker run -p <host_port>:3000 -v wardrobe-data:/usr/src/wardrobe/data 3urobeat/
 
 &nbsp;
 
+## Configuration
+Wardrobe optionally displays and uses your current weather conditions to make outfit recommendations.  
+Weather data is taken from [openweathermap.org](https://openweathermap.org/).  
+Please create a free account and [generate an API key](https://home.openweathermap.org/api_keys). You may set it in a moment on Wardrobe's settings page.
+
+&nbsp;
+
 <a id="getting-started"></a>
 
 # 🚀 Getting Started
@@ -99,6 +106,9 @@ After starting the service, access wardrobe in your browser using the IP of your
 Assuming you started the project on your current device using the default port 3000, open: `http://localhost:3000`
 
 You will be greeted by an empty clothes browse page!
+
+First, quickly check out the 'Settings' page, where you can configure your language, location and weather API key.  
+After saving, head back to the 'Browse' page and let us start exploring:
 
 <br>
 
@@ -118,6 +128,8 @@ Switch to the "Outfits" menu using the nav bar on the left side and click "+ Add
 - Select a fitting piece of clothing for each body part from the clothing picker by clicking on "+"
 - Give your new outfit a fitting name at the top left
 - Select a few fitting labels from the pre-configured popout-list at the top right by clicking on "v"
+  - In order to later use Wardrobe's outfit recommendation popup in the bottom right of the outfits page, you must have a fitting "Season" label selected!  
+  Check them out later on the labels page; for now choose one or multiple seasons that fit your outfit best.
 - Save!
 
 <br>
@@ -127,9 +139,13 @@ Lastly, check out the labels menu:
 This menu allows you to add categories, which hold the labels you've already seen, to categorize and filter your clothing collection.
 
 Categories may be configured to have a speciality, which unlocks another setting field for each label.  
-Besides the already discovered body part speciality, you can also configure a color and a date/temperature range to wear that piece of clothing/outfit using the Season speciality.
+Besides the already discovered body part speciality, you can also configure a color and a date/temperature range to wear that piece of clothing/outfit using the Season speciality.  
+
+This season speciality is used to make outfit recommendations on the outfits page based on your current weather and date.  
+To open the outfit recommendation popup, press the lightbulb button in the bottom right of the outfits page.
 
 &nbsp;
+
 
 <a id="other"></a>
 
