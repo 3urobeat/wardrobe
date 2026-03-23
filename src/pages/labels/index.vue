@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 13:46:20
+ * Last Modified: 2026-03-23 17:32:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -49,7 +49,7 @@
                 </div>
 
                 <button class="custom-button-icon-only" @click="deleteCategory(thisCategory)" :title="$t('deleteCategory')">
-                    <PhX class="size-5 text-red-500"></PhX>
+                    <PhTrash class="size-5 text-red-500" />
                 </button>
             </div>
 
@@ -73,7 +73,7 @@
 
                             <div class="flex w-full justify-end">
                                 <button class="custom-button-icon-only p-0.75!" @click="deleteLabel(thisLabel)" :title="$t('deleteLabel')">
-                                    <PhX class="size-5 text-red-500"></PhX>
+                                    <PhTrash class="size-5 text-red-500" />
                                 </button>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPlus, PhSlidersHorizontal, PhTag, PhX } from "@phosphor-icons/vue";
+    import { PhCheck, PhPlus, PhSlidersHorizontal, PhTag, PhTrash } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import { getLabelInitialized, getLabelOrderIndexBetween, getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
