@@ -4,7 +4,7 @@
  * Created Date: 2026-03-21 23:37:00
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 12:16:45
+ * Last Modified: 2026-03-23 17:31:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -17,14 +17,18 @@
 
 export type ServerStatistics = {
     runtime: {
-        nodeVersion: string
+        nodeVersion: string,
+        isDocker: boolean,
     },
     app: {
         appStorageUsage: number,
-        appMemUsage: number, // RAM usage of wardrobe server in Bytes,
+        appMemUsage: number, // RAM usage of wardrobe server in Bytes
+        appMemTotal: number, // RAM available to this process
         appUptime: number
     },
     system: {
+        hostname: string,
+        osPlatform: string,
         cpuModel: string,
         cpuTemp: number,
         cpuSpeed: number,   // Current CPU speed in GHz

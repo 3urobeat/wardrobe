@@ -5,7 +5,7 @@
 # Created Date: 2026-02-01 22:07:42
 # Author: 3urobeat
 #
-# Last Modified: 2026-02-02 17:25:43
+# Last Modified: 2026-03-23 17:31:16
 # Modified By: 3urobeat
 #
 # Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -74,6 +74,7 @@ EXPOSE 3000
 
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
+ENV WARDROBE_HOST_ENV docker
 
 # Start the application
 CMD [ "npm", "run", "start" ]

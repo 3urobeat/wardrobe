@@ -4,7 +4,7 @@
  * Created Date: 2026-03-21 23:56:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 13:13:03
+ * Last Modified: 2026-03-23 17:49:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -16,12 +16,28 @@
 
 
 import si from "systeminformation";
+import os from "os";
+import util from 'node:util';
+import child_process from 'node:child_process';
+
 import type { ServerStatistics } from "~/model/statistics";
 import { tempToKelvin, Unit } from "~/model/unit";
 import { getDBStorageSize, getImageStorageSize, getStorageMount } from "./useStorage";
 
+const exec = util.promisify(child_process.exec);
+
 
 // SystemInformation docs: https://github.com/sebhildebrandt/systeminformation?tab=readme-ov-file#reference
+
+
+/**
+ * Returns OS kernel name and release
+ * @returns Result of 'uname -s -r'
+ */
+async function getOS(): Promise<string> {
+    const { stdout, stderr } = await exec("uname -s -r");
+    return stdout.trim(); // TODO: Error handling
+}
 
 
 /**
@@ -40,17 +56,21 @@ export async function getServerStatistics(): Promise<ServerStatistics> {
 
     const stats: ServerStatistics = {
         runtime: {
-            nodeVersion: process.version
+            nodeVersion: process.version,
+            isDocker: (process.env.WARDROBE_HOST_ENV != undefined), // Environment variable set in Dockerfile
         },
         app: {
             appStorageUsage: (await getDBStorageSize()) + (await getImageStorageSize()),
             appMemUsage: process.memoryUsage().rss,
+            appMemTotal: process.availableMemory(),
             appUptime: Date.now() - (process.uptime() * 1000)
         },
         system: {
+            hostname: os.hostname(),
+            osPlatform: await getOS(),
             cpuModel: `${cpu.manufacturer} ${cpu.brand}`,
             cpuTemp: tempToKelvin((await si.cpuTemperature()).main, Unit.CELSIUS)!,
-            cpuSpeed: (await si.cpuCurrentSpeed()).avg,// In GHz
+            cpuSpeed: (await si.cpuCurrentSpeed()).avg, // In GHz
             cpuUsage: (await si.currentLoad()).currentLoad,
             memUsage: mem.active,
             memTotal: mem.total,

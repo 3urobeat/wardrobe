@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 13:41:25
+ * Last Modified: 2026-03-23 17:31:26
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -149,13 +149,15 @@
                         </div>
 
                         <!-- Job info -->
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1" v-for="[key, value] of Object.entries(thisJobInfo)">
-                            <label v-if="key != 'name'" class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ key }}:</label>
+                        <ClientOnly>
+                            <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 ml-1" v-for="[key, value] of Object.entries(thisJobInfo)">
+                                <label v-if="key != 'name'" class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ key }}:</label>
 
-                            <label v-if=     "key == 'interval'">{{ formatTimeLocalized(value as number) }}</label>
-                            <input v-else-if="key == 'runOnRegistration'" type="checkbox" class="size-4 self-center" :checked="value as boolean" disabled>
-                            <label v-else-if="key == '_lastExecTimestamp' || key == '_registeredAt'">{{ $t("timeAgo", { time: formatTimestamp(value as number) }) }}</label>
-                        </div>
+                                <label v-if=     "key == 'interval'">{{ formatTimeLocalized(value as number) }}</label>
+                                <input v-else-if="key == 'runOnRegistration'" type="checkbox" class="size-4 self-center" :checked="value as boolean" disabled>
+                                <label v-else-if="key == '_lastExecTimestamp' || key == '_registeredAt'">{{ $t("timeAgo", { time: formatTimestamp(value as number) }) }}</label>
+                            </div>
+                        </ClientOnly>
                     </div>
                 </div>
             </div>
@@ -183,6 +185,9 @@
 
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Wardrobe:</label>
                         <label>v{{ packageJson.version }}</label>
+
+                        <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Docker?</label>
+                        <input type="checkbox" class="size-4 self-center" :checked="serverStatistics?.runtime.isDocker" disabled>
 
                         <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">Node:</label>
                         <label>{{ serverStatistics?.runtime.nodeVersion }}</label>
@@ -232,6 +237,12 @@
 
                             <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('systemTime') }}:</label>
                             <label>{{ formatTimestamp(serverStatistics?.system.serverTime || 0, "always") }}</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('name') }}:</label>
+                            <label>{{ serverStatistics?.system.hostname }}</label>
+
+                            <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('system') }}:</label>
+                            <label>{{ serverStatistics?.system.osPlatform }}</label>
                         </ClientOnly>
 
                     </div>
@@ -266,7 +277,7 @@
                             <label>{{ round((serverStatistics?.app.appStorageUsage || 0) / 1000000, 2) }} MB</label>
 
                             <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('memUsage') }}:</label>
-                            <label>{{ round((serverStatistics?.app.appMemUsage || 0) / 1000000, 2) }} MB</label>
+                            <label>{{ round((serverStatistics?.app.appMemUsage || 0) / 1000000, 2) }} MB / {{ round((serverStatistics?.app.appMemTotal || 0) / 1000000000, 2) }} GB</label>
 
                             <label class="custom-label-secondary text-nowrap py-0! px-2! w-fit">{{ $t('uptime') }}:</label>
                             <label>{{ $t("timeSince", { time: formatTimestamp(serverStatistics?.app.appUptime || 0) }) }}</label>
