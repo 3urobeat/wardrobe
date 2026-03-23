@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 11:21:15
+ * Last Modified: 2026-03-23 18:16:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -70,7 +70,7 @@
                         <label class="custom-label-secondary py-0! px-2! w-fit">{{ $t("poweredBy") }}</label> openweathermap.org
                     </div>
                     <div v-else class="w-120 break-normal">
-                        {{ $t('weatherLoadAPIError') }} {{ $t(weatherAPIErrorMessage!) || weatherAPIErrorMessage }}
+                        {{ $t('weatherLoadAPIError') }} {{ weatherAPIErrorMessage }}
                     </div>
                 </template>
             </PickerDialog>
@@ -118,6 +118,9 @@
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
     import { getWeatherFromServer } from "~/utils/utils";
 
+    const i18n = useI18n();
+
+    // Refs
     const globalSearchInput                         = useTemplateRef("globalSearchInput");
     const globalSearchBarShown: Ref<boolean>        = useState("globalSearchBarShown", () => false); // Poor woman's approach at page properties
     const globalSearchStr:      Ref<string|null>    = useState("globalSearchStr",      () => null);  // null on page load, set to "" on click to expand input
@@ -144,7 +147,7 @@
 
     // Re-fetch weather from server when settings have been changed to react to changed position/api key
     useNuxtApp().hook("app:user:settingsSaved", () => {
-        console.debug(`[DEBUG] Received settingsSaved event, refetching weather'`)
+        console.debug(`[DEBUG] Received settingsSaved event, refetching weather'`);
         getWeather();
     });
 
@@ -173,8 +176,16 @@
         // Display loading icon and clear stored value
         weatherLoading.value = true;
         currentWeather.value = null;
+        weatherAPIErrorMessage = null;
 
-        ({ error: weatherAPIErrorMessage, weather: currentWeather.value } = await getWeatherFromServer());
+        let error;
+        let errorMsg;
+
+        ({ error: error, errorMsg: errorMsg, weather: currentWeather.value } = await getWeatherFromServer());
+
+        if (error) {
+            weatherAPIErrorMessage = i18n.t(error, errorMsg);
+        }
 
         // Disable loading icon again
         weatherLoading.value = false;

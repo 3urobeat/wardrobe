@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-21 23:28:57
+ * Last Modified: 2026-03-23 18:16:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -37,7 +37,7 @@
 
             <!-- Items area -->
             <template v-slot:items="slotProps">
-                <label class="p-1 text-nowrap" v-if="weatherAPIErrorMessage != null">{{ $t('weatherLoadAPIError') }} {{ $t(weatherAPIErrorMessage) || weatherAPIErrorMessage }}</label>
+                <label class="p-1 text-nowrap" v-if="weatherAPIErrorMessage != null">{{ $t('weatherLoadAPIError') }} {{ weatherAPIErrorMessage }}</label>
 
                 <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-auto"> <!-- TODO: overflow clips shadow -->
                     <NuxtLink
@@ -82,6 +82,7 @@
     import type { Outfit } from '~/model/outfit';
     import { getWeatherFromServer } from '~/utils/utils';
 
+    const i18n = useI18n();
 
     // Refs
     const storedLabels:     Ref<Label[]>    = useState("storedLabels");
@@ -116,8 +117,17 @@
     async function getOutfitsToShowInPopout(): Promise<Outfit[] | undefined> {
 
         // Get current weather
+        weatherAPIErrorMessage = null;
+
+        let error;
+        let errorMsg;
         let currentWeather;
-        ({ error: weatherAPIErrorMessage, weather: currentWeather } = await getWeatherFromServer());
+
+        ({ error: error, errorMsg: errorMsg, weather: currentWeather } = await getWeatherFromServer());
+
+        if (error) {
+            weatherAPIErrorMessage = i18n.t(error, errorMsg);
+        }
 
         // Find season category which includes temperature & date range settings
         const seasonCategory = storedCategories.value.find((e) => e.specialityID == CategorySpecialityID.Season);

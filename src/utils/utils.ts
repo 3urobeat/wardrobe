@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 15:03:29
+ * Last Modified: 2026-03-23 18:14:49
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -69,7 +69,7 @@ export async function geolocateClient(): Promise<[ lat: number, lon: number ]> {
     const resBody = await res.json();
 
     if (res.status != 200) {
-        throw((resBody.message || useI18n().t('unknownError')));
+        throw((resBody.message || "Unknown Error"));
     }
 
     return [ resBody.lat, resBody.lon ];
@@ -82,13 +82,13 @@ export async function geolocateClient(): Promise<[ lat: number, lon: number ]> {
  * @returns Object containing error message and weather data
  */
 export async function getWeatherFromServer() {
-    const i18n = useI18n();
 
     // Get settings
     const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
 
-    const response: { error: string | null, weather: WeatherData | null } = {
+    const response: { error: string | null, errorMsg: any, weather: WeatherData | null } = {
         error: null,
+        errorMsg: null,
         weather: null
     };
 
@@ -100,7 +100,8 @@ export async function getWeatherFromServer() {
     if (storedServerSettings.value.location.useGeolocation) {
         [ lat, lon ] = await geolocateClient()
             .catch((err) => {
-                response.error = i18n.t("weatherGeolocationFail", { errorText: err });
+                response.error = "weatherGeolocationFail";
+                response.errorMsg = { errorText: err };
                 return [ undefined, undefined ];
             });
     } else {
@@ -108,7 +109,7 @@ export async function getWeatherFromServer() {
         lon = storedServerSettings.value.location.lon;
 
         if (lat == undefined || lon == undefined) {
-            response.error = i18n.t("weatherGeolocationDisabledNoLatLonSet");
+            response.error = "weatherGeolocationDisabledNoLatLonSet";
         }
     }
 
