@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 19:43:23
+ * Last Modified: 2026-03-23 17:40:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -47,7 +47,7 @@
             >
 
                 <!-- Search and Close button -->
-                <div class="flex justify-end gap-x-4">
+                <div class="flex relative justify-end gap-x-4">
                     <input
                         class="w-full custom-input-primary"
                         :placeholder="$t('search')"
@@ -56,8 +56,9 @@
                         v-if="!hideSearch"
                     />
 
-                    <button class="custom-input-primary" @click="isOpen = !isOpen">
-                        {{ $t("close") }}
+                    <!-- Set button to fixed when search bar is hidden to not consume space -->
+                    <button class="custom-button-icon-only" :class="hideSearch ? 'absolute' : ''" @click="isOpen = !isOpen">
+                        <PhX class="size-5" />
                     </button>
                 </div>
 
@@ -75,6 +76,7 @@
 
 
 <script setup lang="ts">
+    import { PhX } from '@phosphor-icons/vue';
 
     // Refs
     const isOpen:                Ref<boolean>                     = ref(false);
