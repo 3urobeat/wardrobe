@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 14:49:48
+ * Last Modified: 2026-03-23 19:30:15
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -110,6 +110,11 @@
     >
         <!-- Dummy to prevent NuxtPage button presses when the navbar is open -->
         <div :class="showNavbar ? 'fixed min-h-screen min-w-screen opacity-0 lg:w-0 lg:h-0' : ''" class="z-50"></div>
+
+        <!-- JS disabled warning, gets hidden by global.js. Cannot use noscript tag as it causes a Vue hydration mismatch :( -->
+        <div id="js-disabled-banner" class="fixed z-50 select-none min-h-screen min-w-screen bg-bg-field-light/90 dark:bg-bg-field-dark/90">
+            <p class="translate-y-1/3 min-h-screen min-w-screen text-red-500 font-bold text-center">JavaScript is disabled :(<br />Please enable JavaScript to use Wardrobe.</p>
+        </div>
 
         <!-- Page content wrapped into a border container, used to indicate success or failure for actions -->
         <div

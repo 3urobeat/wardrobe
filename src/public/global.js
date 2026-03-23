@@ -4,7 +4,7 @@
  * Created Date: 2025-12-03 18:23:42
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-06 23:02:13
+ * Last Modified: 2026-03-23 19:27:16
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -16,6 +16,10 @@
 
 
 // This file is loaded in header of app.vue
+
+
+// Rmove no JS warning
+document.documentElement.classList.add('js');
 
 
 // TODO: Duplicates utils/storage.ts (except auto detection) but cannot import that here
