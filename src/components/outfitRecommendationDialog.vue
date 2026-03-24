@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-23 18:16:30
+ * Last Modified: 2026-03-24 19:21:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -48,7 +48,7 @@
                     >                                                           <!-- TODO: How much does this search suck compared to some guideline? -->
                         <img
                             class="w-fit h-2/3 mb-1 self-center"
-                            :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
+                            :src="'data:image/png;base64,' + outfitImages.find((e) => e.outfitID == thisOutfit.id)?.imgBlob"
                             :alt="$t('imageFallbackText', { name: thisOutfit.title })"
                         >
                         <label class="self-start text-sm font-semibold ml-0.5">{{ thisOutfit.title }}</label>
@@ -88,8 +88,8 @@
     const storedLabels:     Ref<Label[]>    = useState("storedLabels");
     const storedCategories: Ref<Category[]> = useState("storedCategories");
 
-    const storedOutfits:    Ref<Outfit[]>                          = ref([]);
-    const outfitImages:     Ref<{ id: string, imgBlob: string }[]> = ref([]);
+    const storedOutfits:    Ref<Outfit[]>                                = ref([]);
+    const outfitImages:     Ref<{ outfitID: string, imgBlob: string }[]> = ref([]);
 
     const recommendedOutfits:     Ref<Outfit[]> = ref([]);
     let   weatherAPIErrorMessage: string | null = null;
@@ -102,10 +102,11 @@
     // Load images for outfits // TODO: Lazy load
     onMounted(async () => {
         storedOutfits.value.forEach(async (e) => {
-            outfitImages.value.push({
-                id: e.id,
-                imgBlob: await getImageFromServer(e.previewImgPath, 384)
-            })
+            const outfitImage = await getImageFromServer(e.previewImgPath, 384);
+
+            if (outfitImage) {
+                outfitImages.value.push({ outfitID: e.id, imgBlob: outfitImage.imgBlob });
+            }
         });
 
         recommendedOutfits.value = (await getOutfitsToShowInPopout()) || [];

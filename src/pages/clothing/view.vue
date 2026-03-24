@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 21:25:16
+ * Last Modified: 2026-03-24 19:07:46
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -193,7 +193,7 @@
 
             thisClothing.value = await res.json(); // TODO: Error handling
 
-            thisClothingImgBlob.value = await getImageFromServer(thisClothing.value.imgPath, 512) || "";
+            thisClothingImgBlob.value = (await getImageFromServer(thisClothing.value.imgPath, 512))?.imgBlob || "";
         }
     });
 
@@ -262,7 +262,7 @@
         thisClothing.value.imgPath = fileName;
         console.debug("DEBUG - updateImage: Setting imgPath of clothing to " + thisClothing.value.imgPath);
 
-        thisClothingImgBlob.value = await getImageFromServer(fileName, 512) || "";
+        thisClothingImgBlob.value = (await getImageFromServer(fileName, 512))?.imgBlob || "";
     }
 
 
@@ -324,7 +324,7 @@
 
             emitChangesMadeEvent(false);
             thisClothing.value = resBody.document;
-            thisClothingImgBlob.value = await getImageFromServer(resBody.document.imgPath, 512) || "";
+            thisClothingImgBlob.value = (await getImageFromServer(resBody.document.imgPath, 512))?.imgBlob || "";
         } else {
             responseIndicatorFailure();
         }

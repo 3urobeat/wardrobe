@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 19:47:06
+ * Last Modified: 2026-03-24 19:22:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -42,7 +42,7 @@
             >
                 <img
                     class="w-fit h-5/7 mb-1 md:mb-2 self-center"
-                    :src="'data:image/png;base64,' + clothingImages.find((e) => e.id == thisClothing.id)?.imgBlob"
+                    :src="'data:image/png;base64,' + clothingImages.find((e) => e.clothingID == thisClothing.id)?.imgBlob"
                     :alt="$t('imageFallbackText', { name: thisClothing.title })"
                 >
 
@@ -86,6 +86,7 @@
 
 <script setup lang="ts">
     import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
+    import { UseElementVisibility } from "@vueuse/components";
     import TitleBarFull from "~/components/titleBarFull.vue";
     import type { Clothing } from "~/model/clothing";
     import type { Label } from "~/model/label";
@@ -103,7 +104,7 @@
 
     // Cache
     const storedClothing: Ref<Clothing[]>                        = ref([]);
-    const clothingImages: Ref<{ id: string, imgBlob: string }[]> = ref([]);
+    const clothingImages: Ref<{ clothingID: string, imgBlob: string }[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
@@ -116,10 +117,11 @@
     // Load images for clothes // TODO: Lazy load
     onMounted(() => {
         storedClothing.value.forEach(async (e) => {
-            clothingImages.value.push({
-                id: e.id,
-                imgBlob: await getImageFromServer(e.imgPath, 384)
-            })
+            const clothingImage = await getImageFromServer(e.imgPath, 384);
+
+            if (clothingImage) {
+                clothingImages.value.push({ clothingID: e.id, imgBlob: clothingImage.imgBlob });
+            }
         });
     });
 

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 18:58:31
+ * Last Modified: 2026-03-24 18:25:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -76,3 +76,15 @@ export const defaultServerSettings: ServerSettings = {
     weatherApiKey: "",
     temperatureUnit: Unit.CELSIUS
 };
+
+
+
+/**
+ * Storage Composable
+ */
+
+export type CachedImage = {
+    imgPath: string,
+    imgBlob: string,
+    imgWidth: number | undefined
+}

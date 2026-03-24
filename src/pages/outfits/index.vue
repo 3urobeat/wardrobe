@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-16 19:47:00
+ * Last Modified: 2026-03-24 19:08:31
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -44,7 +44,7 @@
             >
                 <img
                     class="w-fit h-5/7 mb-1 md:mb-2 self-center"
-                    :src="'data:image/png;base64,' + outfitImages.find((e) => e.id == thisOutfit.id)?.imgBlob"
+                    :src="'data:image/png;base64,' + outfitImages.find((e) => e.outfitID == thisOutfit.id)?.imgBlob"
                     :alt="$t('imageFallbackText', { name: thisOutfit.title })"
                 >
 
@@ -111,7 +111,7 @@
 
     // Cache
     const storedOutfits: Ref<Outfit[]>                          = ref([]);
-    const outfitImages:  Ref<{ id: string, imgBlob: string }[]> = ref([]);
+    const outfitImages:  Ref<{ outfitID: string, imgBlob: string }[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
@@ -124,10 +124,11 @@
     // Load images for outfits // TODO: Lazy load
     onMounted(() => {
         storedOutfits.value.forEach(async (e) => {
-            outfitImages.value.push({
-                id: e.id,
-                imgBlob: await getImageFromServer(e.previewImgPath, 384)
-            })
+            const outfitImage = await getImageFromServer(e.previewImgPath, 384);
+
+            if (outfitImage) {
+                outfitImages.value.push({ outfitID: e.id, imgBlob: outfitImage.imgBlob });
+            }
         });
     });
 

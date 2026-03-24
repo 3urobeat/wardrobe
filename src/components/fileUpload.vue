@@ -5,7 +5,7 @@
  * Created Date: 2025-12-06 19:23:27
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-24 18:48:35
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -49,25 +49,9 @@
 
     // Process image upload
     async function uploadImg(file: File) {
-        // Construct form to post
-        const formData = new FormData();
-        formData.append("file", file);
-        //formData.append("imgType", "clothing"); // TODO: Image type is hardcoded
-
         try {
-
             // Attempt to post file to API
-            const res = await fetch("/api/set-clothing-image", {
-                method: "POST",
-                body: formData
-            });
-
-            if (!res.ok) {
-                throw("Failed to upload image: " + res.statusText);
-            }
-
-            // Get file name from response
-            const resBody = await res.json();
+            const resBody = await sendImageToServer(file);
 
             // Emit uploadSuccess event for parent to listen for
             emit("uploadSuccess", resBody.filePath);
