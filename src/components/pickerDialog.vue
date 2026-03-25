@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-23 17:40:23
+ * Last Modified: 2026-03-25 21:32:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -57,7 +57,7 @@
                     />
 
                     <!-- Set button to fixed when search bar is hidden to not consume space -->
-                    <button class="custom-button-icon-only" :class="hideSearch ? 'absolute' : ''" @click="isOpen = !isOpen">
+                    <button class="custom-button-icon-only aspect-square flex justify-center items-center" :class="hideSearch ? 'absolute' : ''" @click="isOpen = !isOpen">
                         <PhX class="size-5" />
                     </button>
                 </div>
