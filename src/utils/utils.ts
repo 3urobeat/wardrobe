@@ -4,7 +4,7 @@
  * Created Date: 2026-01-23 22:00:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 18:10:46
+ * Last Modified: 2026-03-26 21:51:52
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -37,18 +37,17 @@ export async function getUUIDFromServer(): Promise<string> {
  */
 export async function geolocateClient(): Promise<[ lat: number, lon: number ]> {
 
-    // https://ip-api.com/docs/api:json
-    const res = await fetch("http://ip-api.com/json?fields=lat,lon,offset,city,countryCode", {
-        method: "GET"
+    return new Promise((resolve, reject) => {
+        if (!navigator.geolocation) {
+            return reject(new Error("Browser does not support geolocation!"));
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => resolve([ pos.coords.latitude, pos.coords.longitude ]),
+            (err) => reject(err.message || "Unknown Error"),
+            { timeout: 10000 }
+        );
     });
-
-    const resBody = await res.json();
-
-    if (res.status != 200) {
-        throw((resBody.message || "Unknown Error"));
-    }
-
-    return [ resBody.lat, resBody.lon ];
 
 }
 
