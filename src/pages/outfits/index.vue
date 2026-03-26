@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 19:08:31
+ * Last Modified: 2026-03-26 17:08:38
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -42,11 +42,7 @@
                 :key="thisOutfit.id"
                 :to="'/outfits/view?id=' + thisOutfit.id"
             >
-                <img
-                    class="w-fit h-5/7 mb-1 md:mb-2 self-center"
-                    :src="'data:image/png;base64,' + outfitImages.find((e) => e.outfitID == thisOutfit.id)?.imgBlob"
-                    :alt="$t('imageFallbackText', { name: thisOutfit.title })"
-                >
+                <ImgLazy class="h-5/7" :itemName="thisOutfit.title" :imgPath="thisOutfit.previewImgPath" :imgWidth="384" noShadow noRounding />
 
                 <div>
                     <label class="self-start text-sm @xs:text-base font-semibold @xs:m-1">{{ thisOutfit.title }}</label>
@@ -94,6 +90,7 @@
 
 <script setup lang="ts">
     import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
+    import ImgLazy from "~/components/imgLazy.vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
     import type { Label } from "~/model/label";
     import type { Outfit } from "~/model/outfit";
@@ -110,8 +107,7 @@
     const storedLabels: Ref<Label[]> = useState("storedLabels");
 
     // Cache
-    const storedOutfits: Ref<Outfit[]>                          = ref([]);
-    const outfitImages:  Ref<{ outfitID: string, imgBlob: string }[]> = ref([]);
+    const storedOutfits: Ref<Outfit[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
@@ -120,17 +116,6 @@
     // Get all outfits and their details on load
     let res = await useFetch("/api/get-all-outfits");
     storedOutfits.value = res.data.value!; // TODO: Error handling
-
-    // Load images for outfits // TODO: Lazy load
-    onMounted(() => {
-        storedOutfits.value.forEach(async (e) => {
-            const outfitImage = await getImageFromServer(e.previewImgPath, 384);
-
-            if (outfitImage) {
-                outfitImages.value.push({ outfitID: e.id, imgBlob: outfitImage.imgBlob });
-            }
-        });
-    });
 
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
     let outfitsToShow = computed(() => getItemsToShow(storedOutfits.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Outfit[]);

@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 19:22:07
+ * Last Modified: 2026-03-25 21:33:36
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -40,11 +40,7 @@
                 :key="thisClothing.id"
                 :to="'/clothing/view?id=' + thisClothing.id"
             >
-                <img
-                    class="w-fit h-5/7 mb-1 md:mb-2 self-center"
-                    :src="'data:image/png;base64,' + clothingImages.find((e) => e.clothingID == thisClothing.id)?.imgBlob"
-                    :alt="$t('imageFallbackText', { name: thisClothing.title })"
-                >
+                <ImgLazy class="h-5/7" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
 
                 <div>
                     <label class="self-start text-sm @xs:text-base font-semibold @xs:m-1">{{ thisClothing.title }}</label>
@@ -86,7 +82,7 @@
 
 <script setup lang="ts">
     import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
-    import { UseElementVisibility } from "@vueuse/components";
+    import ImgLazy from "~/components/imgLazy.vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
     import type { Clothing } from "~/model/clothing";
     import type { Label } from "~/model/label";
@@ -103,8 +99,7 @@
     const storedLabels: Ref<Label[]> = useState("storedLabels");
 
     // Cache
-    const storedClothing: Ref<Clothing[]>                        = ref([]);
-    const clothingImages: Ref<{ clothingID: string, imgBlob: string }[]> = ref([]);
+    const storedClothing: Ref<Clothing[]> = ref([]);
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
@@ -114,16 +109,6 @@
     let res = await useFetch("/api/get-all-clothes");
     storedClothing.value = res.data.value!; // TODO: Error handling
 
-    // Load images for clothes // TODO: Lazy load
-    onMounted(() => {
-        storedClothing.value.forEach(async (e) => {
-            const clothingImage = await getImageFromServer(e.imgPath, 384);
-
-            if (clothingImage) {
-                clothingImages.value.push({ clothingID: e.id, imgBlob: clothingImage.imgBlob });
-            }
-        });
-    });
 
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
     let clothesToShow = computed(() => getItemsToShow(storedClothing.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Clothing[]);

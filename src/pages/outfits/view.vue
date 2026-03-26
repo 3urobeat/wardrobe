@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 19:09:17
+ * Last Modified: 2026-03-26 17:13:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -166,7 +166,7 @@
                                     </button>
                                 </div>
 
-                                <img class="h-35 my-1.5 self-center" :src="'data:image/png;base64,' + clothingImages.find((e) => e.clothingID == thisClothing.id)?.imgBlob" :alt="$t('imageFallbackText', { name: thisClothing.title })">
+                                <ImgLazy class="h-35 my-1.5" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
                                 <label class="self-start font-semibold mx-1">{{ thisClothing.title }}</label>
                             </div>
                         </div>
@@ -190,12 +190,8 @@
                                             :key="thisClothing.id"
                                             @click="addClothing(thisClothing.id)"
                                         >
-                                            <img
-                                                class="w-fit h-2/3 mb-1 self-center"
-                                                :src="'data:image/png;base64,' + clothingImages.find((e) => e.clothingID == thisClothing.id)?.imgBlob"
-                                                :alt="$t('imageFallbackText', { name: thisClothing.title })"
-                                            >
-                                            <label class="self-start text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
+                                            <ImgLazy class="h-2/3 mb-1" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
+                                            <label class="flex text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
 
                                             <!-- Labels -->
                                             <div class="flex h-7 mt-1 overflow-auto gap-0.5">
@@ -254,7 +250,6 @@
     const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
     const bodyPartLabels: Ref<Label[]>    = ref([]);
     const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
-    const clothingImages: Ref<{ clothingID: string, imgBlob: string }[]> = ref([]); // Edit Mode only
 
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
@@ -296,14 +291,6 @@
 
             thisOutfit.value = await outfitRes.json(); // TODO: Error handling
         }
-
-        storedClothes.value.forEach(async (e) => {
-            const clothingImage = await getImageFromServer(e.imgPath, 256);
-
-            if (clothingImage) {
-                clothingImages.value.push({ clothingID: e.id, imgBlob: clothingImage.imgBlob });
-            }
-        });
     });
 
 

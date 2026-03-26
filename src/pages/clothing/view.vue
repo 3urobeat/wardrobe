@@ -64,17 +64,19 @@
             >
                 <!-- Show image if available -->
                 <img
+                    v-if="thisClothingImgBlob"
                     class="rounded-2xl h-full select-none"
                     :class="editModeEnabled ? 'opacity-50' : ''"
                     :src="'data:image/png;base64,' + thisClothingImgBlob"
                     alt=""
                 >
+                <PhImageBroken v-else-if="!editModeEnabled" class="h-2/3 w-2/3 self-center text-text-secondary-light/50 dark:text-text-secondary-dark/50" />
 
                 <!-- Upload icon -->
-                <PhUploadSimple v-if="editModeEnabled" class="absolute self-center text-4xl text-text-light dark:text-text-dark"></PhUploadSimple>
+                <PhUploadSimple v-if="editModeEnabled" class="absolute self-center text-4xl text-text-light dark:text-text-dark" />
 
                 <!-- Full size dummy component that handles file uploading. Position it absolute to parent by setting parent to relative -->
-                <FileUpload v-if="editModeEnabled" class="absolute w-full h-full" ref="fileUpload" @uploadSuccess="updateImage"></FileUpload>
+                <FileUpload v-if="editModeEnabled" class="absolute w-full h-full" ref="fileUpload" @uploadSuccess="updateImage" />
             </div>
 
             <div class="flex flex-col w-full gap-4 h-2/3">
@@ -151,7 +153,7 @@
 
 
 <script setup lang="ts">
-    import { PhCheck, PhPencil, PhPlus, PhTrash, PhUploadSimple } from "@phosphor-icons/vue";
+    import { PhCheck, PhImageBroken, PhPencil, PhPlus, PhTrash, PhUploadSimple } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import FileUpload from "~/components/fileUpload.vue";
     import type { Clothing } from "~/model/clothing";
