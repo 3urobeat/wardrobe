@@ -5,7 +5,7 @@
  * Created Date: 2026-03-24 21:17:26
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 17:48:08
+ * Last Modified: 2026-03-26 18:24:13
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -21,7 +21,7 @@
 
     <div
         class="flex items-center justify-center"
-        :class="props.class"
+        :class="props.conClass"
         v-element-visibility="onVisibility"
     >
         <div v-if="imgBlob === null" class="absolute self-center loader"></div>
@@ -31,7 +31,7 @@
         <img
             v-else
             class="max-w-full max-h-full"
-            :class="{ 'shadow-md': !noShadow, 'rounding-2xl': !noRounding }"
+            :class="imgClass"
             :src="'data:image/png;base64,' + imgBlob"
             :alt="$t('imageFallbackText', { name: itemName })"
         >
@@ -69,7 +69,11 @@
 
     // Define Props to be accepted by this component
     const props = defineProps({
-        class: {
+        conClass: {
+            type: String,
+            required: false
+        },
+        imgClass: {
             type: String,
             required: false
         },
@@ -83,14 +87,6 @@
         },
         imgWidth: {
             type: Number,
-            required: false
-        },
-        noShadow: {
-            type: Boolean,
-            required: false
-        },
-        noRounding: {
-            type: Boolean,
             required: false
         }
     });

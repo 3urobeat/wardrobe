@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 17:54:12
+ * Last Modified: 2026-03-26 18:24:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -46,7 +46,7 @@
                         :key="thisOutfit.id"
                         :to="'/outfits/view?id=' + thisOutfit.id"
                     >                                                           <!-- TODO: How much does this search suck compared to some guideline? -->
-                        <ImgLazy class="select-none w-full h-full overflow-hidden" :itemName="thisOutfit.title" :imgPath="thisOutfit.previewImgPath" :imgWidth="384" noRounding noShadow />
+                        <ImgLazy conClass="select-none w-full h-full overflow-hidden" :itemName="thisOutfit.title" :imgPath="thisOutfit.previewImgPath" :imgWidth="384" />
 
                         <div>
                             <label class="self-start text-sm font-semibold ml-0.5">{{ thisOutfit.title }}</label>

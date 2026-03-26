@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 17:53:27
+ * Last Modified: 2026-03-26 18:24:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -40,7 +40,7 @@
                 :key="thisClothing.id"
                 :to="'/clothing/view?id=' + thisClothing.id"
             >
-                <ImgLazy class="select-none w-full h-full overflow-hidden" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
+                <ImgLazy conClass="select-none w-full h-full overflow-hidden" imgClass="shadow-md rounded-2xl" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
 
                 <div>
                     <label class="self-start text-sm @xs:text-base font-semibold @xs:m-1">{{ thisClothing.title }}</label>
