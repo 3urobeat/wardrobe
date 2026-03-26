@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 18:25:07
+ * Last Modified: 2026-03-26 18:36:39
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -158,10 +158,10 @@
                                 <!-- Title bar when in edit mode, let it clip over the image -->
                                 <div class="flex relative w-full mt-2 -mb-2 justify-end" v-if="editModeEnabled">
                                     <button
-                                        class="absolute z-20 custom-button-icon-only"
+                                        class="absolute custom-button-icon-only"
                                         @click="removeClothing(thisClothing.id)"
                                         :title="$t('removeItem')"
-                                    >               <!-- Give this button a higher z-level than the close-popover-dummy to be able to delete clothes while the picker stays open -->
+                                    >
                                         <PhX class="size-5 text-red-500"></PhX>
                                     </button>
                                 </div>

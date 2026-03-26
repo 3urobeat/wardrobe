@@ -5,7 +5,7 @@
  * Created Date: 2025-12-24 12:09:18
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-25 21:32:13
+ * Last Modified: 2026-03-26 18:36:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -22,8 +22,7 @@
     <!-- Open/Close button -->
     <div class="flex flex-col items-center" @keydown.esc="dialogCloseEvent">
 
-        <!-- Give this button a higher z-level than the close-popover-dummy to be able to open another picker and close the current one at the same time, saving a click --> <!-- TODO: Does this still work? -->
-        <button class="h-fit z-20" :title="toggleText" @click="isOpen = !isOpen" ref="pickerDialogToggleBtn">
+        <button class="h-fit" :title="toggleText" @click="isOpen = !isOpen" ref="pickerDialogToggleBtn">
             <slot name="toggle"></slot>
             <!-- WARN: This slot *must not* contain another <button>, it will cause a hydration mismatch! -->
         </button>
@@ -36,8 +35,6 @@
             Bind position to computed dialogPosition to be able to move container based on distance to screen bounds.
         -->
         <div v-if="isOpen" class="absolute z-50 mt-6 transition-all" :class="dialogPosition">
-            <!-- Dummy filling the entire page to close popout when clicking on anything outside popout -->
-            <div class="fixed top-0 left-0 min-h-screen min-w-screen opacity-0" @click="isOpen = !isOpen"></div>
 
             <!-- Content -->
             <dialog
@@ -45,7 +42,6 @@
                 class="relative mt-2 max-w-screen flex flex-col p-2 md:p-4 gap-4 rounded-xl shadow-md dark:text-text-dark bg-bg-field-light dark:bg-bg-field-dark"
                 ref="pickerDialog"
             >
-
                 <!-- Search and Close button -->
                 <div class="flex relative justify-end gap-x-4">
                     <input
@@ -66,8 +62,8 @@
                 <div ref="pickerDialogItemsDiv" class="max-w-screen overflow-x-auto">
                     <slot name="items" :searchStr="searchStr"></slot>
                 </div>
-
             </dialog>
+
         </div>
 
     </div>
@@ -77,6 +73,7 @@
 
 <script setup lang="ts">
     import { PhX } from '@phosphor-icons/vue';
+    import { onClickOutside } from '@vueuse/core'
 
     // Refs
     const isOpen:                Ref<boolean>                     = ref(false);
@@ -144,6 +141,9 @@
         isOpen.value = false;
         pickerDialog.value?.close();
     }
+
+    // Auto-Close dialog when clicking outside
+    onClickOutside(pickerDialog, () => isOpen.value = false);
 
 
     // Define Props to be accepted by this component

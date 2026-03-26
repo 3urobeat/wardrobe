@@ -5,7 +5,7 @@
  * Created Date: 2025-12-28 15:07:43
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-23 18:16:14
+ * Last Modified: 2026-03-26 18:41:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -117,6 +117,7 @@
     import { type TemperatureKelvin } from "~/model/unit";
     import { WeatherConditionGroupID, weatherIdToCondition, type WeatherData } from "~/model/weather";
     import { getWeatherFromServer } from "~/utils/utils";
+    import { onClickOutside } from '@vueuse/core'
 
     const i18n = useI18n();
 
@@ -130,18 +131,17 @@
     let   weatherAPIErrorMessage                = null;
 
 
-    // Global mouse event listener to collapse search input when clicking anywhere while search bar is empty
+    // Load weather
     onMounted(() => {
-        console.debug("DEBUG - globalTitleBar: Attaching mouse event listener")
-
-        document.addEventListener("mouseup", () => {
-            if (globalSearchStr.value === "") {
-                globalSearchStr.value = null;
-            }
-        });
-
-        // Load weather
         getWeather();
+    });
+
+
+    // Collapse search input when clicking anywhere while search bar is empty
+    onClickOutside(globalSearchInput, () => {
+        if (globalSearchStr.value === "") {
+            globalSearchStr.value = null;
+        }
     });
 
 
