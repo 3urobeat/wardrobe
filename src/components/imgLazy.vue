@@ -5,7 +5,7 @@
  * Created Date: 2026-03-24 21:17:26
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-25 18:42:52
+ * Last Modified: 2026-03-26 17:48:08
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -20,7 +20,7 @@
 <template>
 
     <div
-        class="flex justify-center select-none"
+        class="flex items-center justify-center"
         :class="props.class"
         v-element-visibility="onVisibility"
     >
@@ -30,7 +30,7 @@
         <!-- Show image if available -->
         <img
             v-else
-            class="max-h-full self-center rounded-2xl"
+            class="max-w-full max-h-full"
             :class="{ 'shadow-md': !noShadow, 'rounding-2xl': !noRounding }"
             :src="'data:image/png;base64,' + imgBlob"
             :alt="$t('imageFallbackText', { name: itemName })"

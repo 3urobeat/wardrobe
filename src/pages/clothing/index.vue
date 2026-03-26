@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-25 21:33:36
+ * Last Modified: 2026-03-26 17:53:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -34,13 +34,13 @@
 
             <!-- Clothing Cards -->
             <NuxtLink
-                class="custom-items-grid-card justify-between cursor-pointer"
+                class="custom-items-grid-card cursor-pointer flex flex-col"
                 :class="itemsGridCardScalingToTailwind(titleBarFull.selectedScaling)"
                 v-for="thisClothing in clothesToShow"
                 :key="thisClothing.id"
                 :to="'/clothing/view?id=' + thisClothing.id"
             >
-                <ImgLazy class="h-5/7" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
+                <ImgLazy class="select-none w-full h-full overflow-hidden" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
 
                 <div>
                     <label class="self-start text-sm @xs:text-base font-semibold @xs:m-1">{{ thisClothing.title }}</label>

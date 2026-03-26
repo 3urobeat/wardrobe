@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-25 21:26:29
+ * Last Modified: 2026-03-26 17:57:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -160,5 +160,5 @@
     @apply grid gap-x-4 gap-y-6 md:gap-x-6 md:gap-y-10
 }
 .custom-items-grid-card {
-    @apply @container flex flex-col w-full aspect-square md:aspect-auto p-4 rounded-2xl shadow-lg bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all
+    @apply @container aspect-square md:aspect-auto rounded-2xl shadow-lg select-none bg-bg-input-light dark:bg-bg-input-dark hover:bg-bg-input-hover-light hover:dark:bg-bg-input-hover-dark hover:transition-all
 }

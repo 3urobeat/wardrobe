@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 17:13:53
+ * Last Modified: 2026-03-26 17:55:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -185,23 +185,26 @@
                                 <template v-slot:items="slotProps">
                                     <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-auto"> <!-- TODO: overflow clips shadow -->
                                         <button
-                                            class="custom-items-grid-card cursor-pointer p-3! h-45! md:h-55! aspect-square! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
+                                            class="custom-items-grid-card cursor-pointer flex flex-col p-2! h-45! md:h-55! aspect-square! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
                                             v-for="thisClothing in getClothesToShowInPopout(thisLabel, slotProps.searchStr)"
                                             :key="thisClothing.id"
                                             @click="addClothing(thisClothing.id)"
                                         >
-                                            <ImgLazy class="h-2/3 mb-1" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
-                                            <label class="flex text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
+                                            <ImgLazy class="select-none w-full h-full overflow-hidden" :itemName="thisClothing.title" :imgPath="thisClothing.imgPath" :imgWidth="384" />
 
-                                            <!-- Labels -->
-                                            <div class="flex h-7 mt-1 overflow-auto gap-0.5">
-                                                <button
-                                                    class="custom-wardrobe-label-clickable text-sm h-fit m-0.5"
-                                                    v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
-                                                    :key="thisLabel.name"
-                                                >
-                                                    {{ thisLabel.name }}
-                                                </button>
+                                            <div>
+                                                <label class="flex text-sm font-semibold ml-0.5">{{ thisClothing.title }}</label>
+
+                                                <!-- Labels -->
+                                                <div class="flex h-7 mt-1 overflow-auto gap-0.5">
+                                                    <button
+                                                        class="custom-wardrobe-label-clickable text-sm h-fit m-0.5"
+                                                        v-for="thisLabel in storedLabels.filter((e) => thisClothing.labelIDs.includes(e.id))"
+                                                        :key="thisLabel.name"
+                                                    >
+                                                        {{ thisLabel.name }}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </button>
 

@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 17:15:01
+ * Last Modified: 2026-03-26 17:54:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -41,24 +41,27 @@
 
                 <div class="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] md:w-180 max-w-screen max-h-140 gap-4 overflow-y-auto"> <!-- TODO: overflow clips shadow -->
                     <NuxtLink
-                        class="custom-items-grid-card cursor-pointer p-3! h-45! md:h-55! aspect-square! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
+                        class="custom-items-grid-card cursor-pointer flex flex-col p-2! h-45! md:h-55! aspect-square! dark:bg-bg-embed-dark! hover:dark:bg-bg-embed-hover-dark!"
                         v-for="thisOutfit in recommendedOutfits.filter((e) => e.title.toLowerCase().includes(slotProps.searchStr.toLowerCase()))"
                         :key="thisOutfit.id"
                         :to="'/outfits/view?id=' + thisOutfit.id"
                     >                                                           <!-- TODO: How much does this search suck compared to some guideline? -->
-                        <ImgLazy class="h-2/3" :itemName="thisOutfit.title" :imgPath="thisOutfit.previewImgPath" :imgWidth="384" noRounding noShadow />
-                        <label class="self-start text-sm font-semibold ml-0.5">{{ thisOutfit.title }}</label>
+                        <ImgLazy class="select-none w-full h-full overflow-hidden" :itemName="thisOutfit.title" :imgPath="thisOutfit.previewImgPath" :imgWidth="384" noRounding noShadow />
 
-                        <!-- Labels -->
-                        <div class="flex h-7 mt-1 overflow-auto gap-0.5">
-                            <button
-                                class="custom-wardrobe-label-clickable text-sm h-fit m-0.5"
-                                v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
-                                :key="thisLabel.name"
-                            >
-                                {{ thisLabel.name }}
-                            </button>
-                        </div>
+                        <div>
+                            <label class="self-start text-sm font-semibold ml-0.5">{{ thisOutfit.title }}</label>
+
+                            <!-- Labels -->
+                            <div class="flex h-7 mt-1 overflow-auto gap-0.5">
+                                <button
+                                    class="custom-wardrobe-label-clickable text-sm h-fit m-0.5"
+                                    v-for="thisLabel in storedLabels.filter((e) => thisOutfit.labelIDs.includes(e.id))"
+                                    :key="thisLabel.name"
+                                >
+                                    {{ thisLabel.name }}
+                                </button>
+                            </div>
+                            </div>
                     </NuxtLink>
 
                     <label class="p-1 text-nowrap" v-if="recommendedOutfits.length == 0">{{ $t("outfitRecommendationEmpty") }}</label>
