@@ -4,7 +4,7 @@
  * Created Date: 2025-12-28 21:38:23
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 19:12:14
+ * Last Modified: 2026-03-27 19:02:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,7 @@
 
 
 import { createCanvas, loadImage } from "canvas";
-import type { Outfit } from "~/model/outfit";
+import type { Outfit } from "~/model/item";
 import { getClothes } from "~/server/utils/useClothesDb";
 import { upsertOutfit, getOutfitsContainingClothing } from "~/server/utils/useOutfitsDb";
 import { getImage, imgCategory, saveImage } from "~/server/utils/useImagesStorage";

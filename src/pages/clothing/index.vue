@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 18:24:18
+ * Last Modified: 2026-03-27 19:02:23
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -84,7 +84,7 @@
     import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
     import ImgLazy from "~/components/imgLazy.vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
-    import type { Clothing } from "~/model/clothing";
+    import type { Clothing } from "~/model/item";
     import type { Label } from "~/model/label";
     import { defaultSortMode, sortModes } from "~/model/sort-modes";
 

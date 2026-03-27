@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-23 17:32:22
+ * Last Modified: 2026-03-27 19:03:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -161,7 +161,7 @@
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import { getLabelInitialized, getLabelOrderIndexBetween, getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
-    import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category-speciality";
+    import { CategorySpecialities, CategorySpecialityID, CategorySpecialityBodyPartValue, CategorySpecialityMap } from "~/model/label-category";
     import { moveArrayElement, useSortable, type UseSortableReturn } from "@vueuse/integrations/useSortable";
     import type { Reactive } from "vue";
     import { UnitType } from "~/model/unit";

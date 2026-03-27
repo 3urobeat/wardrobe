@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 18:36:39
+ * Last Modified: 2026-03-27 19:03:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -237,9 +237,9 @@
     import PickerDialog from "~/components/pickerDialog.vue";
     import { sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
-    import { CategorySpecialityID } from "~/model/label-category-speciality";
-    import type { Clothing } from "~/model/clothing";
-    import type { Outfit } from "~/model/outfit";
+    import { CategorySpecialityID } from "~/model/label-category";
+    import type { Clothing } from "~/model/item";
+    import type { Outfit } from "~/model/item";
     import { defaultSortMode } from "~/model/sort-modes";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
     import threedModelViewer from "~/components/threedModelViewer.vue";

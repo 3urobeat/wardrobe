@@ -4,7 +4,7 @@
  * Created Date: 2025-12-30 22:18:23
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 21:01:26
+ * Last Modified: 2026-03-27 19:02:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -19,8 +19,8 @@ import { getClothes, upsertClothing } from "~/server/utils/useClothesDb";
 import { deleteImage, getAllImagePaths, imgCategory } from "~/server/utils/useImagesStorage";
 import { getAllLabelCategories, getAllLabels, removeLabels } from "~/server/utils/useLabelsDb";
 import { getOutfit, upsertOutfit } from "~/server/utils/useOutfitsDb";
-import { Clothing } from "~/model/clothing";
-import { Outfit } from "~/model/outfit";
+import { Clothing } from "~/model/item";
+import { Outfit } from "~/model/item";
 
 
 /*

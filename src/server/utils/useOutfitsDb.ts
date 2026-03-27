@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-10 19:17:32
+ * Last Modified: 2026-03-27 19:02:37
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -17,7 +17,7 @@
 
 import nedb from "@seald-io/nedb";
 import crypto from "node:crypto";
-import type { Outfit } from "~/model/outfit";
+import type { Outfit } from "~/model/item";
 import { generateOutfitPreviewImage } from "~/server/utils/outfitPreviewImage";
 
 

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-27 19:03:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,7 @@
  */
 
 import type { Category } from "./label-category";
-import { CategorySpecialityMap } from "./label-category-speciality";
+import { CategorySpecialityMap } from "./label-category";
 
 
 /**

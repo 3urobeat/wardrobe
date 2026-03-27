@@ -4,7 +4,7 @@
  * Created Date: 2025-12-31 17:00:33
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-27 19:01:56
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,7 @@
 
 
 import type { Label } from "./label";
-import type { CategorySpecialityID } from "./label-category-speciality";
+import type { TemperatureKelvin } from "./unit";
 
 
 export type Category = {
@@ -35,3 +35,81 @@ export type Category = {
 export function getLabelsOfCategory(list: Label[], categoryID: string) {
     return list.filter((e) => e.categoryID == categoryID);
 }
+
+
+
+// UUID for each category speciality
+export enum CategorySpecialityID {
+    "No_Speciality" = "",
+    "Body_Part"     = "7d243965-be43-4ab6-b6ac-721e942f38d3",   // No extra function on label
+    "Color"         = "ee83f116-fa27-40f7-bdb8-13a2084c1a6f",   // Label should allow picking hex color
+    "Season"        = "9217222d-d61a-49fc-b989-46ec84af48a7"    // Label should allow choosing temperature range
+}
+
+// I dislike that this is a separately defined enum but I needed to iterate over it in labels page
+export enum CategorySpecialityBodyPartValue {
+    Head = "Head",
+    Arms = "Arms",
+    Hands = "Hands",
+    Torso = "Torso",
+    Legs = "Legs",
+    Feet = "Feet"
+}
+
+
+// Maps what a CategorySpeciality expects the label to save. If undefined, label should not display input field. - Thank you @DerDeathraven for TS magic!
+export type CategorySpecialityLabelValueMap<T extends CategorySpecialityID> = {
+    [CategorySpecialityID.No_Speciality]: null;
+    [CategorySpecialityID.Body_Part]:     CategorySpecialityBodyPartValue;
+    [CategorySpecialityID.Color]:         `#${string}`;
+    [CategorySpecialityID.Season]:        { fromTemp: TemperatureKelvin | null, toTemp: TemperatureKelvin | null, fromTimestamp: number | null, toTimestamp: number | null }; // Null
+}[T]
+
+
+export type CategorySpeciality = {
+    id: CategorySpecialityID,
+    name: string,
+    description: string,                                            // Displayed on label
+    value: CategorySpecialityLabelValueMap<CategorySpecialityID>    // If undefined, label should not display any selector
+}
+
+
+// Default initialisations
+export const CategorySpecialityNoSpeciality: CategorySpeciality = {
+    id: CategorySpecialityID.No_Speciality,
+    name: "categorySpecialityNoneName",
+    description: "",
+    value: null
+} as const;
+
+export const CategorySpecialityBodyPart: CategorySpeciality = {
+    id: CategorySpecialityID.Body_Part,
+    name: "categorySpecialityBodyPartName",
+    description: "categorySpecialityBodyPartDescription",
+    value: CategorySpecialityBodyPartValue.Head
+} as const;
+
+export const CategorySpecialityColor: CategorySpeciality = {
+    id: CategorySpecialityID.Color,
+    name: "categorySpecialityColorName",
+    description: "categorySpecialityColorDescription",
+    value: "#000000",
+} as const;
+
+export const CategorySpecialitySeason: CategorySpeciality = {
+    id: CategorySpecialityID.Season,
+    name: "categorySpecialitySeasonName",
+    description: "categorySpecialitySeasonDescription",
+    value: { fromTemp: null, toTemp: null, fromTimestamp: null, toTimestamp: null }
+} as const;
+
+export const CategorySpecialityMap = {
+    [CategorySpecialityID.No_Speciality]: CategorySpecialityNoSpeciality,
+    [CategorySpecialityID.Body_Part]: CategorySpecialityBodyPart,
+    [CategorySpecialityID.Color]: CategorySpecialityColor,
+    [CategorySpecialityID.Season]: CategorySpecialitySeason
+} as const;
+// I don't like this, I feel like this could be done better
+
+// All supported specialities in an array to iterate over it in labels page
+export const CategorySpecialities: CategorySpeciality[] = Object.values(CategorySpecialityMap);

@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 19:07:46
+ * Last Modified: 2026-03-27 19:03:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -156,10 +156,10 @@
     import { PhCheck, PhImageBroken, PhPencil, PhPlus, PhTrash, PhUploadSimple } from "@phosphor-icons/vue";
     import TitleBarBasic from "~/components/titleBarBasic.vue";
     import FileUpload from "~/components/fileUpload.vue";
-    import type { Clothing } from "~/model/clothing";
+    import type { Clothing } from "~/model/item";
     import { getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
-    import { CategorySpecialityMap } from "~/model/label-category-speciality";
+    import { CategorySpecialityMap } from "~/model/label-category";
 
 
     // Get global cache from app.vue

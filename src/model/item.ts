@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:45:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-27 18:59:27
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,6 +15,9 @@
  */
 
 
+import type { Implements } from "./Implements"
+
+
 // Base type for Clothing & Outfit, used by generic components & composables.
 export type Item = {
     id: string,
@@ -23,3 +26,27 @@ export type Item = {
     addedTimestamp: number,  // Used for sorting
     modifiedTimestamp: number
 }
+
+
+// Implements Item
+export type Clothing = Implements<Item, {
+    id: string,
+    title: string,
+    description: string,
+    imgPath: string,
+    labelIDs: string[], // IMPORTANT: May reference non-existent labels if dataCleanUp job did not run yet!
+    addedTimestamp: number,
+    modifiedTimestamp: number
+}>
+
+
+// Implements Item
+export type Outfit = Implements<Item, {
+    id: string,
+    title: string,
+    clothes: { order: number, clothingID: string }[], // IMPORTANT: May reference non-existent clothes if dataCleanUp job did not run yet!
+    labelIDs: string[],                               // IMPORTANT: May reference non-existent labels if dataCleanUp job did not run yet!
+    previewImgPath: string,
+    addedTimestamp: number,
+    modifiedTimestamp: number
+}>

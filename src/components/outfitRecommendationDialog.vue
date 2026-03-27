@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 18:24:37
+ * Last Modified: 2026-03-27 19:03:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -77,8 +77,8 @@
     import { PhLightbulb } from '@phosphor-icons/vue';
     import type { Label } from '~/model/label';
     import type { Category } from '~/model/label-category';
-    import { CategorySpecialityID, type CategorySpecialityLabelValueMap } from '~/model/label-category-speciality';
-    import type { Outfit } from '~/model/outfit';
+    import { CategorySpecialityID, type CategorySpecialityLabelValueMap } from '~/model/label-category';
+    import type { Outfit } from '~/model/item';
     import { getWeatherFromServer } from '~/utils/utils';
 
     const i18n = useI18n();
