@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 18:25:58
+ * Last Modified: 2026-03-27 18:46:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,36 @@
  */
 
 
+import type { Clothing } from "./clothing";
+import type { Label } from "./label";
+import type { CategorySpeciality } from "./label-category-speciality";
+import type { Outfit } from "./outfit";
 import { Unit } from "./unit";
+
+
+// Storage kinds used by Wardrobe
+export enum StorageKind {
+    //LOCAL_STORAGE,          // Stored in Browser of user
+    CLOTHES,
+    LABEL_CATEGORIES,
+    LABELS,
+    OUTFITS,
+    SERVER_SETTINGS,
+    IMAGES
+}
+// TODO: Use in more places?
+
+
+// Maps Storage Kind to which data they contain
+export type StorageKindDataMap<T extends StorageKind> = {
+    //[StorageKind.LOCAL_STORAGE]:    UXSettings;
+    [StorageKind.CLOTHES]:          Clothing;
+    [StorageKind.LABEL_CATEGORIES]: CategorySpeciality;
+    [StorageKind.LABELS]:           Label;
+    [StorageKind.OUTFITS]:          Outfit;
+    [StorageKind.SERVER_SETTINGS]:  ServerSettings;
+    [StorageKind.IMAGES]:           CachedImage;    // Not a 100% perfect fit
+}[T];
 
 
 /*
