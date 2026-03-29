@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 22:04:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:57:54
+ * Last Modified: 2026-03-29 19:15:28
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -26,9 +26,9 @@ import { getAllLabelCategories } from "~/server/utils/useLabelsDb";
 
 
 // This function is executed when this API route is called
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
 
-    console.debug("API get-all-label-categories: Received request");
+    console.debug(apiLogPrefix(event), "Received request");
 
     // Ask db helper to retrieve categories
     const categories = await getAllLabelCategories();

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 17:06:47
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 14:03:01
+ * Last Modified: 2026-03-29 19:16:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.debug("API set-settings: Received request for:", params);
+    console.debug(apiLogPrefix(event), "Received request for:", params);
 
     // Ask db helper to figure stuff out
     const res = setServerSettings(params);

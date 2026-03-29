@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:23:26
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:58:53
+ * Last Modified: 2026-03-29 19:16:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 
     const file = formData[0];
 
-    console.debug("API set-clothing-image: Received request");
+    console.debug(apiLogPrefix(event), "Received request");
 
     // Validate file size
     const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB in bytes

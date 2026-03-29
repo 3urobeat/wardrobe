@@ -4,7 +4,7 @@
  * Created Date: 2025-12-27 10:07:47
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:58:25
+ * Last Modified: 2026-03-29 19:16:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.debug("API rm-clothing: Received request for: ", params.id);
+    console.debug(apiLogPrefix(event), "Received request for: ", params.id);
 
     // Ask db helper to upsert entry
     const res = await deleteClothing(params.id);

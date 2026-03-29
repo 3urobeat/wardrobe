@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 16:43:11
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:57:57
+ * Last Modified: 2026-03-29 19:15:30
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -26,9 +26,9 @@ import { getAllLabels } from "~/server/utils/useLabelsDb";
 
 
 // This function is executed when this API route is called
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
 
-    console.debug("API get-all-labels: Received request");
+    console.debug(apiLogPrefix(event), "Received request");
 
     // Ask db helper to retrieve items
     const labels = await getAllLabels();

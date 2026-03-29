@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:44:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 14:02:56
+ * Last Modified: 2026-03-29 19:15:57
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,7 +15,6 @@
  */
 
 
-import { ServerSettings } from "~/model/storage";
 import { getServerSettings } from "../utils/useSettingsDb";
 
 
@@ -27,9 +26,9 @@ import { getServerSettings } from "../utils/useSettingsDb";
 
 
 // This function is executed when this API route is called
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
 
-    console.debug("API get-settings: Received request");
+    console.debug(apiLogPrefix(event), "Received request");
 
     // Ask db helper for data
     const settings = await getServerSettings();

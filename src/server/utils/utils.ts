@@ -1,10 +1,10 @@
 /*
- * File: get-server-stats.ts
+ * File: utils.ts
  * Project: wardrobe
- * Created Date: 2026-03-21 23:35:30
+ * Created Date: 2026-03-27 16:50:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 19:21:36
+ * Last Modified: 2026-03-29 19:23:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,23 +15,24 @@
  */
 
 
-import { getServerStatistics } from "../utils/statistics";
+import { IncomingMessage } from "http";
 
 
 /**
- * This API route gets server statistics
- * Params: { }
- * Returns: ServerStatistics
+ * Gets IP of client who sent the request
+ * @param req Incoming request
+ * @returns IP
  */
+export function getIpFromRequest(req: IncomingMessage) {
+    return String(req.headers["x-forwarded-for"] || req.socket.remoteAddress).replace("::ffff:", "");
+}
 
 
-// This function is executed when this API route is called
-export default defineEventHandler(async (event) => {
-
-    console.debug(apiLogPrefix(event), "Received request...");
-
-    const stats = await getServerStatistics();
-
-    return stats;
-
-});
+/**
+ * Constructs prefix that is used in all API log messages
+ * @param event Incoming request event
+ * @returns String to be used as log message prefix
+ */
+export function apiLogPrefix(event: any) {
+    return `[API] ${event.node.req.method} '${event.node.req.url}' from ${getIpFromRequest(event.node.req)}:`;
+}

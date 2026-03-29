@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 18:05:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-12 20:58:06
+ * Last Modified: 2026-03-29 19:15:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
         });
     }
 
-    console.debug(`API get-image: Received request to retrieve image '${params.filePath}'${params.width ? " scaled to " + params.width + "px wide": ""}...`);
+    console.debug(apiLogPrefix(event), `Received request to retrieve image '${params.filePath}'${params.width ? " scaled to " + params.width + "px wide": ""}...`);
 
     // Request item // TODO: Image access restricions?
     let item = await getImage(params.filePath);
