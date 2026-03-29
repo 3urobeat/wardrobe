@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-23 17:31:26
+ * Last Modified: 2026-03-29 14:07:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -307,7 +307,7 @@
     const i18n = useI18n();
 
     // Refs
-    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings");
+    const storedServerSettings: Ref<ServerSettings> = getServerSettingsFromServer();
     let   localServerSettings:  Ref<ServerSettings> = useCloned(storedServerSettings, { manual: true }).cloned; // I'm not using useCloned's sync() as it just wouldn't work :shrug:
     const jobs:                 Ref<JobInfo[]>      = ref([]);
 

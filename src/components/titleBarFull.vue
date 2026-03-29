@@ -5,7 +5,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-15 17:59:04
+ * Last Modified: 2026-03-29 15:51:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -99,7 +99,7 @@
 
 
     // Get global cache from app.vue
-    const storedLabels: Ref<Label[]> = useState("storedLabels");
+    const storedLabels: Ref<Label[]> = getAllLabelsFromServer();
 
     // Refs
     const selectedSort:    Ref<sortModes> = ref(sortModes.dateDesc);

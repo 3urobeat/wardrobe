@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:03:05
+ * Last Modified: 2026-03-28 21:49:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -162,9 +162,9 @@
     import { CategorySpecialityMap } from "~/model/label-category";
 
 
-    // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]>     = useState("storedLabels");
-    const storedCategories: Ref<Category[]>  = useState("storedCategories");
+    // Get from cache
+    const storedLabels:     Ref<Label[]>    = getAllLabelsFromServer();
+    const storedCategories: Ref<Category[]> = getAllLabelCategoriesFromServer();
 
     // Refs
     const thisClothing:        Ref<Clothing> = ref({ id: "", title: "", description: "", imgPath: "", labelIDs: [], addedTimestamp: 0, modifiedTimestamp: 0 });

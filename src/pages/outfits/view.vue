@@ -245,9 +245,9 @@
     import threedModelViewer from "~/components/threedModelViewer.vue";
 
 
-    // Get global cache from app.vue
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    const storedCategories: Ref<Category[]> = useState("storedCategories");
+    // Get from cache
+    const storedLabels:     Ref<Label[]>    = getAllLabelsFromServer();
+    const storedCategories: Ref<Category[]> = getAllLabelCategoriesFromServer();
 
     // Refs
     const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });

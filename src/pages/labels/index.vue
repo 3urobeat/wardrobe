@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:03:05
+ * Last Modified: 2026-03-28 20:26:43
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -169,8 +169,8 @@
 
 
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    const storedCategories: Ref<Category[]> = useState("storedCategories");
+    const storedLabels:     Ref<Label[]>    = getAllLabelsFromServer();
+    const storedCategories: Ref<Category[]> = getAllLabelCategoriesFromServer();
 
     let localLabels:       Ref<Label[]>;
     let localCategories:   Ref<Category[]>;

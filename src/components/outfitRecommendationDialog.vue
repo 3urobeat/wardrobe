@@ -5,7 +5,7 @@
  * Created Date: 2026-03-01 15:17:09
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:03:05
+ * Last Modified: 2026-03-29 15:51:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -84,8 +84,8 @@
     const i18n = useI18n();
 
     // Refs
-    const storedLabels:     Ref<Label[]>    = useState("storedLabels");
-    const storedCategories: Ref<Category[]> = useState("storedCategories");
+    const storedLabels:     Ref<Label[]>    = getAllLabelsFromServer();
+    const storedCategories: Ref<Category[]> = getAllLabelCategoriesFromServer();
 
     const storedOutfits:    Ref<Outfit[]> = ref([]);
 

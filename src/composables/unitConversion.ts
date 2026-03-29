@@ -4,7 +4,7 @@
  * Created Date: 2026-03-04 10:39:01
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-22 11:23:21
+ * Last Modified: 2026-03-28 22:42:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -24,7 +24,7 @@ import type { ServerSettings } from "~/model/storage";
 import { temperatureUnitToString, tempKelvinTo, UnitStrMap, Unit, type TemperatureKelvin } from "~/model/unit";
 
 
-const useSet = (): Ref<ServerSettings> => useState("storedServerSettings");
+const useSet = (): Ref<ServerSettings> => getServerSettingsFromServer();
 
 
 /**

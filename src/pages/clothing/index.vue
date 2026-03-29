@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:02:23
+ * Last Modified: 2026-03-28 22:20:17
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -96,10 +96,10 @@
 
 
     // Get global cache from app.vue
-    const storedLabels: Ref<Label[]> = useState("storedLabels");
 
     // Cache
     const storedClothing: Ref<Clothing[]> = ref([]);
+    const storedLabels:   Ref<Label[]>    = getAllLabelsFromServer();
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?

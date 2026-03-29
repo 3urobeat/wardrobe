@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-24 19:19:18
+ * Last Modified: 2026-03-29 15:54:34
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,14 +15,44 @@
  */
 
 
-import type { CachedImage } from "~/model/storage";
+import type { Label } from "~/model/label";
+import type { Category } from "~/model/label-category";
+import type { CachedImage, ServerSettings } from "~/model/storage";
 
 
 // Cache
+const storedLabels: Ref<Label[]> = ref([]);
+const storedCategories: Ref<Category[]> = ref([]);
+const storedServerSettings: Ref<ServerSettings> = ref({} as ServerSettings);
 const cachedImages: Ref<CachedImage[]> = ref([]);
 // TODO: Test Reactivity
 // TODO: Limit size
 // TODO: Establish cache update socket with server
+
+
+export async function initLabels() {
+    storedLabels.value = (await useFetch("/api/get-all-labels")).data.value!;
+}
+
+export function getAllLabelsFromServer(): Ref<Label[]> {
+    return storedLabels;
+}
+
+export async function initLabelCategories() {
+    storedCategories.value = (await useFetch("/api/get-all-label-categories")).data.value!;
+}
+
+export function getAllLabelCategoriesFromServer(): Ref<Category[]> {
+    return storedCategories;
+}
+
+export async function initServerSettings() {
+    storedServerSettings.value = (await useFetch("/api/get-settings")).data.value!;
+}
+
+export function getServerSettingsFromServer(): Ref<ServerSettings> {
+    return storedServerSettings; // TODO: Error handling
+}
 
 
 /**

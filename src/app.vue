@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-23 19:30:15
+ * Last Modified: 2026-03-29 15:48:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -133,11 +133,9 @@
 <script setup lang="ts">
     import { PhList, PhCaretLeft, PhHouse, PhGear, PhCoatHanger, PhTag } from "@phosphor-icons/vue";
     import packagejson from "../package.json";
-    import type { Label } from "~/model/label";
-    import type { Category } from "./model/label-category";
     import type { PageProperties } from "./model/page";
-    import { defaultServerSettings, type ServerSettings } from "./model/storage";
     import TextOverflowAutoScroll from "./components/textOverflowAutoScroll.vue";
+    import { initLabelCategories, initLabels, initServerSettings } from "./composables/storage";
 
     const route       = useRoute();
     let   changesMade = false;
@@ -147,22 +145,10 @@
     const showNavbar    = ref(false);
     const onlineVersion = ref("");
 
-    // Global cache, accessed by pages
-    const storedLabels:         Ref<Label[]>        = useState("storedLabels",         () => []);
-    const storedCategories:     Ref<Category[]>     = useState("storedCategories",     () => []);
-    const storedServerSettings: Ref<ServerSettings> = useState("storedServerSettings", () => defaultServerSettings);
-
-    // Get all labels and categories
-    let labelsRes = await useFetch("/api/get-all-labels");
-    storedLabels.value = labelsRes.data.value!; // TODO: Error handling
-
-    // Get all labels and categories
-    let categoriesRes = await useFetch("/api/get-all-label-categories");
-    storedCategories.value = categoriesRes.data.value!; // TODO: Error handling
-
-    // Get server settings
-    let serverSettingsRes = await useFetch("/api/get-settings");
-    storedServerSettings.value = serverSettingsRes.data.value!; // TODO: Error handling
+    // Init global cache, accessed by pages
+    await initLabels();
+    await initLabelCategories();
+    await initServerSettings();
 
 
     // Handle changesMade event from pages
