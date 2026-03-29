@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 18:18:14
+ * Last Modified: 2026-03-29 18:41:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -175,7 +175,7 @@
     const editModeEnabled = (useRoute().name == "clothing-edit");
 
     // Get ID of the outfit to view from query parameters
-    const clothingId = useRoute().query.id || "new";
+    const clothingId = (useRoute().query.id || "new").toString();
 
     // Redirect to edit page if view was opened with id new
     if (!editModeEnabled && clothingId == "new") useRouter().push("/clothing/edit?id=new");
@@ -184,17 +184,7 @@
     // Get clothing
     onMounted(async () => {
         if (clothingId != "new") {
-            const res = await fetch("/api/get-clothing", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: clothingId
-                })
-            });
-
-            thisClothing.value = await res.json(); // TODO: Error handling
+            thisClothing.value = await getClothingFromServer(clothingId);
 
             thisClothingImgBlob.value = (await getImageFromServer(thisClothing.value.imgPath, 512))?.imgBlob || "";
         }
@@ -265,17 +255,7 @@
 
         // Send request to API if user confirmed
         if (confirmed) {
-            const res = await fetch("/api/rm-clothing", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: thisClothing.value.id
-                })
-            });
-
-            const resBody = await res.json();
+            const resBody = await rmClothingToServer(thisClothing.value.id);
 
             // Indicate success/failure
             if (resBody.success) {
@@ -298,17 +278,7 @@
     async function saveChanges() {
 
         // Send data to API
-        const res = await fetch("/api/set-clothing", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                clothing: thisClothing.value
-            })
-        });
-
-        const resBody = await res.json();
+        const resBody = await setClothingToServer(thisClothing.value);
 
         // Update local refs depending on success/failure and indicate result
         if (resBody.success) {

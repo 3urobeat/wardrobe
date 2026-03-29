@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 15:54:34
+ * Last Modified: 2026-03-29 18:41:59
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,6 +15,7 @@
  */
 
 
+import type { Clothing, Outfit } from "~/model/item";
 import type { Label } from "~/model/label";
 import type { Category } from "~/model/label-category";
 import type { CachedImage, ServerSettings } from "~/model/storage";
@@ -30,6 +31,51 @@ const cachedImages: Ref<CachedImage[]> = ref([]);
 // TODO: Establish cache update socket with server
 
 
+export async function getAllClothesFromServer(): Promise<Clothing[]> {
+    return (await useFetch("/api/get-all-clothes")).data.value!;
+}
+
+export async function getClothingFromServer(id: string): Promise<Clothing> {
+    const res = await fetch("/api/get-clothing", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id
+        })
+    })
+
+    return await res.json();
+}
+
+export async function setClothingToServer(data: Clothing) {
+    const res = await fetch("/api/set-clothing", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            clothing: data
+        })
+    });
+
+    return await res.json();
+}
+
+export async function rmClothingToServer(id: string) {
+    const res = await fetch("/api/rm-clothing", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id
+        })
+    });
+
+    return await res.json();
+}
 export async function initLabels() {
     storedLabels.value = (await useFetch("/api/get-all-labels")).data.value!;
 }

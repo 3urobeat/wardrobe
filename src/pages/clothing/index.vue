@@ -5,7 +5,7 @@
  * Created Date: 2024-03-23 13:03:16
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-28 22:20:17
+ * Last Modified: 2026-03-29 18:33:48
  * Modified By: 3urobeat
  *
  * Copyright (c) 2024 - 2026 3urobeat <https://github.com/3urobeat>
@@ -84,6 +84,7 @@
     import { PhBinoculars, PhMagnifyingGlass, PhPlus } from "@phosphor-icons/vue";
     import ImgLazy from "~/components/imgLazy.vue";
     import TitleBarFull from "~/components/titleBarFull.vue";
+    import { getAllClothesFromServer } from "~/composables/storage";
     import type { Clothing } from "~/model/item";
     import type { Label } from "~/model/label";
     import { defaultSortMode, sortModes } from "~/model/sort-modes";
@@ -95,19 +96,13 @@
     });
 
 
-    // Get global cache from app.vue
-
-    // Cache
-    const storedClothing: Ref<Clothing[]> = ref([]);
+    // Get labels and clothing from cache
     const storedLabels:   Ref<Label[]>    = getAllLabelsFromServer();
+    const storedClothing: Ref<Clothing[]> = ref([]);
+    storedClothing.value = await getAllClothesFromServer();
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
-
-
-    // Get all clothing and their details on load
-    let res = await useFetch("/api/get-all-clothes");
-    storedClothing.value = res.data.value!; // TODO: Error handling
 
 
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
