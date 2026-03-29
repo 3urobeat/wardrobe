@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-28 21:49:04
+ * Last Modified: 2026-03-29 18:18:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -160,6 +160,7 @@
     import { getNewLastLabelOrderIndex, sortLabelsList, type Label } from "~/model/label";
     import { getLabelsOfCategory, type Category } from "~/model/label-category";
     import { CategorySpecialityMap } from "~/model/label-category";
+    import { getImageFromServer, setCategoriesAndLabelsToServer } from "~/composables/storage";
 
 
     // Get from cache
@@ -235,18 +236,7 @@
             };
 
             // Send new label to server
-            const res = await fetch("/api/set-labels", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    labels: [ newLabel ]
-                })
-            });
-            // TODO: Error handling
-
-            storedLabels.value.push(newLabel);
+            const res = await setCategoriesAndLabelsToServer(undefined, [ newLabel ]);
 
             // Directly select new label
             thisClothing.value.labelIDs.push(newLabel.id);

@@ -46,12 +46,76 @@ export function getAllLabelCategoriesFromServer(): Ref<Category[]> {
     return storedCategories;
 }
 
+export async function setCategoriesAndLabelsToServer(categoryData: Category[] | undefined, labelsData: Label[] | undefined) {
+    const setRes = await fetch("/api/set-labels", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            categories: categoryData,
+            labels: labelsData
+        })
+    });
+
+    const resBody = await setRes.json();
+
+    if (resBody.success) {
+        if (categoryData) storedCategories.value.push(...categoryData);
+        if (labelsData)   storedLabels.value.push(...labelsData);
+    }
+
+    return resBody;
+}
+
+export async function rmLabelsToServer(categoryIDs: string[] | undefined, labelIDs: string[] | undefined) {
+    const rmRes = await fetch("/api/rm-labels", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            categoryIDs: categoryIDs,
+            labelIDs: labelIDs
+        })
+    });
+
+    const resBody = await rmRes.json();
+
+    if (resBody.success) {
+        if (categoryIDs) storedCategories.value = storedCategories.value.filter((e) => !categoryIDs.includes(e.id));
+        if (labelIDs)    storedLabels.value     = storedLabels.value.filter((e) => !labelIDs.includes(e.id));
+    }
+
+    return resBody;
+}
+
 export async function initServerSettings() {
     storedServerSettings.value = (await useFetch("/api/get-settings")).data.value!;
 }
 
 export function getServerSettingsFromServer(): Ref<ServerSettings> {
     return storedServerSettings; // TODO: Error handling
+}
+
+export async function setServerSettingsToServer(data: ServerSettings) {
+    const stringifiedData = JSON.stringify(data);
+
+    const res = await fetch("/api/set-settings", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: stringifiedData
+    })
+
+    const resBody = await res.json();
+
+    if (resBody.success) {
+        storedServerSettings.value = data;
+    }
+
+    return resBody;
 }
 
 

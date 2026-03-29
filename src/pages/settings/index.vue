@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:51:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 14:07:10
+ * Last Modified: 2026-03-29 18:23:44
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -303,6 +303,7 @@
     import { formatTimeLocalized } from "~/composables/unitConversion";
     import type { ServerStatistics } from "~/model/statistics";
     import packageJson from "~/../package.json";
+    import { getServerSettingsFromServer, setServerSettingsToServer } from "~/composables/storage";
 
     const i18n = useI18n();
 
@@ -357,15 +358,7 @@
         i18n.setLocale(selectedLanguage as never); // I won't be able to fulfill this parameter constraint when using a variable...
 
         // Send server settings to backend to be saved in database
-        const res = await fetch("/api/set-settings", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(localServerSettings.value)
-        });
-
-        const resBody = await res.json();
+        const resBody = await setServerSettingsToServer(localServerSettings.value);
 
         // Indicate success/failure
         if (resBody.success) {
@@ -373,8 +366,7 @@
             emitChangesMadeEvent(false);
 
             // Manually sync local clones to global cache, useCloned's sync() didn't work. Refresh clone of localServerSettings to avoid it gaining reactivity
-            storedServerSettings.value = localServerSettings.value;
-            localServerSettings        = useCloned(storedServerSettings, { manual: true }).cloned;
+            localServerSettings = useCloned(storedServerSettings, { manual: true }).cloned;
 
             emitSettingsSavedEvent(); // Notify listeners to e.g. refresh weather in globalTitleBar
         } else {

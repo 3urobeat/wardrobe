@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-28 20:26:43
+ * Last Modified: 2026-03-29 18:17:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -166,6 +166,7 @@
     import type { Reactive } from "vue";
     import { UnitType } from "~/model/unit";
     import DayMonthInput from "~/components/dayMonthInput.vue";
+    import { setCategoriesAndLabelsToServer } from "~/composables/storage";
 
 
     // Create local clones of global labels & category cache from app.vue. Changes are synced in saveChanges()
@@ -322,32 +323,10 @@
         let rmResBody = { success: true }; // Default
 
         if (labelIDsToDelete.length > 0 || categoryIDsToDelete.length > 0) {
-            const rmRes = await fetch("/api/rm-labels", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    categoryIDs: categoryIDsToDelete,
-                    labelIDs: labelIDsToDelete
-                })
-            });
-
-            rmResBody = await rmRes.json();
+            rmResBody = await rmLabelsToServer(categoryIDsToDelete, labelIDsToDelete);
         }
 
-        const setRes = await fetch("/api/set-labels", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                categories: localCategories.value,
-                labels: localLabels.value
-            })
-        });
-
-        const setResBody = await setRes.json();
+        const setResBody = await setCategoriesAndLabelsToServer(localCategories.value, localLabels.value);
 
         // Update local refs depending on success/failure and indicate result
         if (rmResBody.success && setResBody.success) {
@@ -357,10 +336,7 @@
             labelIDsToDelete    = [];
             categoryIDsToDelete = [];
 
-
             // Manually sync local clones to global cache, useCloned's sync() didn't work. Refresh clone of localServerSettings to avoid it gaining reactivity
-            storedLabels.value     = localLabels.value;
-            storedCategories.value = localCategories.value;
             init(); // TODO: Buggy reordering list
         } else {
             responseIndicatorFailure();
