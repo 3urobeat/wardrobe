@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 18:41:59
+ * Last Modified: 2026-03-29 18:46:54
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -76,6 +76,53 @@ export async function rmClothingToServer(id: string) {
 
     return await res.json();
 }
+
+export async function getAllOutfitsFromServer(): Promise<Outfit[]> {
+    return (await useFetch("/api/get-all-outfits")).data.value!;
+}
+
+export async function getOutfitFromServer(id: string): Promise<Outfit> {
+    const res = await fetch("/api/get-outfit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id
+        })
+    });
+
+    return await res.json();
+}
+
+export async function setOutfitToServer(data: Outfit) {
+    const res = await fetch("/api/set-outfit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            outfit: data
+        })
+    });
+
+    return await res.json();
+}
+
+export async function rmOutfitToServer(id: string) {
+    const res = await fetch("/api/rm-outfit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id
+        })
+    });
+
+    return await res.json();
+}
+
 export async function initLabels() {
     storedLabels.value = (await useFetch("/api/get-all-labels")).data.value!;
 }

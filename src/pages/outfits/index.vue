@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:40:46
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-28 21:14:00
+ * Last Modified: 2026-03-29 18:45:58
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -95,6 +95,7 @@
     import type { Label } from "~/model/label";
     import type { Outfit } from "~/model/item";
     import { defaultSortMode, type sortModes } from "~/model/sort-modes";
+    import { getAllOutfitsFromServer } from "~/composables/storage";
 
 
     // Set page properties
@@ -103,19 +104,14 @@
     });
 
 
-    // Get global cache from app.vue
-
-    // Cache
-    const storedOutfits: Ref<Outfit[]> = ref([]);
+    // Get labels and outfits from cache
     const storedLabels:  Ref<Label[]>  = getAllLabelsFromServer();
+    const storedOutfits: Ref<Outfit[]> = ref([]);
+    storedOutfits.value = await getAllOutfitsFromServer();
 
     // Get refs to props exported by defineExpose() in TitleBarFull
     const titleBarFull: Ref<{ selectedSort: sortModes, selectedFilters: string[], selectedScaling: number, toggleFilter: (thisFilter: string) => void }> = ref({ selectedSort: defaultSortMode, selectedFilters: [], selectedScaling: 0, toggleFilter: () => {} }); // TODO: Can this be an exported type somewhere?
 
-
-    // Get all outfits and their details on load
-    let res = await useFetch("/api/get-all-outfits");
-    storedOutfits.value = res.data.value!; // TODO: Error handling
 
     // Pre-calculate items that should be shown. Can be accessed multiple times in template without re-calculation. Updates when sort/filter/search changes due to reactivity
     let outfitsToShow = computed(() => getItemsToShow(storedOutfits.value, titleBarFull.value.selectedSort, titleBarFull.value.selectedFilters) as Outfit[]);

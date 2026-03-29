@@ -5,7 +5,7 @@
  * Created Date: 2025-09-10 17:37:07
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:03:05
+ * Last Modified: 2026-03-29 18:50:04
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -243,6 +243,7 @@
     import { defaultSortMode } from "~/model/sort-modes";
     import { responseIndicatorFailure, responseIndicatorSuccess } from "~/composables/responseIndicator";
     import threedModelViewer from "~/components/threedModelViewer.vue";
+    import { getAllClothesFromServer, getOutfitFromServer, rmOutfitToServer, setOutfitToServer } from "~/composables/storage";
 
 
     // Get from cache
@@ -252,14 +253,15 @@
     // Refs
     const thisOutfit:     Ref<Outfit>     = ref({ id: "", title: "", clothes: [], labelIDs: [], previewImgPath: "", addedTimestamp: 0, modifiedTimestamp: 0 });
     const bodyPartLabels: Ref<Label[]>    = ref([]);
-    const storedClothes:  Ref<Clothing[]> = ref([]); // Edit Mode only
+    const storedClothes:  Ref<Clothing[]> = ref([]);
+    storedClothes.value = await getAllClothesFromServer();
 
 
     // Check if edit mode is enabled based on if name of this route is outfits-view or outfits-edit
     const editModeEnabled = (useRoute().name == "outfits-edit");
 
     // Get ID of the outfit to view from query parameters
-    const outfitId = useRoute().query.id || "new";
+    const outfitId = (useRoute().query.id || "new").toString();
 
     // Redirect to edit page if view was opened with id new
     if (!editModeEnabled && outfitId == "new") useRouter().push("/outfits/edit?id=new");
@@ -272,27 +274,11 @@
     }
 
 
-    // Get outfits and their data
-    let clothingRes = await useFetch("/api/get-all-clothes");
-    storedClothes.value = clothingRes.data.value!; // TODO: Error handling
-
-
-
     // Load images for clothes // TODO: Lazy load
     onMounted(async () => {
         // Get outfit data if not new
         if (outfitId != "new") {
-            const outfitRes = await fetch("/api/get-outfit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: outfitId
-                })
-            });
-
-            thisOutfit.value = await outfitRes.json(); // TODO: Error handling
+            thisOutfit.value = await getOutfitFromServer(outfitId);
         }
     });
 
@@ -356,17 +342,7 @@
 
         // Send request to API if user confirmed
         if (confirmed) {
-            const res = await fetch("/api/rm-outfit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    id: thisOutfit.value.id
-                })
-            });
-
-            const resBody = await res.json();
+            const resBody = await rmOutfitToServer(thisOutfit.value.id);
 
             // Indicate success/failure
             if (resBody.success) {
@@ -389,17 +365,7 @@
     async function saveChanges() {
 
         // Send data to API
-        const res = await fetch("/api/set-outfit", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                outfit: thisOutfit.value
-            })
-        });
-
-        const resBody = await res.json();
+        const resBody = await setOutfitToServer(thisOutfit.value);
 
         // Update local refs depending on success/failure and indicate result
         if (resBody.success) {
