@@ -75,7 +75,7 @@ const cachedImages     = new Cache<StorageKind.IMAGES>();
 const storedLabels     = new Cache<StorageKind.LABELS>();
 const storedCategories = new Cache<StorageKind.LABEL_CATEGORIES>();
 
-const storedServerSettings: Ref<ServerSettings> = ref(defaultServerSettings); // Does not use Cache as it's just a singular object
+const storedServerSettings: Ref<ServerSettings> = ref({} as ServerSettings); // Does not use Cache as it's just a singular object
 
 
 async function sendApiRequest(route: string, data: object): Promise<any> {
@@ -99,7 +99,7 @@ export async function initGlobalCache()  {
         useFetch("/api/get-settings")
     ]);
 
-    storedLabels.data          = ref(labels.data.value!);
+    storedLabels.data          = ref(labels.data.value as Label[]);
     storedCategories.data      = ref(categories.data.value!);
     storedServerSettings.value = settings.data.value!;
 }

@@ -29,7 +29,7 @@ export type Label = {
     orderIndex: number,         // Floating point number
     categoryID: string,         // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    specialityValue: unknown    // Arbitrary data submitted for label if selected category speciality calls for it
+    specialityValue: any        // Arbitrary data submitted for label if selected category speciality calls for it
 }
 
 // Extend type using intersection

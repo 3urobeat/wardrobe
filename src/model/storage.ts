@@ -18,7 +18,7 @@
 import type { Clothing, Outfit } from "./item";
 import type { Label } from "./label";
 import type { Category } from "./label-category";
-import { Unit } from "./unit";
+import type { Unit } from "./unit";
 
 
 // Storage kinds used by Wardrobe
@@ -102,7 +102,7 @@ export const defaultServerSettings: ServerSettings = {
         lon: null
     },
     weatherApiKey: "",
-    temperatureUnit: Unit.CELSIUS
+    temperatureUnit: 1 // TODO: Cannot access Unit here, always causes issues with Unit being used as both a type and value in this file
 };
 
 
