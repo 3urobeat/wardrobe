@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 18:05:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 19:15:44
+ * Last Modified: 2026-03-30 17:30:22
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -15,13 +15,14 @@
  */
 
 
+import { CachedImage } from "~/model/storage";
 import { getImage, scaleImage } from "~/server/utils/useImagesStorage";
 
 
 /**
  * This API route retrieves an image by file path from storage, optionally scales it and serves it as base64 encoded blob
  * Params: { filePath: string, width?: number }
- * Returns: string
+ * Returns: CachedImage
  */
 
 
@@ -55,6 +56,12 @@ export default defineEventHandler(async (event) => {
         item = await scaleImage(item, params.width, true);
     }
 
-    return item.toString("base64");
+    const res: CachedImage = {
+        id: params.filePath,
+        imgBlob: item.toString("base64"),
+        imgWidth: params.width
+    }
+
+    return res;
 
 });

@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 16:58:56
+ * Last Modified: 2026-03-30 17:33:12
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -42,7 +42,7 @@ export type StorageKindDataMap<T extends StorageKind> = {
     [StorageKind.LABELS]:           Label;
     [StorageKind.OUTFITS]:          Outfit;
     [StorageKind.SERVER_SETTINGS]:  ServerSettings;
-    [StorageKind.IMAGES]:           CachedImage;    // Not a 100% perfect fit, only used in frontend
+    [StorageKind.IMAGES]:           CachedImage;    // Not a 100% perfect fit, only used in API & Frontend
 }[T];
 
 
@@ -111,9 +111,9 @@ export const defaultServerSettings: ServerSettings = {
  * Storage Composable
  */
 
-// Used in Frontend to store a fetched image
+// Used in API & frontend, not in storage itself
 export type CachedImage = {
-    id: string, // imgPath is used as ID here
+    id: string,                  // imgPath is specified as ID here
     imgBlob: string,
     imgWidth: number | undefined // Only used on client side for scaling, is not the actual width on server
 }

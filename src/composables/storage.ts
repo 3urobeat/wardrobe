@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 17:10:21
+ * Last Modified: 2026-03-30 17:34:42
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -229,21 +229,13 @@ export async function getImageFromServer(imgPath: string, width: number | undefi
     }
 
     // Fetch image from server
-    const res = await fetch("/api/get-image", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            filePath: imgPath,
-            width: width
-        })
+    const resBody = await sendApiRequest("get-image", {
+        filePath: imgPath,
+        width: width
     });
 
-    const imageBlob = await res.text(); // TODO: Adapt route to return JSON and use sendApiRequest()
-
     // Add to cache
-    const cacheLength = cachedImages.add({ id: imgPath, imgBlob: imageBlob, imgWidth: width });
+    const cacheLength = cachedImages.add(resBody);
     console.debug(`[DEBUG] getImageFromServer: Fetched image '${imgPath}' from server. Image cache has ${cacheLength} entries now.`);
 
     return cachedImages.data.value[cacheLength - 1] as CachedImage;
