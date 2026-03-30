@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 18:41:04
+ * Last Modified: 2026-03-30 17:38:24
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -65,7 +65,7 @@
                 <!-- Show image if available -->
                 <img
                     v-if="thisClothingImgBlob"
-                    class="rounded-2xl h-full select-none"
+                    class="rounded-2xl self-center h-fit max-h-full select-none"
                     :class="editModeEnabled ? 'opacity-50' : ''"
                     :src="'data:image/png;base64,' + thisClothingImgBlob"
                     alt=""
