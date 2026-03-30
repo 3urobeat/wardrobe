@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 16:08:20
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-26 17:57:20
+ * Last Modified: 2026-03-30 18:10:20
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -118,12 +118,12 @@
 
 /* Primary input, used in various places on <input> or even secondary <button> container */
 .custom-input-primary {
-    @apply h-8 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-2 outline-border-secondary-light dark:outline-border-secondary-dark hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all disabled:bg-bg-field-hover-light disabled:dark:bg-bg-field-hover-dark disabled:cursor-not-allowed;
+    @apply h-7.5 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-2 outline-border-secondary-light dark:outline-border-secondary-dark hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all disabled:bg-bg-field-hover-light disabled:dark:bg-bg-field-hover-dark disabled:cursor-not-allowed;
 }
 
 /* Duplicates custom-input-primary with different outline, sadly cannot reference component in this component */
 .custom-input-secondary {
-    @apply h-8 py-1 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-2 outline-border-primary-light dark:outline-border-primary-dark hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all disabled:bg-bg-field-hover-light disabled:dark:bg-bg-field-hover-dark disabled:cursor-not-allowed;
+    @apply h-7.5 px-3 rounded-md shadow-md bg-bg-field-light dark:bg-bg-field-dark outline-2 outline-border-primary-light dark:outline-border-primary-dark hover:bg-bg-field-hover-light hover:dark:bg-bg-field-hover-dark hover:transition-all disabled:bg-bg-field-hover-light disabled:dark:bg-bg-field-hover-dark disabled:cursor-not-allowed;
 }
 
 /* Primary label to display text */

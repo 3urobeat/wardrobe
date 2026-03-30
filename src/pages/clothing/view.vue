@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:39:55
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 17:38:24
+ * Last Modified: 2026-03-30 18:09:40
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -88,7 +88,7 @@
                     {{ thisClothing.title }}
                 </p>
                 <input
-                    class="custom-input-secondary w-full sm:w-1/2 self-center sm:self-start"
+                    class="custom-input-secondary shrink-0 w-full sm:w-1/2 self-center sm:self-start"
                     :placeholder="$t('name')"
                     v-model.trim="thisClothing.title"
                     v-if="editModeEnabled"
@@ -96,13 +96,13 @@
 
                 <!-- Description label/input -->
                 <p
-                    class="custom-label-primary w-full h-20! shrink-0 py-2!"
+                    class="custom-label-primary w-full h-20! shrink-0 py-1"
                     v-if="!editModeEnabled"
                 >
                     {{ thisClothing.description }}
                 </p>
                 <textarea
-                    class="custom-input-secondary w-full h-20! shrink-0 py-2!"
+                    class="custom-input-secondary w-full h-20! shrink-0 py-1"
                     :placeholder="$t('description')"
                     v-model.trim="thisClothing.description"
                     v-if="editModeEnabled"

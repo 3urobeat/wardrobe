@@ -5,7 +5,7 @@
  * Created Date: 2025-09-09 17:13:32
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 18:17:54
+ * Last Modified: 2026-03-30 18:06:18
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -36,12 +36,12 @@
             <div class="flex items-center justify-between m-2">
                 <div class="flex gap-6">
                     <input
-                        class="custom-input-primary py-0.5! h-fit! w-1/3 sm:w-full transition-all"
+                        class="custom-input-primary w-1/3 sm:w-full transition-all"
                         :placeholder="$t('categoryName')"
                         v-model.trim="thisCategory.name"
                     />
 
-                    <div class="flex custom-input-primary h-fit! py-0.75! px-1!" @change="updateCategorySpeciality(thisCategory)">
+                    <div class="flex custom-input-primary px-1!" @change="updateCategorySpeciality(thisCategory)">
                         <select class="px-1" v-model="thisCategory.specialityID">
                             <option v-for="thisSpeciality in CategorySpecialities" :value="thisSpeciality.id">{{ $t(thisSpeciality.name) }}</option>
                         </select>
@@ -94,7 +94,7 @@
                                 v-if="thisCategory.specialityID && CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.value != undefined"
                                 :title="$t('labelsConfigureSpeciality')"
                             >
-                                <select v-if="thisCategory.specialityID == CategorySpecialityID.Body_Part" class="custom-input-primary w-32 h-fit! px-1.5!" v-model="thisLabel.specialityValue">
+                                <select v-if="thisCategory.specialityID == CategorySpecialityID.Body_Part" class="custom-input-primary w-32 px-1.5!" v-model="thisLabel.specialityValue">
                                     <!-- <option value=undefined disabled selected hidden>{{ CategorySpecialities.find((e) => e.id == thisCategory.specialityID)?.description }}</option> -->
                                     <option v-for="[key, value] of Object.entries(CategorySpecialityBodyPartValue)" :value="key">{{ $t(value.toLowerCase()) }}</option>
                                 </select>
@@ -112,18 +112,18 @@
                                                 <div class="grid grid-cols-2 gap-x-2 gap-y-0.5 items-center">
                                                     <label for="specialSeasonFromTemp">{{ $t('fromTemp') }}</label>
                                                     <div class="flex items-center">
-                                                        <ConvertedUnit id="specialSeasonFromTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp" />
+                                                        <ConvertedUnit id="specialSeasonFromTemp" type="number" class="custom-input-primary w-26 my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTemp" />
                                                         <label>{{ getConfTempUnitStr() }}</label>
                                                     </div>
                                                     <label for="specialSeasonToTemp">{{ $t('toTemp') }}</label>
                                                     <div class="flex items-center">
-                                                        <ConvertedUnit id="specialSeasonToTemp" type="number" class="custom-input-primary w-26 h-fit! my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp" />
+                                                        <ConvertedUnit id="specialSeasonToTemp" type="number" class="custom-input-primary w-26 my-1 px-1.5! mr-2" :unit-type="UnitType.TEMPERATURE" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTemp" />
                                                         <label>{{ getConfTempUnitStr() }}</label>
                                                     </div>
                                                     <label for="specialSeasonFromTime">{{ $t('fromDate') }}</label>
-                                                    <DayMonthInput id="specialSeasonFromTime" type="date" class="custom-input-primary w-fit h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp" />
+                                                    <DayMonthInput id="specialSeasonFromTime" type="date" class="custom-input-primary w-fit my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.fromTimestamp" />
                                                     <label for="specialSeasonToTime">{{ $t('toDate') }}</label>
-                                                    <DayMonthInput id="specialSeasonToTime" type="date" class="custom-input-primary w-fit h-fit! my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp" />
+                                                    <DayMonthInput id="specialSeasonToTime" type="date" class="custom-input-primary w-fit my-1 px-1.5!" v-model="getLabelInitialized(thisLabel, thisCategory).specialityValue.toTimestamp" />
                                                 </div>
                                                 <p class="text-text-secondary-light dark:text-text-secondary-dark mt-2 text-xs">{{ $t("labelsSpecialitySeasonTempDateTooltip") }}</p>
                                             </div>
