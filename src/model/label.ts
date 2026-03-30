@@ -4,7 +4,7 @@
  * Created Date: 2025-09-09 21:59:50
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:03:19
+ * Last Modified: 2026-03-30 17:00:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -29,7 +29,7 @@ export type Label = {
     orderIndex: number,         // Floating point number
     categoryID: string,         // IMPORTANT: May reference non-existent category if dataCleanUp job did not run yet!
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    specialityValue: any        // Arbitrary data submitted for label if selected category speciality calls for it
+    specialityValue: unknown    // Arbitrary data submitted for label if selected category speciality calls for it
 }
 
 // Extend type using intersection

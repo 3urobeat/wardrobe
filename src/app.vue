@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 15:48:10
+ * Last Modified: 2026-03-30 16:59:19
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -135,7 +135,6 @@
     import packagejson from "../package.json";
     import type { PageProperties } from "./model/page";
     import TextOverflowAutoScroll from "./components/textOverflowAutoScroll.vue";
-    import { initLabelCategories, initLabels, initServerSettings } from "./composables/storage";
 
     const route       = useRoute();
     let   changesMade = false;
@@ -145,10 +144,8 @@
     const showNavbar    = ref(false);
     const onlineVersion = ref("");
 
-    // Init global cache, accessed by pages
-    await initLabels();
-    await initLabelCategories();
-    await initServerSettings();
+    // Init global cache 'storage.ts'
+    await initGlobalCache();
 
 
     // Handle changesMade event from pages

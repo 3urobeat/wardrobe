@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-29 18:46:54
+ * Last Modified: 2026-03-30 17:01:32
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -18,18 +18,84 @@
 import type { Clothing, Outfit } from "~/model/item";
 import type { Label } from "~/model/label";
 import type { Category } from "~/model/label-category";
-import type { CachedImage, ServerSettings } from "~/model/storage";
+import { defaultServerSettings, StorageKind, type CachedImage, type ServerSettings, type StorageKindDataMap } from "~/model/storage";
+
+
+// The type of storage kinds we want to cache here. They all have an ID prop, which is used for add/update/remove actions
+type CachableStorageKind =
+  | StorageKind.CLOTHES
+  | StorageKind.LABEL_CATEGORIES
+  | StorageKind.LABELS
+  | StorageKind.OUTFITS
+  | StorageKind.IMAGES;
 
 
 // Cache
-const storedLabels: Ref<Label[]> = ref([]);
-const storedCategories: Ref<Category[]> = ref([]);
-const storedServerSettings: Ref<ServerSettings> = ref({} as ServerSettings);
-const cachedImages: Ref<CachedImage[]> = ref([]);
+class Cache<T extends CachableStorageKind> {
+    data: Ref<StorageKindDataMap<T>[]> = ref([]);
+
+    // Adds to array and returns new length
+    add(elem: StorageKindDataMap<T>): number {
+        return this.data.value.push(elem);
+    }
+    // Flat-adds array to array and returns new length
+    addArray(elem: StorageKindDataMap<T>[]): number {
+        return this.data.value.push(...elem);
+    }
+
+    // Updates element with matching ID or inserts a new one and returns index
+    upsert(elem: StorageKindDataMap<T>): number {
+        const index = this.data.value.findIndex((e) => e.id == elem.id);
+
+        if (index == -1) {
+            return this.add(elem) - 1; // -1 since add() returns new array length
+        } else {
+            this.data.value[index] = elem;
+            return index;
+        }
+    }
+
+    // Removes any elements with matching ID and returns new length
+    remove(elem: StorageKindDataMap<T>): number {
+        this.data.value = this.data.value.filter((e) => e.id != elem.id);
+        return this.data.value.length;
+    }
+    // Removes array of IDs and returns new length
+    removeArray(ids: string[]): number {
+        this.data.value = this.data.value.filter((e) => !ids.includes(e.id));
+        return this.data.value.length;
+    }
+}
 // TODO: Test Reactivity
 // TODO: Limit size
 // TODO: Establish cache update socket with server
 
+
+const cachedImages     = new Cache<StorageKind.IMAGES>();
+const storedLabels     = new Cache<StorageKind.LABELS>();
+const storedCategories = new Cache<StorageKind.LABEL_CATEGORIES>();
+
+const storedServerSettings: Ref<ServerSettings> = ref(defaultServerSettings); // Does not use Cache as it's just a singular object
+
+
+export async function initGlobalCache()  {
+    console.debug("[DEBUG] Initializing global cache...");
+
+    const [labels, categories, settings] = await Promise.all([
+        useFetch("/api/get-all-labels"),
+        useFetch("/api/get-all-label-categories"),
+        useFetch("/api/get-settings")
+    ]);
+
+    storedLabels.data          = ref(labels.data.value!);
+    storedCategories.data      = ref(categories.data.value!);
+    storedServerSettings.value = settings.data.value!;
+}
+
+
+/*
+    -------------------- CLOTHES --------------------
+*/
 
 export async function getAllClothesFromServer(): Promise<Clothing[]> {
     return (await useFetch("/api/get-all-clothes")).data.value!;
@@ -77,6 +143,11 @@ export async function rmClothingToServer(id: string) {
     return await res.json();
 }
 
+
+/*
+    -------------------- OUTFITS --------------------
+*/
+
 export async function getAllOutfitsFromServer(): Promise<Outfit[]> {
     return (await useFetch("/api/get-all-outfits")).data.value!;
 }
@@ -123,20 +194,17 @@ export async function rmOutfitToServer(id: string) {
     return await res.json();
 }
 
-export async function initLabels() {
-    storedLabels.value = (await useFetch("/api/get-all-labels")).data.value!;
-}
+
+/*
+    -------------------- LABELS --------------------
+*/
 
 export function getAllLabelsFromServer(): Ref<Label[]> {
-    return storedLabels;
-}
-
-export async function initLabelCategories() {
-    storedCategories.value = (await useFetch("/api/get-all-label-categories")).data.value!;
+    return storedLabels.data;
 }
 
 export function getAllLabelCategoriesFromServer(): Ref<Category[]> {
-    return storedCategories;
+    return storedCategories.data;
 }
 
 export async function setCategoriesAndLabelsToServer(categoryData: Category[] | undefined, labelsData: Label[] | undefined) {
@@ -154,8 +222,8 @@ export async function setCategoriesAndLabelsToServer(categoryData: Category[] | 
     const resBody = await setRes.json();
 
     if (resBody.success) {
-        if (categoryData) storedCategories.value.push(...categoryData);
-        if (labelsData)   storedLabels.value.push(...labelsData);
+        if (categoryData) storedCategories.addArray(categoryData);
+        if (labelsData)   storedLabels.addArray(labelsData);
     }
 
     return resBody;
@@ -176,16 +244,17 @@ export async function rmLabelsToServer(categoryIDs: string[] | undefined, labelI
     const resBody = await rmRes.json();
 
     if (resBody.success) {
-        if (categoryIDs) storedCategories.value = storedCategories.value.filter((e) => !categoryIDs.includes(e.id));
-        if (labelIDs)    storedLabels.value     = storedLabels.value.filter((e) => !labelIDs.includes(e.id));
+        if (categoryIDs) storedCategories.removeArray(categoryIDs);
+        if (labelIDs)    storedLabels.removeArray(labelIDs);
     }
 
     return resBody;
 }
 
-export async function initServerSettings() {
-    storedServerSettings.value = (await useFetch("/api/get-settings")).data.value!;
-}
+
+/*
+    -------------------- SETTINGS --------------------
+*/
 
 export function getServerSettingsFromServer(): Ref<ServerSettings> {
     return storedServerSettings; // TODO: Error handling
@@ -212,6 +281,10 @@ export async function setServerSettingsToServer(data: ServerSettings) {
 }
 
 
+/*
+    -------------------- IMAGES --------------------
+*/
+
 /**
  * Helper function to get image from server
  * @param imgPath File path to request
@@ -222,7 +295,7 @@ export async function getImageFromServer(imgPath: string, width: number | undefi
     if (!imgPath) return null;
 
     // Attempt to find image with matching size (or none) in cache
-    const cachedImg = cachedImages.value.find((e) => e.imgPath == imgPath && e.imgWidth == width);
+    const cachedImg = cachedImages.data.value.find((e) => e.id == imgPath && e.imgWidth == width);
 
     if (cachedImg) {
         console.debug(`[DEBUG] getImageFromServer: Found image '${imgPath}' in cache!`);
@@ -244,10 +317,10 @@ export async function getImageFromServer(imgPath: string, width: number | undefi
     const imageBlob = await res.text();
 
     // Add to cache
-    const cacheLength = cachedImages.value.push({ imgPath: imgPath, imgBlob: imageBlob, imgWidth: width });
+    const cacheLength = cachedImages.add({ id: imgPath, imgBlob: imageBlob, imgWidth: width });
     console.debug(`[DEBUG] getImageFromServer: Fetched image '${imgPath}' from server. Image cache has ${cacheLength} entries now.`);
 
-    return cachedImages.value[cacheLength - 1] as CachedImage;
+    return cachedImages.data.value[cacheLength - 1] as CachedImage;
 }
 
 
@@ -277,12 +350,9 @@ export async function sendImageToServer(file: File): Promise<any> {
     const resBody = await res.json();
 
     // Remove all references of image from cache to fetch next usage from server again
-    // TODO: Return imgBlob from API route and replace every matching imgPath using map()
-    cachedImages.value = cachedImages.value.filter((e) => {
-        const match = e.imgPath == resBody.filePath;
-        if (match) console.debug(`[DEBUG] sendImageToServer: Removing '${resBody.filePath}' from image cache...`);
-        return !match;
-    });
+    // TODO: Return imgBlob from API route and replace every matching imgPath using map() instead of deleting them
+    cachedImages.remove({ id: resBody.filePath, imgBlob: "", imgWidth: 0 });
+    console.debug(`[DEBUG] sendImageToServer: Removed '${resBody.filePath}' from image cache...`);
 
     return resBody;
 
