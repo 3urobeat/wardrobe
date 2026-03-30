@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 16:59:19
+ * Last Modified: 2026-03-30 17:58:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -75,7 +75,7 @@
     <!-- Footer for project details. Separated from nav container because backdrop caused positioning issues -->
     <footer
         :class="showNavbar ? '' : 'invisible lg:visible opacity-0'"
-        class="fixed z-20 text-nowrap bottom-0 left-0 pb-2 px-2.5 lg:opacity-100 dark:text-text-dark select-none duration-500 transition-all"
+        class="fixed z-20 text-nowrap bottom-0 left-0 pb-2 px-2.5 group lg:opacity-100 dark:text-text-dark select-none duration-500 transition-all"
     >
         <div class="flex flex-col text-sm opacity-50">
             <div :class="onlineVersion && onlineVersion != packagejson.version ? '' : 'hidden'" class="mb-4 px-1 py-0.5 bg-bg-embed-light dark:bg-bg-embed-dark outline-2 outline-border-secondary-light dark:outline-border-secondary-dark rounded-lg">
@@ -97,8 +97,11 @@
 
             </a>
 
-            <p>{{ $t("navbarLicensedUnder") }} <a class="underline hover:text-gray-500" href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPLv3</a></p>
-            <p>Copyright (c) 2026 <a class="underline hover:text-gray-500" href="https://github.com/3urobeat" target="_blank">3urobeat</a></p>
+            <!-- Becomes visible on group hover -->
+            <div class="h-0 opacity-0 group-hover:h-10 group-hover:opacity-100 duration-500 transition-all">
+                <p>{{ $t("navbarLicensedUnder") }} <a class="underline hover:text-gray-500" href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank">AGPLv3</a></p>
+                <p>Copyright (c) 2026 <a class="underline hover:text-gray-500" href="https://github.com/3urobeat" target="_blank">3urobeat</a></p>
+            </div>
         </div>
     </footer>
 
