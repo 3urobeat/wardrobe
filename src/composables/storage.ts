@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 17:01:32
+ * Last Modified: 2026-03-30 17:10:21
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -78,6 +78,18 @@ const storedCategories = new Cache<StorageKind.LABEL_CATEGORIES>();
 const storedServerSettings: Ref<ServerSettings> = ref(defaultServerSettings); // Does not use Cache as it's just a singular object
 
 
+async function sendApiRequest(route: string, data: object): Promise<any> {
+    const res = await fetch("/api/" + route, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+
+    return await res.json();
+}
+
 export async function initGlobalCache()  {
     console.debug("[DEBUG] Initializing global cache...");
 
@@ -102,45 +114,15 @@ export async function getAllClothesFromServer(): Promise<Clothing[]> {
 }
 
 export async function getClothingFromServer(id: string): Promise<Clothing> {
-    const res = await fetch("/api/get-clothing", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id: id
-        })
-    })
-
-    return await res.json();
+    return await sendApiRequest("get-clothing", { id: id });
 }
 
 export async function setClothingToServer(data: Clothing) {
-    const res = await fetch("/api/set-clothing", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            clothing: data
-        })
-    });
-
-    return await res.json();
+    return await sendApiRequest("set-clothing", { clothing: data });
 }
 
 export async function rmClothingToServer(id: string) {
-    const res = await fetch("/api/rm-clothing", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id: id
-        })
-    });
-
-    return await res.json();
+    return await sendApiRequest("rm-clothing", { id: id });
 }
 
 
@@ -153,45 +135,15 @@ export async function getAllOutfitsFromServer(): Promise<Outfit[]> {
 }
 
 export async function getOutfitFromServer(id: string): Promise<Outfit> {
-    const res = await fetch("/api/get-outfit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id: id
-        })
-    });
-
-    return await res.json();
+    return await sendApiRequest("get-outfit", { id: id });
 }
 
 export async function setOutfitToServer(data: Outfit) {
-    const res = await fetch("/api/set-outfit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            outfit: data
-        })
-    });
-
-    return await res.json();
+    return await sendApiRequest("set-outfit", { outfit: data });
 }
 
 export async function rmOutfitToServer(id: string) {
-    const res = await fetch("/api/rm-outfit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id: id
-        })
-    });
-
-    return await res.json();
+    return await sendApiRequest("rm-outfit", { id: id });
 }
 
 
@@ -208,18 +160,10 @@ export function getAllLabelCategoriesFromServer(): Ref<Category[]> {
 }
 
 export async function setCategoriesAndLabelsToServer(categoryData: Category[] | undefined, labelsData: Label[] | undefined) {
-    const setRes = await fetch("/api/set-labels", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            categories: categoryData,
-            labels: labelsData
-        })
+    const resBody = await sendApiRequest("set-labels", {
+        categories: categoryData,
+        labels: labelsData
     });
-
-    const resBody = await setRes.json();
 
     if (resBody.success) {
         if (categoryData) storedCategories.addArray(categoryData);
@@ -230,18 +174,10 @@ export async function setCategoriesAndLabelsToServer(categoryData: Category[] | 
 }
 
 export async function rmLabelsToServer(categoryIDs: string[] | undefined, labelIDs: string[] | undefined) {
-    const rmRes = await fetch("/api/rm-labels", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            categoryIDs: categoryIDs,
-            labelIDs: labelIDs
-        })
+    const resBody = await sendApiRequest("rm-labels", {
+        categoryIDs: categoryIDs,
+        labelIDs: labelIDs
     });
-
-    const resBody = await rmRes.json();
 
     if (resBody.success) {
         if (categoryIDs) storedCategories.removeArray(categoryIDs);
@@ -261,17 +197,7 @@ export function getServerSettingsFromServer(): Ref<ServerSettings> {
 }
 
 export async function setServerSettingsToServer(data: ServerSettings) {
-    const stringifiedData = JSON.stringify(data);
-
-    const res = await fetch("/api/set-settings", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: stringifiedData
-    })
-
-    const resBody = await res.json();
+    const resBody = await sendApiRequest("rm-labels", data);
 
     if (resBody.success) {
         storedServerSettings.value = data;
@@ -314,7 +240,7 @@ export async function getImageFromServer(imgPath: string, width: number | undefi
         })
     });
 
-    const imageBlob = await res.text();
+    const imageBlob = await res.text(); // TODO: Adapt route to return JSON and use sendApiRequest()
 
     // Add to cache
     const cacheLength = cachedImages.add({ id: imgPath, imgBlob: imageBlob, imgWidth: width });
