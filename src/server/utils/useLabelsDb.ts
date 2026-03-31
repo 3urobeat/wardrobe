@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-31 22:21:29
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -16,8 +16,10 @@
 
 
 import nedb from "@seald-io/nedb";
+import { SubscriptionEventAction } from "~/model/api";
 import type { Label } from "~/model/label";
 import type { Category } from "~/model/label-category";
+import { StorageKind } from "~/model/storage";
 
 
 // Load database
@@ -48,6 +50,12 @@ function upsertLabel(label: Label) {
 
     return labelsDb.updateAsync({ id: label.id }, { $set: label }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.UPSERT,
+                storage: StorageKind.LABELS,
+                newData: label // TODO: != res.affectedDocuments, hmm
+            });
+
             return {
                 success: true,
                 message: "",
@@ -100,6 +108,12 @@ function removeLabel(labelID: string) {
 
     return labelsDb.removeAsync({ id: labelID }, {})
         .then((res) => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.DELETE,
+                storage: StorageKind.LABELS,
+                newData: { id: labelID }
+            });
+
             return {
                 success: true,
                 message: ""
@@ -162,6 +176,12 @@ function upsertLabelCategory(category: Category) {
 
     return labelCategoriesDb.updateAsync({ id: category.id }, { $set: category }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.UPSERT,
+                storage: StorageKind.LABEL_CATEGORIES,
+                newData: category // TODO: != res.affectedDocuments, hmm
+            });
+
             return {
                 success: true,
                 message: "",
@@ -213,6 +233,12 @@ function removeLabelCategory(categoryID: string) {
 
     return labelCategoriesDb.removeAsync({ id: categoryID }, {})
         .then((res) => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.DELETE,
+                storage: StorageKind.LABEL_CATEGORIES,
+                newData: { id: categoryID }
+            });
+
             return {
                 success: true,
                 message: ""

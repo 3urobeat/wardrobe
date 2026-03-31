@@ -4,7 +4,7 @@
  * Created Date: 2026-03-26 18:57:42
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 16:29:02
+ * Last Modified: 2026-03-31 22:22:14
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -31,8 +31,8 @@ export enum SubscriptionEventType {
 
 // Event actions
 export enum SubscriptionEventAction {
-    NEW,
-    UPDATE,
+    NEW,    // Is this even used?
+    UPSERT,
     DELETE
 }
 
@@ -45,7 +45,7 @@ export interface SubscriptionEvent {
 // Specific SubscriptionEvent type for storage updates
 export interface StorageSubscriptionEvent extends SubscriptionEvent {
     type: SubscriptionEventType.STORAGE,
-    action: SubscriptionEventAction.NEW | SubscriptionEventAction.UPDATE | SubscriptionEventAction.DELETE,
+    action: SubscriptionEventAction.NEW | SubscriptionEventAction.UPSERT | SubscriptionEventAction.DELETE,
     storage: StorageKind, //Omit<StorageKind, StorageKind.LOCAL_STORAGE>,
-    newData: StorageKindDataMap<StorageKind>
+    newData: StorageKindDataMap<StorageKind> | { id: string } // This might contain ONLY the prop id on action DELETE btw. // TODO: Also this constraint doesn't seem to work correctly, perhaps the entire interface must be generic?
 }

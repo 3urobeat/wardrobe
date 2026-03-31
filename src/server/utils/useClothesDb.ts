@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:02:26
+ * Last Modified: 2026-03-31 22:23:53
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -17,7 +17,9 @@
 
 import nedb from "@seald-io/nedb";
 import crypto from "node:crypto";
+import { SubscriptionEventAction } from "~/model/api";
 import type { Clothing } from "~/model/item";
+import { StorageKind } from "~/model/storage";
 import { updateImagesOfAffectedOutfits } from "~/server/utils/outfitPreviewImage";
 
 
@@ -57,6 +59,12 @@ export async function upsertClothing(clothing: Clothing) {
         .then((res) => {
             // Unused image will be deleted by periodic database cleanup job
 
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.UPSERT,
+                storage: StorageKind.CLOTHES,
+                newData: clothing // TODO: != res.affectedDocuments, hmm
+            });
+
             // Tell outfit image handler to figure out re-generating images of outfits containing this clothing // TODO: ...only when image has changed (requires a DB query beforehand to get old value...)
             if (res.affectedDocuments) {
                 updateImagesOfAffectedOutfits(res.affectedDocuments.id);
@@ -89,6 +97,12 @@ export async function deleteClothing(clothingID: string) {
 
     return clothesDb.removeAsync({ id: clothingID }, { })
         .then(() => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.DELETE,
+                storage: StorageKind.CLOTHES,
+                newData: { id: clothingID }
+            });
+
             return {
                 success: true,
                 message: ""

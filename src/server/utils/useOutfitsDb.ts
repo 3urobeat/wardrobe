@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-27 19:02:37
+ * Last Modified: 2026-03-31 22:18:31
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -17,7 +17,9 @@
 
 import nedb from "@seald-io/nedb";
 import crypto from "node:crypto";
+import { SubscriptionEventAction } from "~/model/api";
 import type { Outfit } from "~/model/item";
+import { StorageKind } from "~/model/storage";
 import { generateOutfitPreviewImage } from "~/server/utils/outfitPreviewImage";
 
 
@@ -62,6 +64,12 @@ export async function upsertOutfit(outfit: Outfit) {
 
     return outfitsDb.updateAsync({ id: outfit.id }, { $set: outfit }, { upsert: true, returnUpdatedDocs: true })
         .then((res) => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.UPSERT,
+                storage: StorageKind.OUTFITS,
+                newData: outfit // TODO: != res.affectedDocuments, hmm
+            });
+
             return {
                 success: true,
                 message: "",
@@ -89,6 +97,12 @@ export async function deleteOutfit(outfitID: string) {
 
     return outfitsDb.removeAsync({ id: outfitID }, { })
         .then(() => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.DELETE,
+                storage: StorageKind.OUTFITS,
+                newData: { id: outfitID }
+            });
+
             return {
                 success: true,
                 message: ""

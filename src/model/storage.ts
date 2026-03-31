@@ -4,7 +4,7 @@
  * Created Date: 2025-09-08 15:21:35
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 17:33:12
+ * Last Modified: 2026-03-31 21:57:40
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -114,6 +114,6 @@ export const defaultServerSettings: ServerSettings = {
 // Used in API & frontend, not in storage itself
 export type CachedImage = {
     id: string,                  // imgPath is specified as ID here
-    imgBlob: string,
+    imgBlob: string | null,
     imgWidth: number | undefined // Only used on client side for scaling, is not the actual width on server
 }

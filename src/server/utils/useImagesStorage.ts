@@ -4,7 +4,7 @@
  * Created Date: 2025-12-06 17:28:44
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-31 22:12:05
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -17,6 +17,9 @@
 
 import crypto from "node:crypto";
 import sharp from "sharp";
+import { sendStorageSubscriptionEvent } from "./useStorage";
+import { SubscriptionEventAction } from "~/model/api";
+import { StorageKind } from "~/model/storage";
 
 // Use images storage - storage bucket is defined in nuxt.config.ts
 const imagesStorage = useStorage("images");
@@ -93,6 +96,13 @@ export async function saveImage(category: imgCategory, fileBuffer: Buffer<ArrayB
         const path = `${category}/${fileName}`;
         await imagesStorage.setItemRaw(path, fileBuffer); // TODO: Image type is hardcoded
 
+        // Notify registered clients
+        sendStorageSubscriptionEvent({
+            action: SubscriptionEventAction.NEW,
+            storage: StorageKind.IMAGES,
+            newData: { id: path, imgBlob: null, imgWidth: undefined }   // Images are lazy loaded due to their size, won't broadcast it here
+        });
+
         return path;
 
     } catch (err) {
@@ -109,4 +119,11 @@ export async function saveImage(category: imgCategory, fileBuffer: Buffer<ArrayB
  */
 export function deleteImage(filePath: string) {
     imagesStorage.del(filePath); // TOOD: Handle errors? Ignore them?
+
+    // Notify registered clients
+    sendStorageSubscriptionEvent({
+        action: SubscriptionEventAction.DELETE,
+        storage: StorageKind.IMAGES,
+        newData: { id: filePath, imgBlob: null, imgWidth: undefined }   // Images are lazy loaded due to their size, won't broadcast it here
+    });
 }

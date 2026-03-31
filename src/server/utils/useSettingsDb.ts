@@ -4,7 +4,7 @@
  * Created Date: 2026-02-14 19:44:02
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-28 13:56:33
+ * Last Modified: 2026-03-31 22:14:41
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -16,7 +16,8 @@
 
 
 import nedb from "@seald-io/nedb";
-import { defaultServerSettings, ServerSettings } from "~/model/storage";
+import { SubscriptionEventAction } from "~/model/api";
+import { defaultServerSettings, ServerSettings, StorageKind } from "~/model/storage";
 
 
 // Load database
@@ -39,6 +40,12 @@ export async function getServerSettings(): Promise<ServerSettings> {
 export async function setServerSettings(settings: ServerSettings) {
     return serverSettingsDb.updateAsync({}, { $set: settings }, { upsert: true, returnUpdatedDocs: true })
         .then(() => {
+            sendStorageSubscriptionEvent({              // Notify registered clients
+                action: SubscriptionEventAction.UPSERT,
+                storage: StorageKind.SERVER_SETTINGS,
+                newData: settings
+            });
+
             return {
                 success: true,
                 message: ""
