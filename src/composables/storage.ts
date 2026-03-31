@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-31 21:42:07
+ * Last Modified: 2026-03-31 22:34:10
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -15,6 +15,7 @@
  */
 
 
+import { SubscriptionEventAction, type StorageSubscriptionEvent } from "~/model/api";
 import type { Clothing, Outfit } from "~/model/item";
 import type { Label } from "~/model/label";
 import type { Category } from "~/model/label-category";
@@ -73,7 +74,6 @@ class Cache<T extends CachableStorageKind> {
 }
 // TODO: Test Reactivity
 // TODO: Limit size
-// TODO: Establish cache update socket with server
 
 
 let cachedImages:     Cache<StorageKind.IMAGES>;
@@ -122,6 +122,55 @@ async function sendApiRequest(route: string, data?: object): Promise<any> {
     })
 
     return await res.json();
+}
+
+
+/**
+ * Handles incoming server storage update events
+ * @param event
+ */
+export function handleCacheSubscriptionEvent(event: StorageSubscriptionEvent) {
+    let dest: Cache<any>;
+
+    // StorageKinds without an ID prop must already be handled here!
+    switch (event.storage) {
+        case StorageKind.IMAGES:
+            dest = cachedImages;
+            event.action = SubscriptionEventAction.DELETE; // Modify action to DELETE and let ImgLazy figure out reloading image when necessary
+            break;
+        case StorageKind.CLOTHES:
+            throw("Clothes Update not implemented");
+            break;
+        case StorageKind.OUTFITS:
+            throw("Outfits Update not implemented");
+            break;
+        case StorageKind.LABELS:
+            dest = storedLabels;
+            break;
+        case StorageKind.LABEL_CATEGORIES:
+            dest = storedCategories;
+            break;
+        case StorageKind.SERVER_SETTINGS:
+            storedServerSettings.value = event.newData as ServerSettings;
+            emitSettingsSavedEvent();
+            return; // Entire overwrite, not an array, nothing to do here
+        default:
+            throw("handleCacheSubscriptionEvent: Unsupported storage kind " + event.storage);
+    }
+
+    switch (event.action) {
+        case SubscriptionEventAction.NEW:
+            dest.add(event.newData);
+            break;
+        case SubscriptionEventAction.UPSERT:
+            dest.upsert(event.newData);
+            break;
+        case SubscriptionEventAction.DELETE:
+            dest.remove(event.newData);
+            break;
+        default:
+            throw("handleCacheSubscriptionEvent: Unsupported action " + event.action);
+    }
 }
 
 
@@ -229,7 +278,7 @@ export function getServerSettingsFromServer(): Ref<ServerSettings> {
 }
 
 export async function setServerSettingsToServer(data: ServerSettings)/* : Promise<ApiResponse> */ {
-    const resBody = await sendApiRequest("rm-labels", data);
+    const resBody = await sendApiRequest("set-settings", data);
 
     if (resBody.success) {
         storedServerSettings.value = data;
