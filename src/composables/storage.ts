@@ -4,7 +4,7 @@
  * Created Date: 2026-03-23 21:34:56
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 17:34:42
+ * Last Modified: 2026-03-31 21:42:07
  * Modified By: 3urobeat
  *
  * Copyright (c) 2026 3urobeat <https://github.com/3urobeat>
@@ -33,6 +33,11 @@ type CachableStorageKind =
 // Cache
 class Cache<T extends CachableStorageKind> {
     data: Ref<StorageKindDataMap<T>[]> = ref([]);
+
+    // Initializes cache
+    constructor(initData: StorageKindDataMap<T>[]) {
+        this.data.value = initData;
+    }
 
     // Adds to array and returns new length
     add(elem: StorageKindDataMap<T>): number {
@@ -71,25 +76,18 @@ class Cache<T extends CachableStorageKind> {
 // TODO: Establish cache update socket with server
 
 
-const cachedImages     = new Cache<StorageKind.IMAGES>();
-const storedLabels     = new Cache<StorageKind.LABELS>();
-const storedCategories = new Cache<StorageKind.LABEL_CATEGORIES>();
+let cachedImages:     Cache<StorageKind.IMAGES>;
+// let cachedClothes:    Cache<StorageKind.CLOTHES>;
+// let cachedOutfits:    Cache<StorageKind.OUTFITS>;
+let storedLabels:     Cache<StorageKind.LABELS>;
+let storedCategories: Cache<StorageKind.LABEL_CATEGORIES>;
 
 const storedServerSettings: Ref<ServerSettings> = ref({} as ServerSettings); // Does not use Cache as it's just a singular object
 
 
-async function sendApiRequest(route: string, data: object): Promise<any> {
-    const res = await fetch("/api/" + route, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-
-    return await res.json();
-}
-
+/**
+ * Initializes global cache with data required on all pages
+ */
 export async function initGlobalCache()  {
     console.debug("[DEBUG] Initializing global cache...");
 
@@ -99,9 +97,31 @@ export async function initGlobalCache()  {
         useFetch("/api/get-settings")
     ]);
 
-    storedLabels.data          = ref(labels.data.value as Label[]);
-    storedCategories.data      = ref(categories.data.value!);
+    cachedImages     = new Cache([]);
+    storedLabels     = new Cache(labels.data.value as Label[]);
+    storedCategories = new Cache(categories.data.value!);
+
     storedServerSettings.value = settings.data.value!;
+}
+// TODO: SSR?
+
+
+/**
+ * Sends API request to server and returns parsed JSON response
+ * @param route Route to query
+ * @param data Optional: JSON data to pass
+ * @returns Promise resolving with parsed JSON response
+ */
+async function sendApiRequest(route: string, data?: object): Promise<any> {
+    const res = await fetch("/api/" + route, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: data ? JSON.stringify(data) : undefined
+    })
+
+    return await res.json();
 }
 
 
@@ -110,18 +130,24 @@ export async function initGlobalCache()  {
 */
 
 export async function getAllClothesFromServer(): Promise<Clothing[]> {
-    return (await useFetch("/api/get-all-clothes")).data.value!;
+    /* if (!cachedClothes) {
+        cachedClothes = new Cache([]);          // Asynchronously fill cache - No SSR :(
+        sendApiRequest("get-all-clothes").then((res) => cachedClothes.data.value = res);
+    }
+
+    return cachedClothes.data; */
+    return (await useFetch("/api/get-all-clothes")).data.value! // SSR
 }
 
 export async function getClothingFromServer(id: string): Promise<Clothing> {
     return await sendApiRequest("get-clothing", { id: id });
 }
 
-export async function setClothingToServer(data: Clothing) {
+export async function setClothingToServer(data: Clothing)/* : Promise<ApiResponse> */ {
     return await sendApiRequest("set-clothing", { clothing: data });
 }
 
-export async function rmClothingToServer(id: string) {
+export async function rmClothingToServer(id: string)/* : Promise<ApiResponse> */ {
     return await sendApiRequest("rm-clothing", { id: id });
 }
 
@@ -131,18 +157,24 @@ export async function rmClothingToServer(id: string) {
 */
 
 export async function getAllOutfitsFromServer(): Promise<Outfit[]> {
-    return (await useFetch("/api/get-all-outfits")).data.value!;
+    /* if (!cachedOutfits) {
+        cachedOutfits = new Cache([]);          // Asynchronously fill cache - No SSR :(
+        sendApiRequest("/api/get-all-outfits").then((res) => cachedOutfits.data.value = res);
+    }
+
+    return cachedOutfits.data; */
+    return (await useFetch("/api/get-all-outfits")).data.value!; // SSR
 }
 
 export async function getOutfitFromServer(id: string): Promise<Outfit> {
     return await sendApiRequest("get-outfit", { id: id });
 }
 
-export async function setOutfitToServer(data: Outfit) {
+export async function setOutfitToServer(data: Outfit)/* : Promise<ApiResponse> */ {
     return await sendApiRequest("set-outfit", { outfit: data });
 }
 
-export async function rmOutfitToServer(id: string) {
+export async function rmOutfitToServer(id: string)/* : Promise<ApiResponse> */ {
     return await sendApiRequest("rm-outfit", { id: id });
 }
 
@@ -159,7 +191,7 @@ export function getAllLabelCategoriesFromServer(): Ref<Category[]> {
     return storedCategories.data;
 }
 
-export async function setCategoriesAndLabelsToServer(categoryData: Category[] | undefined, labelsData: Label[] | undefined) {
+export async function setCategoriesAndLabelsToServer(categoryData: Category[] | undefined, labelsData: Label[] | undefined)/* : Promise<ApiResponse> */ {
     const resBody = await sendApiRequest("set-labels", {
         categories: categoryData,
         labels: labelsData
@@ -173,7 +205,7 @@ export async function setCategoriesAndLabelsToServer(categoryData: Category[] | 
     return resBody;
 }
 
-export async function rmLabelsToServer(categoryIDs: string[] | undefined, labelIDs: string[] | undefined) {
+export async function rmLabelsToServer(categoryIDs: string[] | undefined, labelIDs: string[] | undefined)/* : Promise<ApiResponse> */ {
     const resBody = await sendApiRequest("rm-labels", {
         categoryIDs: categoryIDs,
         labelIDs: labelIDs
@@ -196,7 +228,7 @@ export function getServerSettingsFromServer(): Ref<ServerSettings> {
     return storedServerSettings; // TODO: Error handling
 }
 
-export async function setServerSettingsToServer(data: ServerSettings) {
+export async function setServerSettingsToServer(data: ServerSettings)/* : Promise<ApiResponse> */ {
     const resBody = await sendApiRequest("rm-labels", data);
 
     if (resBody.success) {
@@ -211,17 +243,11 @@ export async function setServerSettingsToServer(data: ServerSettings) {
     -------------------- IMAGES --------------------
 */
 
-/**
- * Helper function to get image from server
- * @param imgPath File path to request
- * @param width Optional: Request scaled down image
- * @returns Returns image blob as string on success
- */
-export async function getImageFromServer(imgPath: string, width: number | undefined): Promise<CachedImage | null> {
+export async function getImageFromServer(imgPath: string, scaleToWidth: number | undefined): Promise<CachedImage | null> {
     if (!imgPath) return null;
 
     // Attempt to find image with matching size (or none) in cache
-    const cachedImg = cachedImages.data.value.find((e) => e.id == imgPath && e.imgWidth == width);
+    const cachedImg = cachedImages.data.value.find((e) => e.id == imgPath && e.imgWidth == scaleToWidth);
 
     if (cachedImg) {
         console.debug(`[DEBUG] getImageFromServer: Found image '${imgPath}' in cache!`);
@@ -229,25 +255,19 @@ export async function getImageFromServer(imgPath: string, width: number | undefi
     }
 
     // Fetch image from server
-    const resBody = await sendApiRequest("get-image", {
+    const resBody: CachedImage = await sendApiRequest("get-image", {
         filePath: imgPath,
-        width: width
+        width: scaleToWidth
     });
 
     // Add to cache
     const cacheLength = cachedImages.add(resBody);
     console.debug(`[DEBUG] getImageFromServer: Fetched image '${imgPath}' from server. Image cache has ${cacheLength} entries now.`);
 
-    return cachedImages.data.value[cacheLength - 1] as CachedImage;
+    return cachedImages.data.value[cacheLength - 1]!;
 }
 
-
-/**
- * Sends new image to server and updates cache
- * @param file File to send
- * @returns API response body
- */
-export async function sendImageToServer(file: File): Promise<any> {
+export async function sendImageToServer(file: File)/* : Promise<ApiResponse> */ {
 
     // Construct form to post
     const formData = new FormData();

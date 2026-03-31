@@ -4,7 +4,7 @@
  * Created Date: 2025-09-17 17:25:36
  * Author: 3urobeat
  *
- * Last Modified: 2026-02-02 21:32:26
+ * Last Modified: 2026-03-31 18:21:45
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -25,7 +25,7 @@ import { sortModes } from "~/model/sort-modes";
  * @param selectedSort
  * @param selectedFilters
  */
-export default function(storedItems: Item[], selectedSort?: sortModes, selectedFilters?: string[]) {
+export default function(storedItems: Item[], selectedSort?: sortModes, selectedFilters?: string[]): Item[] {
 
     // Get search string ref from app.vue
     const searchStr: Ref<string|null> = useState("globalSearchStr");

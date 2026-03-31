@@ -5,7 +5,7 @@
  * Created Date: 2025-09-08 15:54:21
  * Author: 3urobeat
  *
- * Last Modified: 2026-03-30 17:58:10
+ * Last Modified: 2026-03-31 21:34:01
  * Modified By: 3urobeat
  *
  * Copyright (c) 2025 - 2026 3urobeat <https://github.com/3urobeat>
@@ -185,7 +185,11 @@
 
     // Do initial page load stuff
     updateGlobalSearchBar(useRoute().meta);
-    checkForUpdate();
+
+    onMounted(() => { // Client side only
+        console.debug("Wardrobe mounted!");
+        checkForUpdate();
+    })
 
 
     // Resets and toggles global search bar visibility
@@ -205,7 +209,7 @@
             let output = await fetch("https://raw.githubusercontent.com/wardrobe-hq/wardrobe/main/package.json");
             let parsed = await output.json();
 
-            console.log("checkForUpdate: Version found online: " + parsed.version);
+            console.log("Successfully checked for an Update; Local: %s | Online: %s ", packagejson.version, parsed.version);
 
             onlineVersion.value = parsed.version;
 
